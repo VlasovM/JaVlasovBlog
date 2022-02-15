@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Collection;
 
 @Entity
 @Data
@@ -31,4 +32,15 @@ public class User {
 
     private String text;
 
+    @OneToMany(mappedBy = "user")
+    @NotNull
+    private Collection<Post> posts;
+
+    @NotNull
+    @OneToMany(mappedBy = "user")
+    private Collection<PostVotes> postVotes;
+
+    @NotNull
+    @OneToMany(mappedBy = "user")
+    private Collection<PostComments> postComments;
 }

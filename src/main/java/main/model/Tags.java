@@ -3,13 +3,12 @@ package main.model;
 import com.sun.istack.NotNull;
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Collection;
 
 @Entity
 @Data
+@Table(name = "tags")
 public class Tags {
 
     @Id
@@ -18,4 +17,11 @@ public class Tags {
 
     @NotNull
     private String name;
+
+    @NotNull
+    @ManyToMany
+    @JoinTable (name = "tag2post",
+        joinColumns = @JoinColumn (name = "tag_id"),
+        inverseJoinColumns = @JoinColumn (name = "post_id"))
+    private Collection<Post> posts;
 }

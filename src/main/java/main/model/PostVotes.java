@@ -3,14 +3,12 @@ package main.model;
 import com.sun.istack.NotNull;
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
 @Data
+@Table(name = "post_votes")
 public class PostVotes {
 
     @Id
@@ -18,10 +16,14 @@ public class PostVotes {
     private int id;
 
     @NotNull
-    private String user_id;
+    @ManyToOne (optional = false, cascade = CascadeType.ALL)
+    @JoinColumn (name = "user_id")
+    private User user;
 
     @NotNull
-    private String post_id;
+    @ManyToOne (optional = false, cascade = CascadeType.ALL)
+    @JoinColumn (name = "post_id")
+    private Post post;
 
     @NotNull
     private Timestamp time;
