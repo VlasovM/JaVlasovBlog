@@ -1,11 +1,13 @@
 package main.model;
 
 import com.sun.istack.NotNull;
+import lombok.Data;
 
 import javax.persistence.*;
 
 @Entity
 @Table (name = "global_settings")
+@Data
 public class GlobalSettings {
 
     @Id
