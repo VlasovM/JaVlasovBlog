@@ -32,15 +32,15 @@ public class User {
 
     private String text;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     @NotNull
     private Collection<Post> posts;
 
     @NotNull
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Collection<PostVotes> postVotes;
 
     @NotNull
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Collection<PostComments> postComments;
 }

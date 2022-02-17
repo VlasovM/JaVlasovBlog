@@ -16,12 +16,12 @@ public class PostVotes {
     private int id;
 
     @NotNull
-    @ManyToOne (optional = false, cascade = CascadeType.ALL)
+    @ManyToOne (optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn (name = "user_id")
     private User user;
 
     @NotNull
-    @ManyToOne (optional = false, cascade = CascadeType.ALL)
+    @ManyToOne (optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn (name = "post_id")
     private Post post;
 

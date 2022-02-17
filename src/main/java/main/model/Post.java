@@ -42,18 +42,18 @@ public class Post {
     private int view_count;
 
     @NotNull
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
+    private Collection<PostVotes> postVotes;
+
+    @NotNull
+    @OneToMany (mappedBy = "post", fetch = FetchType.LAZY)
+    private Collection<PostComments> postComments;
+
+    @NotNull
     @ManyToMany
     @JoinTable (name = "tag2post",
             joinColumns = @JoinColumn(name = "post_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private Collection<Tags> tags;
-
-    @NotNull
-    @OneToMany(mappedBy = "post")
-    private Collection<PostVotes> postVotes;
-
-    @NotNull
-    @OneToMany (mappedBy = "post")
-    private Collection<PostComments> postComments;
 }
 

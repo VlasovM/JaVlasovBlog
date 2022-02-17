@@ -18,12 +18,12 @@ public class PostComments {
     private int parent_id;
 
     @NotNull
-    @ManyToOne (optional = false, cascade = CascadeType.ALL)
+    @ManyToOne (optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn (name = "post_id")
     private Post post;
 
     @NotNull
-    @ManyToOne (optional = false, cascade = CascadeType.ALL)
+    @ManyToOne (optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn (name = "user_id")
     private User user;
 
