@@ -1,7 +1,7 @@
-package main.service;
+package com.javlasov.blog.service;
 
-import main.api.response.SettingsResponse;
-import main.repository.GlobalSettingsRepository;
+import com.javlasov.blog.api.response.SettingsResponse;
+import com.javlasov.blog.repository.GlobalSettingsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

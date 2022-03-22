@@ -1,6 +1,6 @@
-package main.repository;
+package com.javlasov.blog.repository;
 
-import main.model.GlobalSettings;
+import com.javlasov.blog.model.GlobalSettings;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

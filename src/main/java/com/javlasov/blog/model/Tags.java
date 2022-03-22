@@ -1,4 +1,4 @@
-package main.model;
+package com.javlasov.blog.model;
 
 import com.sun.istack.NotNull;
 import lombok.Data;

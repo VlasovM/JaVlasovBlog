@@ -1,21 +1,18 @@
-package main.model;
+package com.javlasov.blog.model;
 
 import com.sun.istack.NotNull;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 
 @Entity
 @Data
-@Table(name = "post_comments")
-public class PostComments {
+@Table(name = "tag2post")
+public class Tag2Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-
-    private int parent_id;
 
     @NotNull
     @ManyToOne (optional = false, cascade = CascadeType.ALL)
@@ -24,12 +21,6 @@ public class PostComments {
 
     @NotNull
     @ManyToOne (optional = false, cascade = CascadeType.ALL)
-    @JoinColumn (name = "user_id")
-    private User user;
-
-    @NotNull
-    private Timestamp time;
-
-    @NotNull
-    private String text;
+    @JoinColumn (name = "tag_id")
+    private Tags tag;
 }

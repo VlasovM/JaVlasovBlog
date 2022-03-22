@@ -1,14 +1,15 @@
-package main.model;
+package com.javlasov.blog.model;
 
 import com.sun.istack.NotNull;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
 @Data
-@Table(name = "tag2post")
-public class Tag2Post {
+@Table(name = "post_votes")
+public class PostVotes {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -16,11 +17,16 @@ public class Tag2Post {
 
     @NotNull
     @ManyToOne (optional = false, cascade = CascadeType.ALL)
+    @JoinColumn (name = "user_id")
+    private User user;
+
+    @NotNull
+    @ManyToOne (optional = false, cascade = CascadeType.ALL)
     @JoinColumn (name = "post_id")
     private Post post;
 
     @NotNull
-    @ManyToOne (optional = false, cascade = CascadeType.ALL)
-    @JoinColumn (name = "tag_id")
-    private Tags tag;
+    private Timestamp time;
+
+    private boolean value;
 }

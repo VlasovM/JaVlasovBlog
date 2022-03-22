@@ -1,45 +1,55 @@
-package main.model;
+package com.javlasov.blog.model;
 
 import com.sun.istack.NotNull;
 import lombok.Data;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.Collection;
 
 @Entity
 @Data
 @Table(name = "posts")
+@NoArgsConstructor
+@ToString
 public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private int id;
 
-    private boolean is_active;
+    @Column(name = "is_active")
+    private short active;
 
     @NotNull
-    private ModerationStatus moderation_status;
+    @Column(name = "moderation_status")
+    private ModerationStatus moderationStatus;
 
-    private int moderator_id;
+    @Column(name = "moderator_id")
+    private int moderatorId;
+
+    @NotNull
+    @Column(name = "time")
+    private LocalDate time;
+
+    @NotNull
+    @Column(name = "title")
+    private String title;
+
+    @NotNull
+    @Column(name = "text")
+    private String text;
+
+    @Column(name = "view_count")
+    private int viewCount;
 
     @ManyToOne (optional = false, cascade = CascadeType.ALL)
     @JoinColumn (name = "user_id")
     @NotNull
     private User user;
-
-    @NotNull
-    private Timestamp time;
-
-    @NotNull
-    private String title;
-
-    @NotNull
-    private String text;
-
-    private int view_count;
 
     @NotNull
     @ManyToMany

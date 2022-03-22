@@ -1,4 +1,4 @@
-package main.api.response;
+package com.javlasov.blog.api.response;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
