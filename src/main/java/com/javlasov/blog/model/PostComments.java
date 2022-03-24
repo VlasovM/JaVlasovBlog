@@ -13,9 +13,19 @@ public class PostComments {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private int id;
 
-    private int parent_id;
+    @Column(name = "parent_id")
+    private int parentId;
+
+    @NotNull
+    @Column(name = "time")
+    private Timestamp time;
+
+    @NotNull
+    @Column(name = "text")
+    private String text;
 
     @NotNull
     @ManyToOne (optional = false, cascade = CascadeType.ALL)
@@ -26,10 +36,4 @@ public class PostComments {
     @ManyToOne (optional = false, cascade = CascadeType.ALL)
     @JoinColumn (name = "user_id")
     private User user;
-
-    @NotNull
-    private Timestamp time;
-
-    @NotNull
-    private String text;
 }

@@ -14,13 +14,13 @@ public class Tag2Post {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @JoinColumn(name = "post_id")
     @NotNull
-    @ManyToOne (optional = false, cascade = CascadeType.ALL)
-    @JoinColumn (name = "post_id")
     private Post post;
 
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @JoinColumn(name = "tag_id")
     @NotNull
-    @ManyToOne (optional = false, cascade = CascadeType.ALL)
-    @JoinColumn (name = "tag_id")
     private Tags tag;
 }

@@ -46,24 +46,24 @@ public class Post {
     @Column(name = "view_count")
     private int viewCount;
 
-    @ManyToOne (optional = false, cascade = CascadeType.ALL)
-    @JoinColumn (name = "user_id")
     @NotNull
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
     private User user;
 
     @NotNull
-    @ManyToMany
-    @JoinTable (name = "tag2post",
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH}, fetch = FetchType.LAZY)
+    @JoinTable(name = "tag2post",
             joinColumns = @JoinColumn(name = "post_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private Collection<Tags> tags;
 
     @NotNull
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private Collection<PostVotes> postVotes;
 
     @NotNull
-    @OneToMany (mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private Collection<PostComments> postComments;
 }
 

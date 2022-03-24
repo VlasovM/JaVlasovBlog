@@ -11,7 +11,7 @@ import java.util.Collection;
 
 @Entity
 @Data
-@Table (name = "users")
+@Table(name = "users")
 @NoArgsConstructor
 @ToString
 public class User {
@@ -19,6 +19,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
+    @NotNull
     private int id;
 
     @NotNull
@@ -43,15 +44,15 @@ public class User {
     @Column(name = "reg_time")
     private Timestamp regTime;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @NotNull
     private Collection<Post> posts;
 
     @NotNull
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Collection<PostVotes> postVotes;
 
     @NotNull
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Collection<PostComments> postComments;
 }

@@ -15,18 +15,21 @@ public class PostVotes {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @NotNull
     @ManyToOne (optional = false, cascade = CascadeType.ALL)
     @JoinColumn (name = "user_id")
+    @NotNull
     private User user;
 
-    @NotNull
     @ManyToOne (optional = false, cascade = CascadeType.ALL)
     @JoinColumn (name = "post_id")
+    @NotNull
     private Post post;
 
     @NotNull
+    @Column(name = "time")
     private Timestamp time;
 
+    @Column(name = "value")
+    @NotNull
     private boolean value;
 }

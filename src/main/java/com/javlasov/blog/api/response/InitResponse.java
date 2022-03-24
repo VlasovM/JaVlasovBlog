@@ -18,6 +18,6 @@ public class InitResponse {
     @Value("${blog.copyright}")
     private String copyRight;
     @Value("${blog.copyrightFrom}")
-    private String copyRightForm;
+    private String copyrightFrom;
 
 }
