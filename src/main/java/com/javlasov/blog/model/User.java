@@ -8,6 +8,7 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Data
@@ -46,7 +47,7 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @NotNull
-    private Collection<Post> posts;
+    private List<Post> posts;
 
     @NotNull
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
