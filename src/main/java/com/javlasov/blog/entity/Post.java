@@ -1,13 +1,16 @@
-package com.javlasov.blog.model;
+package com.javlasov.blog.entity;
 
 import com.sun.istack.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 
 @Entity
 @Data
@@ -26,14 +29,15 @@ public class Post {
 
     @NotNull
     @Column(name = "moderation_status")
+    @Enumerated(EnumType.STRING)
     private ModerationStatus moderationStatus;
 
     @Column(name = "moderator_id")
     private int moderatorId;
 
-    @NotNull
     @Column(name = "time")
-    private LocalDate time;
+    @NotNull
+    private Date time;
 
     @NotNull
     @Column(name = "title")
@@ -46,9 +50,9 @@ public class Post {
     @Column(name = "view_count")
     private int viewCount;
 
-    @NotNull
-    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @ToString.Exclude
     private User user;
 
     @NotNull
@@ -59,11 +63,11 @@ public class Post {
     private Collection<Tags> tags;
 
     @NotNull
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-    private Collection<PostVotes> postVotes;
+    @OneToMany(mappedBy = "postId", cascade = CascadeType.ALL)
+    private List<PostVotes> postVotes;
 
     @NotNull
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-    private Collection<PostComments> postComments;
+    @OneToMany(mappedBy = "postId", cascade = CascadeType.ALL)
+    private List<PostComments> postComments;
 }
 

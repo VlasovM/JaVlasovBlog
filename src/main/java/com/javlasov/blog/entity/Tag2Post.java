@@ -1,4 +1,4 @@
-package com.javlasov.blog.model;
+package com.javlasov.blog.entity;
 
 import com.sun.istack.NotNull;
 import lombok.Data;

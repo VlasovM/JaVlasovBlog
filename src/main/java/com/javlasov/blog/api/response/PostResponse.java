@@ -1,7 +1,7 @@
 package com.javlasov.blog.api.response;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.javlasov.blog.model.Post;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.javlasov.blog.dto.PostDto;
 import lombok.Data;
 
 import java.util.List;
@@ -11,6 +11,6 @@ public class PostResponse {
 
     private int count;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private List<Post> posts;
+    @JsonProperty("posts")
+    private List<PostDto> postsDto;
 }

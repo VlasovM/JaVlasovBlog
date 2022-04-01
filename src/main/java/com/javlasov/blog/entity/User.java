@@ -1,5 +1,6 @@
-package com.javlasov.blog.model;
+package com.javlasov.blog.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -45,15 +46,15 @@ public class User {
     @Column(name = "reg_time")
     private Timestamp regTime;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    @NotNull
-    private List<Post> posts;
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+//    @ToString.Exclude
+//    private List<Post> posts;
 
     @NotNull
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
     private Collection<PostVotes> postVotes;
 
     @NotNull
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
     private Collection<PostComments> postComments;
 }

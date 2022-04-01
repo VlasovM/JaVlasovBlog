@@ -10,7 +10,7 @@ public class CheckService {
 
     public CheckResponse checkUser() {
         checkResponse = new CheckResponse();
-        if (checkResponse.is_result()) {
+        if (checkResponse.isResult()) {
             //some code to return user info
         }
         return checkResponse;

@@ -1,4 +1,4 @@
-package com.javlasov.blog.model;
+package com.javlasov.blog.entity;
 
 public enum ModerationStatus {
 
