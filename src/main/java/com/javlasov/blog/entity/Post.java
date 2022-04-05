@@ -4,11 +4,8 @@ import com.sun.istack.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -54,13 +51,6 @@ public class Post {
     @JoinColumn(name = "user_id")
     @ToString.Exclude
     private User user;
-
-    @NotNull
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH}, fetch = FetchType.LAZY)
-    @JoinTable(name = "tag2post",
-            joinColumns = @JoinColumn(name = "post_id"),
-            inverseJoinColumns = @JoinColumn(name = "tag_id"))
-    private Collection<Tags> tags;
 
     @NotNull
     @OneToMany(mappedBy = "postId", cascade = CascadeType.ALL)

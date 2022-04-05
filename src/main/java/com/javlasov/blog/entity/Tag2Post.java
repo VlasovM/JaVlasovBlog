@@ -22,5 +22,5 @@ public class Tag2Post {
     @ManyToOne(optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "tag_id")
     @NotNull
-    private Tags tag;
+    private Tag tag;
 }

@@ -5,11 +5,12 @@ import com.javlasov.blog.dto.PostDto;
 import com.javlasov.blog.entity.Post;
 import com.javlasov.blog.entity.PostComments;
 import com.javlasov.blog.entity.PostVotes;
-import com.javlasov.blog.mappers.PostMapper;
+import com.javlasov.blog.mappers.DtoMapper;
 import com.javlasov.blog.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -17,19 +18,20 @@ import java.util.List;
 public class PostService {
 
     private final PostRepository postRepository;
-    private final PostMapper postMapper;
+    private final DtoMapper dtoMapper;
     private List<Post> allPostsList;
     private List<PostDto> allPostsDtoList;
 
-    public PostResponse postResponse() {
+    public PostResponse postResponse(String mode, int offset, int limit) {
         PostResponse postResponse = new PostResponse();
         allPostsList = postRepository.findAll();
-        allPostsDtoList = postMapper.toDtoList(allPostsList);
+        allPostsDtoList = dtoMapper.PostListToPostDtoList(allPostsList);
         setPostDtoVotesCount();
         setPostCommentsCount();
         setPostAnnounce();
         setPostTimestamp();
-
+        sortCollection(mode);
+        allPostsDtoList = getCollectionsByOffsetLimit(offset, limit);
         postResponse.setPostsDto(allPostsDtoList);
         postResponse.setCount(allPostsDtoList.size());
         return postResponse;
@@ -42,10 +44,10 @@ public class PostService {
             PostDto postDto = allPostsDtoList.get(i);
             int like = 0;
             int dislike = 0;
-            for (int j = 0; j < postVotesList.size(); j++) {
-                if (postVotesList.get(j).getValue() == 1) {
+            for (PostVotes postVotes : postVotesList) {
+                if (postVotes.getValue() == 1) {
                     like++;
-                } else if (postVotesList.get(j).getValue() == -1) {
+                } else if (postVotes.getValue() == -1) {
                     dislike++;
                 }
             }
@@ -85,35 +87,73 @@ public class PostService {
         }
     }
 
+    private void sortCollection(String mode) {
+        if (mode != null) {
+            if (mode.startsWith("recent")) {
+                PostComparatorByRecent comparator = new PostComparatorByRecent();
+                allPostsDtoList.sort(comparator);
+            }
+            if (mode.startsWith("popular")) {
+                PostComparatorByPopular comparator = new PostComparatorByPopular();
+                allPostsDtoList.sort(comparator);
+            }
+            if (mode.startsWith("best")) {
+                PostComparatorByBest comparator = new PostComparatorByBest();
+                allPostsDtoList.sort(comparator);
+            }
+            if (mode.startsWith("early")) {
+                PostComparatorByEarly comparator = new PostComparatorByEarly();
+                allPostsDtoList.sort(comparator);
+            }
+        }
+    }
+
+    private List<PostDto> getCollectionsByOffsetLimit(int offset, int limit) {
+        List<PostDto> postDtoList;
+        if (offset + limit > allPostsDtoList.size()) {
+            postDtoList = allPostsDtoList.subList(offset, allPostsDtoList.size());
+        } else {
+            if (offset == 0) {
+                postDtoList = allPostsDtoList.subList(offset, limit);
+            } else {
+                int rightBorder = offset + limit;
+                postDtoList = allPostsDtoList.subList(offset, rightBorder);
+            }
+        }
+        return postDtoList;
+    }
+}
+
+class PostComparatorByRecent implements Comparator<PostDto> {
+
+    @Override
+    public int compare(PostDto o1, PostDto o2) {
+        return (int) (o1.getTimestamp() - o2.getTimestamp());
+    }
 
 }
 
-//    public PostResponse getPostResponse() {
-//        List<Post> allPosts;
-//
-//
-//
-//        return null;
-//    }
-//
-//    private List findAllPosts() {
-//        List<Post> allPosts = postRepository.findAll();
-//        return null;
-//    }
-//
-//    private List<Post> outputOfPosts(int offset, int limit) {
-//        List<Post> allPosts = findAllPosts();
-//        List<Post> postList;
-//
-//        if (offset + limit > allPosts.size()) {
-//            postList = allPosts.subList(offset, allPosts.size());
-//        } else {
-//            if (offset == 0) {
-//                postList = allPosts.subList(offset, limit);
-//            } else {
-//                int rightBorder = offset + limit;
-//                postList = allPosts.subList(offset, rightBorder);
-//            }
-//        }
-//        return postList;
-//    }
+class PostComparatorByPopular implements Comparator<PostDto> {
+
+    @Override
+    public int compare(PostDto o1, PostDto o2) {
+        return o2.getCommentCount() - o1.getCommentCount();
+    }
+}
+
+class PostComparatorByBest implements Comparator<PostDto> {
+
+    @Override
+    public int compare(PostDto o1, PostDto o2) {
+        return o2.getLikeCount() - o1.getLikeCount();
+    }
+}
+
+class PostComparatorByEarly implements Comparator<PostDto> {
+
+    @Override
+    public int compare(PostDto o1, PostDto o2) {
+        return (int) (o2.getTimestamp() - o1.getTimestamp());
+    }
+}
+

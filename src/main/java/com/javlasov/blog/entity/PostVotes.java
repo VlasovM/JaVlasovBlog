@@ -1,6 +1,5 @@
 package com.javlasov.blog.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import lombok.Data;
 
@@ -16,23 +15,12 @@ public class PostVotes {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-//    @ManyToOne (optional = false, cascade = CascadeType.ALL)
-//    @JoinColumn (name = "user_id")
-//    @NotNull
-//    @JsonIgnore
-//    private User user;
-
     @Column(name = "user_id")
     private int userId;
 
 
     @Column(name = "post_id")
     private int postId;
-//    @ManyToOne (optional = false, cascade = CascadeType.ALL)
-//    @JoinColumn (name = "post_id")
-//    @NotNull
-//    @JsonIgnore
-//    private Post post;
 
     @NotNull
     @Column(name = "time")

@@ -1,6 +1,5 @@
 package com.javlasov.blog.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,7 +8,6 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Collection;
-import java.util.List;
 
 @Entity
 @Data
@@ -45,10 +43,6 @@ public class User {
     @NotNull
     @Column(name = "reg_time")
     private Timestamp regTime;
-
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-//    @ToString.Exclude
-//    private List<Post> posts;
 
     @NotNull
     @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
