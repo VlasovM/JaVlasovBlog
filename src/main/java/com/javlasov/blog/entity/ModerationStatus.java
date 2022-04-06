@@ -1,6 +1,7 @@
-package main.model;
+package com.javlasov.blog.entity;
 
 public enum ModerationStatus {
 
     NEW, ACCEPTED, DECLINED
+
 }

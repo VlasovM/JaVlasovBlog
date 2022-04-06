@@ -1,10 +1,10 @@
-package main.model;
+package com.javlasov.blog.entity;
 
 import com.sun.istack.NotNull;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -13,15 +13,19 @@ public class CaptchaCodes {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private int id;
 
     @NotNull
-    private Timestamp time;
+    @Column(name = "time")
+    private LocalDateTime time;
 
     @NotNull
+    @Column(name = "code")
     private String code;
 
     @NotNull
-    private String secret_code;
+    @Column(name = "secret_code")
+    private String secretCode;
 
 }
