@@ -2,22 +2,19 @@ package com.javlasov.blog.api.response;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 @Data
 @Component
+@ConfigurationProperties("blog")
 public class InitResponse {
-    @Value("${blog.title}")
     private String title;
-    @Value("${blog.subtitle}")
     private String subTitle;
-    @Value("${blog.phone}")
     private String phone;
-    @Value("${blog.email}")
     private String email;
-    @Value("${blog.copyright}")
     private String copyRight;
-    @Value("${blog.copyrightFrom}")
     private String copyrightFrom;
-
 }

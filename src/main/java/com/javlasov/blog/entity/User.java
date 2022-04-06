@@ -7,6 +7,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 @Entity
@@ -42,7 +43,7 @@ public class User {
 
     @NotNull
     @Column(name = "reg_time")
-    private Timestamp regTime;
+    private LocalDateTime regTime;
 
     @NotNull
     @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)

@@ -32,14 +32,4 @@ public class PostComments {
 
     @Column(name = "post_id")
     private int postId;
-//
-//    @NotNull
-//    @ManyToOne (optional = false, cascade = CascadeType.ALL)
-//    @JoinColumn (name = "post_id")
-//    private Post post;
-//
-//    @NotNull
-//    @ManyToOne (optional = false, cascade = CascadeType.ALL)
-//    @JoinColumn (name = "user_id")
-//    private User user;
 }

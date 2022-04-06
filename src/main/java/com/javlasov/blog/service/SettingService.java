@@ -2,60 +2,52 @@ package com.javlasov.blog.service;
 
 import com.javlasov.blog.api.response.SettingsResponse;
 import com.javlasov.blog.entity.GlobalSettings;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.javlasov.blog.repository.GlobalSettingRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
-import java.util.List;
-
 @Service
+@RequiredArgsConstructor
 public class SettingService {
 
-    @Autowired
-    private EntityManager entityManager;
+    private final GlobalSettingRepository globalSettingRepository;
+    private final static String POSITIVE = "YES";
+    private final static String NEGATIVE = "NO";
 
     public SettingsResponse checkSetting() {
         SettingsResponse settingsResponse = new SettingsResponse();
-        GlobalSettings multiUserMode = getGlobalSettings(1);
-        GlobalSettings postPremoderation = getGlobalSettings(2);
-        GlobalSettings statisticsIsPublic = getGlobalSettings(3);
+        GlobalSettings multiUserMode = globalSettingRepository.getById(1);
+        GlobalSettings postPremoderation = globalSettingRepository.getById(2);
+        GlobalSettings statisticsIsPublic = globalSettingRepository.getById(3);
 
         switch (multiUserMode.getValue()) {
-            case ("YES"):
+            case (POSITIVE):
                 settingsResponse.setMultiuserMode(true);
                 break;
-            case ("NO"):
+            case (NEGATIVE):
                 settingsResponse.setMultiuserMode(false);
                 break;
         }
 
         switch (postPremoderation.getValue()) {
-            case ("YES"):
+            case (POSITIVE):
                 settingsResponse.setPostPremoderation(true);
                 break;
-            case ("NO"):
+            case (NEGATIVE):
                 settingsResponse.setPostPremoderation(false);
                 break;
         }
 
         switch (statisticsIsPublic.getValue()) {
-            case ("YES"):
+            case (POSITIVE):
                 settingsResponse.setStaticsIsPublic(true);
                 break;
-            case ("NO"):
+            case (NEGATIVE):
                 settingsResponse.setStaticsIsPublic(false);
                 break;
         }
 
 
         return settingsResponse;
-    }
-
-    public GlobalSettings getGlobalSettings(int id) {
-        Query query = entityManager.createQuery("from GlobalSettings");
-        List<GlobalSettings> globalSettingsList = query.getResultList();
-        GlobalSettings globalSettings = globalSettingsList.get(id - 1);
-        return globalSettings;
     }
 }

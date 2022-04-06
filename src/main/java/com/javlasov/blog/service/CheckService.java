@@ -11,7 +11,7 @@ public class CheckService {
     public CheckResponse checkUser() {
         checkResponse = new CheckResponse();
         if (checkResponse.isResult()) {
-            //some code to return user info
+            //TODO: Make verification of authorized users
         }
         return checkResponse;
     }

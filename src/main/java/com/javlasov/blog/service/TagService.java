@@ -6,12 +6,13 @@ import com.javlasov.blog.entity.Tag;
 import com.javlasov.blog.mappers.DtoMapper;
 import com.javlasov.blog.repository.PostRepository;
 import com.javlasov.blog.repository.TagRepository;
+import com.mysql.cj.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,49 +21,37 @@ public class TagService {
     private final DtoMapper dtoMapper;
     private final TagRepository tagRepository;
     private final PostRepository postRepository;
-    private List<Tag> tagList;
-    private double coefficientK;
-    private double allPosts;
 
     public TagResponse tag(String query) {
         TagResponse tagResponse = new TagResponse();
-        tagList = findTagsWithQuery(query);
-        allPosts = postRepository.findAll().size();
-        List<TagDto> tagDtoList = dtoMapper.TagDtoToTagDtoList(tagList);
-
-        calculateKCoefficient(findMostPopularTag());
-
-        for (int i = 0; i < tagList.size(); i++) {
-            Tag tag = tagList.get(i);
-            double weight = calculateTagWeight(tag);
-            tagDtoList.get(i).setWeight(weight);
-        }
-
+        List<Tag> tagList = findTagsWithQuery(query);
+        List<TagDto> tagDtoList = prepareTag(tagList);
         tagResponse.setTags(tagDtoList);
         return tagResponse;
+    }
+
+    private List<TagDto> prepareTag(List<Tag> tagList) {
+        List<TagDto> result = new ArrayList<>();
+        Tag mostPopularTag = findMostPopularTag(tagList);
+        double coefficientK = calculateKCoefficient(mostPopularTag);
+        for (Tag tag : tagList) {
+            TagDto tagDto = dtoMapper.TagToTagDto(tag);
+            tagDto.setWeight(calculateTagWeight(tag, coefficientK));
+            result.add(tagDto);
+        }
+        return result;
     }
 
     private List<Tag> findTagsWithQuery(String query) {
         if (query == null) {
             return tagRepository.findAll();
-        } else {
-            List<Tag> allTags = tagRepository.findAll();
-            tagList = new ArrayList<>();
-            for (Tag tag : allTags) {
-                if (tag.getName().startsWith(query) || tag.getName().startsWith(query.toLowerCase(Locale.ROOT))) {
-                    tagList.add(tag);
-                }
-            }
-            return tagList;
         }
+        return tagRepository.findAll().stream()
+                .filter(tag -> StringUtils.startsWithIgnoreCase(tag.getName(), query))
+                .collect(Collectors.toList());
     }
 
-    private double calculateTagWeight(Tag tag) {
-        double dWeightTag = tag.getPosts().size() / allPosts;
-        return dWeightTag * coefficientK;
-    }
-
-    private Tag findMostPopularTag() {
+    private Tag findMostPopularTag(List<Tag> tagList) {
         Tag mostPopularTag = new Tag();
         int count = 0;
         for (Tag tag : tagList) {
@@ -74,8 +63,13 @@ public class TagService {
         return mostPopularTag;
     }
 
-    private void calculateKCoefficient(Tag mostPopularTag) {
-        double dWeightMax = mostPopularTag.getPosts().size() / allPosts;
-        coefficientK = 1 / dWeightMax;
+    private double calculateTagWeight(Tag tag, double coefficientK) {
+        double dWeightTag = (double) tag.getPosts().size() / postRepository.findAll().size();
+        return dWeightTag * coefficientK;
+    }
+
+    private double calculateKCoefficient(Tag mostPopularTag) {
+        double dWeightMax = (double) mostPopularTag.getPosts().size() / postRepository.findAll().size();
+        return 1 / dWeightMax;
     }
 }

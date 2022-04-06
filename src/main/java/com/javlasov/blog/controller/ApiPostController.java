@@ -3,7 +3,6 @@ package com.javlasov.blog.controller;
 import com.javlasov.blog.api.response.PostResponse;
 import com.javlasov.blog.service.PostService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +24,7 @@ public class ApiPostController {
         if (limit == null) {
             limit = 10;
         }
-        return new ResponseEntity<>(postService.postResponse(mode, offset, limit), HttpStatus.OK);
+        return ResponseEntity.ok(postService.postResponse(mode, offset, limit));
     }
 
 }
