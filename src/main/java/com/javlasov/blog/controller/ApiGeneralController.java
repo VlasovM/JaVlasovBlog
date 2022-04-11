@@ -3,6 +3,7 @@ package com.javlasov.blog.controller;
 import com.javlasov.blog.api.response.InitResponse;
 import com.javlasov.blog.api.response.SettingsResponse;
 import com.javlasov.blog.api.response.TagResponse;
+import com.javlasov.blog.service.InitService;
 import com.javlasov.blog.service.SettingService;
 import com.javlasov.blog.service.TagService;
 import lombok.RequiredArgsConstructor;
@@ -17,13 +18,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ApiGeneralController {
 
-    private final InitResponse initResponse;
+    private final InitService initService;
     private final SettingService service;
     private final TagService tagService;
 
     @GetMapping("/init")
     private ResponseEntity<InitResponse> init() {
-        return ResponseEntity.ok(initResponse);
+        return ResponseEntity.ok(initService.init());
     }
 
     @GetMapping("/settings")

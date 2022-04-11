@@ -29,7 +29,7 @@ public class PostService {
         sortCollection(mode, postDtoList);
         postDtoList = getCollectionsByOffsetLimit(offset, limit, postDtoList);
         postResponse.setPostsDto(postDtoList);
-        postResponse.setCount(allPostsList.size());
+        postResponse.setCount(postDtoList.size());
         return postResponse;
     }
 
@@ -72,7 +72,7 @@ public class PostService {
 
     private void setPostTimestamp(Post post, PostDto postDto) {
         Duration duration = Duration.between(post.getTime(), LocalDateTime.now());
-        long secondsAfterCreatePost = duration.getSeconds();
+        long secondsAfterCreatePost = (System.currentTimeMillis() / 1000L) - duration.getSeconds();
         postDto.setTimestamp(secondsAfterCreatePost);
     }
 
