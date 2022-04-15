@@ -4,16 +4,20 @@ import com.javlasov.blog.api.response.PostResponse;
 import com.javlasov.blog.dto.PostDto;
 import com.javlasov.blog.entity.Post;
 import com.javlasov.blog.entity.PostVotes;
+import com.javlasov.blog.entity.Tag;
 import com.javlasov.blog.mappers.DtoMapper;
 import com.javlasov.blog.repository.PostRepository;
+import com.javlasov.blog.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Service
 @RequiredArgsConstructor
@@ -21,8 +25,9 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final DtoMapper dtoMapper;
+    private final TagRepository tagRepository;
 
-    public PostResponse postResponse(String mode, int offset, int limit) {
+    public PostResponse getAllPosts(String mode, int offset, int limit) {
         PostResponse postResponse = new PostResponse();
         List<Post> allPostsList = postRepository.findAll();
         List<PostDto> postDtoList = preparePost(allPostsList);
@@ -31,6 +36,76 @@ public class PostService {
         postResponse.setPostsDto(postDtoList);
         postResponse.setCount(postDtoList.size());
         return postResponse;
+    }
+
+    public PostResponse postSearch(String query, int offset, int limit) {
+        PostResponse postResponse = new PostResponse();
+        List<Post> allPostsWithQuery = findPostWithQuery(query);
+        List<PostDto> postDtoList = preparePost(allPostsWithQuery);
+        postDtoList = getCollectionsByOffsetLimit(offset, limit, postDtoList);
+        postResponse.setPostsDto(postDtoList);
+        postResponse.setCount(postDtoList.size());
+        return postResponse;
+    }
+
+    public PostResponse getPostByDate(String date, int offset, int limit) {
+        PostResponse postResponse = new PostResponse();
+        List<Post> allPosts = postRepository.findAll();
+        List<Post> postsByDate = findPostByDate(allPosts, date);
+        List<PostDto> postDtoList = preparePost(postsByDate);
+        postDtoList = getCollectionsByOffsetLimit(offset, limit, postDtoList);
+        postResponse.setCount(postDtoList.size());
+        postResponse.setPostsDto(postDtoList);
+        return postResponse;
+    }
+
+    public PostResponse getPostByTag(String tag, int offset, int limit) {
+        PostResponse postResponse = new PostResponse();
+        List<Post> allPosts = postRepository.findAll();
+        List<Post> posts = findPostByTag(allPosts, tag);
+        List<PostDto> postDtoList = preparePost(posts);
+        postDtoList = getCollectionsByOffsetLimit(offset, limit, postDtoList);
+        postResponse.setPostsDto(postDtoList);
+        postResponse.setCount(postDtoList.size());
+        return postResponse;
+    }
+
+    private List<Post> findPostByTag(List<Post> allPosts, String tagName) {
+        List<Tag> tags = tagRepository.findAll();
+        List<Post> result = new ArrayList<>();
+        for (Tag tag : tags) {
+            if (tag.getName().equals(tagName)) {
+                result.addAll(tag.getPosts());
+            }
+        }
+        return result;
+    }
+
+    private List<Post> findPostByDate(List<Post> allPosts, String date) {
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        List<Post> result = new ArrayList<>();
+        for (Post post : allPosts) {
+            String datePost = post.getTime().format(format);
+            if (datePost.equals(date)) {
+                result.add(post);
+            }
+        }
+        return result;
+    }
+
+    private List<Post> findPostWithQuery(String query) {
+        List<Post> allPosts = postRepository.findAll();
+        List<Post> result = new ArrayList<>();
+        for (Post post : allPosts) {
+            boolean isContain = (Pattern.compile(Pattern.quote(query), Pattern.CASE_INSENSITIVE)
+                    .matcher(post.getText()).find()) ||
+                    (Pattern.compile(Pattern.quote(query), Pattern.CASE_INSENSITIVE)
+                            .matcher(post.getTitle()).find());
+            if (isContain) {
+                result.add(post);
+            }
+        }
+        return result;
     }
 
     private List<PostDto> preparePost(List<Post> posts) {
@@ -117,7 +192,7 @@ class PostComparatorByRecent implements Comparator<PostDto> {
 
     @Override
     public int compare(PostDto o1, PostDto o2) {
-        return (int) (o1.getTimestamp() - o2.getTimestamp());
+        return (int) (o2.getTimestamp() - o1.getTimestamp());
     }
 
 }
@@ -142,7 +217,7 @@ class PostComparatorByEarly implements Comparator<PostDto> {
 
     @Override
     public int compare(PostDto o1, PostDto o2) {
-        return (int) (o2.getTimestamp() - o1.getTimestamp());
+        return (int) (o1.getTimestamp() - o2.getTimestamp());
     }
 }
 

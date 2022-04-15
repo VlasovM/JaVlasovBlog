@@ -43,7 +43,7 @@ public class TagService {
     }
 
     private List<Tag> findTagsWithQuery(String query) {
-        if (query == null) {
+        if (query.isEmpty()) {
             return tagRepository.findAll();
         }
         return tagRepository.findAll().stream()
