@@ -35,7 +35,7 @@ public class TagService {
         Tag mostPopularTag = findMostPopularTag(tagList);
         double coefficientK = calculateKCoefficient(mostPopularTag);
         for (Tag tag : tagList) {
-            TagDto tagDto = dtoMapper.TagToTagDto(tag);
+            TagDto tagDto = dtoMapper.tagToTagDto(tag);
             tagDto.setWeight(calculateTagWeight(tag, coefficientK));
             result.add(tagDto);
         }

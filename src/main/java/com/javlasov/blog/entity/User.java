@@ -41,6 +41,9 @@ public class User {
     @Column(name = "is_moderator")
     private boolean is_moderator;
 
+    @Column(name = "photo")
+    private String photo;
+
     @NotNull
     @Column(name = "reg_time")
     private LocalDateTime regTime;

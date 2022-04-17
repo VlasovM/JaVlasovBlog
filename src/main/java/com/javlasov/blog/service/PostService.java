@@ -1,10 +1,11 @@
 package com.javlasov.blog.service;
 
 import com.javlasov.blog.api.response.PostResponse;
+import com.javlasov.blog.dto.PostCommentDto;
 import com.javlasov.blog.dto.PostDto;
-import com.javlasov.blog.entity.Post;
-import com.javlasov.blog.entity.PostVotes;
-import com.javlasov.blog.entity.Tag;
+import com.javlasov.blog.dto.PostDtoById;
+import com.javlasov.blog.dto.UserDto;
+import com.javlasov.blog.entity.*;
 import com.javlasov.blog.mappers.DtoMapper;
 import com.javlasov.blog.repository.PostRepository;
 import com.javlasov.blog.repository.TagRepository;
@@ -61,8 +62,7 @@ public class PostService {
 
     public PostResponse getPostByTag(String tag, int offset, int limit) {
         PostResponse postResponse = new PostResponse();
-        List<Post> allPosts = postRepository.findAll();
-        List<Post> posts = findPostByTag(allPosts, tag);
+        List<Post> posts = findPostByTag(tag);
         List<PostDto> postDtoList = preparePost(posts);
         postDtoList = getCollectionsByOffsetLimit(offset, limit, postDtoList);
         postResponse.setPostsDto(postDtoList);
@@ -70,7 +70,67 @@ public class PostService {
         return postResponse;
     }
 
-    private List<Post> findPostByTag(List<Post> allPosts, String tagName) {
+    public PostDtoById getPostById(int id) {
+        Post post = postRepository.getById(id);
+        return preparePostById(post);
+    }
+
+    private PostDtoById preparePostById(Post post) {
+        PostDtoById postDto = dtoMapper.postDtoById(post);
+        UserDto user = postDto.getUser();
+        user.setPhoto(null);
+        setTags(post, postDto);
+        setComments(post, postDto);
+        Duration duration = Duration.between(post.getTime(), LocalDateTime.now());
+        long secondsAfterCreatePost = (System.currentTimeMillis() / 1000L) - duration.getSeconds();
+        postDto.setTimestamp(secondsAfterCreatePost);
+        setPostByIdDtoVotesCount(post, postDto);
+        incrementViewCount(post, postDto);
+        return postDto;
+    }
+
+    private void incrementViewCount(Post post, PostDtoById postDto) {
+        User userPost = post.getUser();
+        if (!userPost.is_moderator()) {
+            int viewCount = post.getViewCount() + 1;
+            postDto.setViewCount(viewCount);
+            post.setViewCount(viewCount);
+            postRepository.save(post);
+        }
+    }
+
+    private void setTags(Post post, PostDtoById postDto) {
+        List<String> result = new ArrayList<>();
+        List<Tag> tags = tagRepository.findAll();
+        for (Tag tag : tags) {
+            List<Post> posts = tag.getPosts();
+            if (posts.contains(post)) {
+                result.add(tag.getName());
+            }
+        }
+        postDto.setTags(result);
+    }
+
+    private void setComments(Post post, PostDtoById postDto) {
+        List<PostComments> comments = post.getPostComments();
+        List<PostCommentDto> result = new ArrayList<>();
+
+        for (PostComments comment : comments) {
+            UserDto userDto = dtoMapper.userToUserDto(post.getUser());
+            PostCommentDto commentDto = dtoMapper.postCommentToDto(comment);
+
+            Duration duration = Duration.between(comment.getTime(), LocalDateTime.now());
+            long secondsAfterCreatePost = (System.currentTimeMillis() / 1000L) - duration.getSeconds();
+
+            commentDto.setTimestamp(secondsAfterCreatePost);
+            commentDto.setUser(userDto);
+            result.add(commentDto);
+        }
+
+        postDto.setComments(result);
+    }
+
+    private List<Post> findPostByTag(String tagName) {
         List<Tag> tags = tagRepository.findAll();
         List<Post> result = new ArrayList<>();
         for (Tag tag : tags) {
@@ -111,7 +171,10 @@ public class PostService {
     private List<PostDto> preparePost(List<Post> posts) {
         List<PostDto> result = new ArrayList<>();
         for (Post post : posts) {
-            PostDto postDto = dtoMapper.PostToPostDto(post);
+            PostDto postDto = dtoMapper.postToPostDto(post);
+            UserDto user = postDto.getUser();
+            user.setPhoto(null);
+            postDto.setUser(user);
             setPostDtoVotesCount(post, postDto);
             setPostCommentsCount(post, postDto);
             setPostAnnounce(post, postDto);
@@ -122,6 +185,20 @@ public class PostService {
     }
 
     private void setPostDtoVotesCount(Post post, PostDto postDto) {
+        List<PostVotes> postVotesList = post.getPostVotes();
+        int like = 0;
+        int dislike = 0;
+        for (PostVotes postVotes : postVotesList) {
+            if (postVotes.getValue() == 1) {
+                like++;
+            }
+            dislike++;
+        }
+        postDto.setLikeCount(like);
+        postDto.setDislikeCount(dislike);
+    }
+
+    private void setPostByIdDtoVotesCount(Post post, PostDtoById postDto) {
         List<PostVotes> postVotesList = post.getPostVotes();
         int like = 0;
         int dislike = 0;
