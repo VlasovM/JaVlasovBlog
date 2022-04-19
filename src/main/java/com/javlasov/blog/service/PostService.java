@@ -91,7 +91,7 @@ public class PostService {
 
     private void incrementViewCount(Post post, PostDtoById postDto) {
         User userPost = post.getUser();
-        if (!userPost.is_moderator()) {
+        if (userPost.getIsModerator() == 0) {
             int viewCount = post.getViewCount() + 1;
             postDto.setViewCount(viewCount);
             post.setViewCount(viewCount);

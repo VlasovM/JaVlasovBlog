@@ -39,7 +39,7 @@ public class User {
     private String code;
 
     @Column(name = "is_moderator")
-    private boolean is_moderator;
+    private int isModerator;
 
     @Column(name = "photo")
     private String photo;
