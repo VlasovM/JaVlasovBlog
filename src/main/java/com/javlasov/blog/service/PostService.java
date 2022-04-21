@@ -1,6 +1,7 @@
 package com.javlasov.blog.service;
 
 import com.javlasov.blog.api.response.PostResponse;
+import com.javlasov.blog.constants.CommonConstants;
 import com.javlasov.blog.dto.PostCommentDto;
 import com.javlasov.blog.dto.PostDto;
 import com.javlasov.blog.dto.PostDtoById;
@@ -91,7 +92,7 @@ public class PostService {
 
     private void incrementViewCount(Post post, PostDtoById postDto) {
         User userPost = post.getUser();
-        if (userPost.getIsModerator() == 0) {
+        if (userPost.getModerator() == 0) {
             int viewCount = post.getViewCount() + 1;
             postDto.setViewCount(viewCount);
             post.setViewCount(viewCount);
@@ -142,10 +143,10 @@ public class PostService {
     }
 
     private List<Post> findPostByDate(List<Post> allPosts, String date) {
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter formatter = CommonConstants.FORMATTER;
         List<Post> result = new ArrayList<>();
         for (Post post : allPosts) {
-            String datePost = post.getTime().format(format);
+            String datePost = post.getTime().format(formatter);
             if (datePost.equals(date)) {
                 result.add(post);
             }

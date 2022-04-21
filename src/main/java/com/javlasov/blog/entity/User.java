@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Collection;
 
@@ -39,7 +38,7 @@ public class User {
     private String code;
 
     @Column(name = "is_moderator")
-    private int isModerator;
+    private int moderator;
 
     @Column(name = "photo")
     private String photo;

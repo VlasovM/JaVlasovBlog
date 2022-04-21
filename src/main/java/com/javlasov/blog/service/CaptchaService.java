@@ -26,7 +26,7 @@ public class CaptchaService {
         String secretCode = generateSecretCode();
         captchaResponse.setImageBase64(image);
         captchaResponse.setSecretCode(secretCode);
-        saveCaptchaInDB(captcha, secretCode);
+        saveCaptchaToDb(captcha, secretCode);
         return captchaResponse;
     }
 
@@ -37,11 +37,11 @@ public class CaptchaService {
     }
 
     private String generateSecretCode() {
-        return UUID.randomUUID().toString().replaceAll("-", "");
+        return UUID.randomUUID().toString();
     }
 
 
-    private void saveCaptchaInDB(GCage gCage, String secretCode) {
+    private void saveCaptchaToDb(GCage gCage, String secretCode) {
         String code = gCage.getTokenGenerator().next();
         CaptchaCodes captcha = new CaptchaCodes();
         captcha.setSecretCode(secretCode);

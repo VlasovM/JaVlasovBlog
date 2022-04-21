@@ -1,6 +1,7 @@
 package com.javlasov.blog.service;
 
 import com.javlasov.blog.api.response.CalendarResponse;
+import com.javlasov.blog.constants.CommonConstants;
 import com.javlasov.blog.entity.Post;
 import com.javlasov.blog.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -38,12 +39,12 @@ public class CalendarService {
     }
 
     private Map<String, Long> findPosts(List<Post> allPosts, int year) {
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter formatter = CommonConstants.FORMATTER;
         List<String> dates = new ArrayList<>();
         for (Post post : allPosts) {
             if (post.getTime().getYear() == year) {
                 LocalDateTime datePost = post.getTime();
-                String date = datePost.format(format);
+                String date = datePost.format(formatter);
                 dates.add(date);
             }
         }

@@ -114,7 +114,7 @@ public class RegisterService {
         user.setEmail(email);
         user.setName(name);
         user.setPassword(password);
-        user.setIsModerator(0);
+        user.setModerator(0);
         user.setRegTime(LocalDateTime.now());
     }
 }

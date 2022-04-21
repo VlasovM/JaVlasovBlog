@@ -1,5 +1,6 @@
 package com.javlasov.blog.controller;
 
+import com.javlasov.blog.api.request.RegisterRequest;
 import com.javlasov.blog.api.response.CaptchaResponse;
 import com.javlasov.blog.api.response.CheckResponse;
 import com.javlasov.blog.api.response.RegisterResponse;
@@ -30,11 +31,11 @@ public class ApiAuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<RegisterResponse> register(@RequestParam(name = "e_mail") String email,
-                                                     @RequestParam String password,
-                                                     @RequestParam String name,
-                                                     @RequestParam String captcha,
-                                                     @RequestParam(name = "captcha_secret") String captchaSecret) {
-        return ResponseEntity.ok(registerService.register(email, password, name, captcha, captchaSecret));
+    public ResponseEntity<RegisterResponse> register(@RequestBody RegisterRequest request) {
+        System.out.println(request.getEmail());
+        System.out.println(request.getPassword());
+        System.out.println(request.getName());
+        return ResponseEntity.ok(registerService.register(request.getEmail(), request.getPassword(), request.getName(),
+                request.getCaptcha(), request.getCaptchaSecret()));
     }
 }
