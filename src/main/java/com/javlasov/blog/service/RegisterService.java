@@ -1,7 +1,6 @@
 package com.javlasov.blog.service;
 
 import com.javlasov.blog.api.response.RegisterResponse;
-import com.javlasov.blog.entity.CaptchaCodes;
 import com.javlasov.blog.entity.User;
 import com.javlasov.blog.repository.CaptchaRepository;
 import com.javlasov.blog.repository.UserRepository;
@@ -22,9 +21,10 @@ public class RegisterService {
     private final CaptchaRepository captchaRepository;
 
     public RegisterResponse register(String email, String password, String name,
-                                     String captchaUser, String captchaBase64) {
+                                     String captcha, String secret) {
         RegisterResponse registerResponse = new RegisterResponse();
-        Map<String, String> errors = checkInputData(email, name, password, captchaUser, captchaBase64);
+        Map<String, String> errors = checkInputData(email, name, password, captcha, secret);
+
         if (errors.isEmpty()) {
             registerResponse.setResult(true);
             registerResponse.setErrors(null);
@@ -37,7 +37,7 @@ public class RegisterService {
     }
 
     private Map<String, String> checkInputData(String email, String name, String pass,
-                                               String captchaUser, String captchaBase64) {
+                                               String captcha, String secret) {
         Map<String, String> result = new TreeMap<>();
 
         String emailUser = checkEmail(email);
@@ -55,7 +55,7 @@ public class RegisterService {
             result.put("password", passUser);
         }
 
-        if (!checkCaptcha(captchaUser, captchaBase64)) {
+        if (!checkCaptcha(captcha, secret)) {
             result.put("captcha", "Код с картинки введён неверно");
         }
 
@@ -79,28 +79,34 @@ public class RegisterService {
     }
 
     private String checkName(String name) {
-        for (char c : name.toCharArray()) {
-            if (!Character.isAlphabetic(c)) {
-                return "Имя может содержать только буквы.";
+        if (name.length() >= 2) {
+            for (char c : name.toCharArray()) {
+                if (!Character.isAlphabetic(c)) {
+                    return "Имя может содержать только буквы.";
+                }
             }
+            return name;
         }
-        return name;
+        return "Имя должно содержать минимум 2 символа.";
     }
 
     private String checkPassword(String pass) {
-        String regExp = "[a-zA-Z0-9]{7,}";
-        if (!(pass.length() <= 7)) {
+        String regExp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{7,}$";
+        if (!(pass.length() < 7)) {
             if (!pass.matches(regExp)) {
-                return "Пароль должен содержать буквы и цифры и иметь буквы разного регистра";
+                return "Пароль должен содержать буквы и цифры";
             }
             return pass;
         }
         return "Пароль не может быть короче 7 символов.";
     }
 
-    private boolean checkCaptcha(String captchaUser, String captchaBase64) {
-        CaptchaCodes captcha = captchaRepository.findByCode(captchaBase64);
-        return captcha.getSecretCode().equals(captchaUser);
+    private boolean checkCaptcha(String captchaUser, String secret) {
+        if (captchaRepository.existsBySecretCode(secret)) {
+            String code = captchaRepository.findBySecretCode(secret).getCode();
+            return code.equals(captchaUser);
+        }
+        return false;
     }
 
     private void addUserInDB(String email, String password, String name) {

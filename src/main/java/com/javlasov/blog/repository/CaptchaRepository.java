@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CaptchaRepository extends JpaRepository<CaptchaCodes, Integer> {
 
-    CaptchaCodes findByCode(String code);
+    CaptchaCodes findBySecretCode(String code);
+    boolean existsBySecretCode(String code);
 
 }
