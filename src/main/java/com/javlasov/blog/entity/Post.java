@@ -7,7 +7,6 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -60,5 +59,6 @@ public class Post {
     @NotNull
     @OneToMany(mappedBy = "postId", cascade = CascadeType.ALL)
     private List<PostComments> postComments;
+
 }
 

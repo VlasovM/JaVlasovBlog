@@ -13,5 +13,4 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
     @Query(value = "FROM Post WHERE active = 1 AND moderationStatus = 'ACCEPTED' AND time <= CURRENT_TIME ")
     List<Post> findAll();
 
-
 }

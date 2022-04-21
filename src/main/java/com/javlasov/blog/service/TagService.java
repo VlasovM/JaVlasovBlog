@@ -35,7 +35,7 @@ public class TagService {
         Tag mostPopularTag = findMostPopularTag(tagList);
         double coefficientK = calculateKCoefficient(mostPopularTag);
         for (Tag tag : tagList) {
-            TagDto tagDto = dtoMapper.TagToTagDto(tag);
+            TagDto tagDto = dtoMapper.tagToTagDto(tag);
             tagDto.setWeight(calculateTagWeight(tag, coefficientK));
             result.add(tagDto);
         }
@@ -43,7 +43,7 @@ public class TagService {
     }
 
     private List<Tag> findTagsWithQuery(String query) {
-        if (query == null) {
+        if (query.isEmpty()) {
             return tagRepository.findAll();
         }
         return tagRepository.findAll().stream()
