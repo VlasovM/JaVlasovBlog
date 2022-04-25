@@ -9,7 +9,10 @@ import com.javlasov.blog.service.CheckService;
 import com.javlasov.blog.service.RegisterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -31,10 +34,10 @@ public class ApiAuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<RegisterResponse> register(@RequestBody RegisterRequest request) {
-        System.out.println(request.getEmail());
-        System.out.println(request.getPassword());
-        System.out.println(request.getName());
+    public ResponseEntity<RegisterResponse> register(@Valid @RequestBody RegisterRequest request, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.ok(registerService.getRegisterWithErrors(bindingResult.getAllErrors()));
+        }
         return ResponseEntity.ok(registerService.register(request.getEmail(), request.getPassword(), request.getName(),
                 request.getCaptcha(), request.getCaptchaSecret()));
     }
