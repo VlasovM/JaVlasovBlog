@@ -2,8 +2,8 @@ package com.javlasov.blog.service;
 
 import com.javlasov.blog.api.response.TagResponse;
 import com.javlasov.blog.dto.TagDto;
-import com.javlasov.blog.entity.Tag;
 import com.javlasov.blog.mappers.DtoMapper;
+import com.javlasov.blog.model.Tag;
 import com.javlasov.blog.repository.PostRepository;
 import com.javlasov.blog.repository.TagRepository;
 import com.mysql.cj.util.StringUtils;

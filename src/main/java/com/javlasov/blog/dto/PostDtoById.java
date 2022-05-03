@@ -19,7 +19,7 @@ public class PostDtoById {
     private String title;
     private String text;
     private int likeCount;
-    private UserDto user;
+    private UserDtoForPosts user;
     private int dislikeCount;
     private int viewCount;
     private List<PostCommentDto> comments;

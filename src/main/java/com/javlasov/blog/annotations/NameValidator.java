@@ -15,4 +15,5 @@ public class NameValidator implements ConstraintValidator<Name, String> {
         String regExp = "[a-zA-Z ]+"; // only letters in name
         return (name.trim().length() >= 2 && (name.matches(regExp)));
     }
+
 }

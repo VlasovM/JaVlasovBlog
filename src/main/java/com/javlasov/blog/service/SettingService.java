@@ -1,7 +1,7 @@
 package com.javlasov.blog.service;
 
 import com.javlasov.blog.api.response.SettingsResponse;
-import com.javlasov.blog.entity.GlobalSettings;
+import com.javlasov.blog.model.GlobalSettings;
 import com.javlasov.blog.repository.GlobalSettingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

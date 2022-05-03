@@ -1,5 +1,6 @@
-package com.javlasov.blog.entity;
+package com.javlasov.blog.model;
 
+import com.javlasov.blog.model.enums.Role;
 import com.sun.istack.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -54,4 +55,8 @@ public class User {
     @NotNull
     @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
     private Collection<PostComments> postComments;
+
+    public Role getRole() {
+        return moderator == 1 ? Role.MODERATOR : Role.USER;
+    }
 }

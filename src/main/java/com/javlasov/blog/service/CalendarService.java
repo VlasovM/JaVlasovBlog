@@ -2,7 +2,7 @@ package com.javlasov.blog.service;
 
 import com.javlasov.blog.api.response.CalendarResponse;
 import com.javlasov.blog.constants.CommonConstants;
-import com.javlasov.blog.entity.Post;
+import com.javlasov.blog.model.Post;
 import com.javlasov.blog.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,5 @@
-package com.javlasov.blog.entity;
+package com.javlasov.blog.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import lombok.Data;
 

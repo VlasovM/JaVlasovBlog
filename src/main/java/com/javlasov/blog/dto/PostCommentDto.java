@@ -10,6 +10,6 @@ public class PostCommentDto {
     private int id;
     private long timestamp;
     private String text;
-    private UserDto user;
+    private UserDtoForPosts user;
 
 }

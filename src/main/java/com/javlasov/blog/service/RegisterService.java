@@ -1,10 +1,11 @@
 package com.javlasov.blog.service;
 
 import com.javlasov.blog.api.response.RegisterResponse;
-import com.javlasov.blog.entity.User;
+import com.javlasov.blog.model.User;
 import com.javlasov.blog.repository.CaptchaRepository;
 import com.javlasov.blog.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
@@ -71,19 +72,22 @@ public class RegisterService {
 
     private void checkCaptcha(String captchaUser, String secret, Map<String, String> errors) {
         if (captchaRepository.existsBySecretCode(secret)) {
-            String code = captchaRepository.findBySecretCode(secret).getCode();
+            String code = captchaRepository.findBySecretCode(secret).get().getCode();
+            System.out.println(code);
             if (!code.equals(captchaUser)) {
                 errors.put("captcha", "Код с картинки введён неверно");
             }
+            return;
         }
         errors.put("captcha", "Код с картинки введён неверно");
     }
 
     private void addUserInDB(String email, String password, String name) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(12);
         User user = new User();
         user.setEmail(email);
         user.setName(name);
-        user.setPassword(password);
+        user.setPassword(passwordEncoder.encode(password));
         user.setModerator(0);
         user.setRegTime(LocalDateTime.now());
         userRepository.save(user);

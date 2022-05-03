@@ -16,7 +16,7 @@ public class RegisterRequest {
     private String password;
 
     @JsonProperty(value = "e_mail")
-    @Email()
+    @Email
     private String email;
 
     private String captcha;

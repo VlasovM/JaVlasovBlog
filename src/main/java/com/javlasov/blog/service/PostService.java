@@ -5,12 +5,15 @@ import com.javlasov.blog.constants.CommonConstants;
 import com.javlasov.blog.dto.PostCommentDto;
 import com.javlasov.blog.dto.PostDto;
 import com.javlasov.blog.dto.PostDtoById;
-import com.javlasov.blog.dto.UserDto;
-import com.javlasov.blog.entity.*;
+import com.javlasov.blog.dto.UserDtoForPosts;
 import com.javlasov.blog.mappers.DtoMapper;
+import com.javlasov.blog.model.*;
 import com.javlasov.blog.repository.PostRepository;
 import com.javlasov.blog.repository.TagRepository;
+import com.javlasov.blog.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -28,6 +31,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final DtoMapper dtoMapper;
     private final TagRepository tagRepository;
+    private final UserRepository userRepository;
 
     public PostResponse getAllPosts(String mode, int offset, int limit) {
         PostResponse postResponse = new PostResponse();
@@ -73,12 +77,78 @@ public class PostService {
 
     public PostDtoById getPostById(int id) {
         Post post = postRepository.getById(id);
-        return preparePostById(post);
+        return preparePost(post);
     }
 
-    private PostDtoById preparePostById(Post post) {
+    public PostResponse getMyPosts(String status, int offset, int limit) {
+        PostResponse postResponse = new PostResponse();
+        String emailCurrentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByEmail(emailCurrentUser).orElseThrow(() -> new UsernameNotFoundException(emailCurrentUser));
+        List<Post> posts = postRepository.findPostsByUserId(user.getId());
+        List<PostDto> postDtoList = new ArrayList<>();
+        switch (status) {
+            case "inactive":
+                postDtoList = inActivePosts(posts);
+                break;
+            case "pending":
+                postDtoList = pendingPosts(posts);
+                break;
+            case "declined":
+                postDtoList = declinedPosts(posts);
+                break;
+            case "published":
+                postDtoList = publishedPosts(posts);
+                break;
+        }
+        postDtoList = getCollectionsByOffsetLimit(offset, limit, postDtoList);
+        postResponse.setCount(postDtoList.size());
+        postResponse.setPostsDto(postDtoList);
+        return postResponse;
+    }
+
+    private List<PostDto> inActivePosts(List<Post> posts) {
+        List<Post> postList = new ArrayList<>();
+        for (Post post : posts) {
+            if (post.getActive() == 0) {
+                postList.add(post);
+            }
+        }
+        return preparePost(postList);
+    }
+
+    private List<PostDto> pendingPosts(List<Post> posts) {
+        List<Post> postList = new ArrayList<>();
+        for (Post post : posts) {
+            if (post.getActive() == 1 && post.getModerationStatus().toString().equals("NEW")) {
+                postList.add(post);
+            }
+        }
+        return preparePost(postList);
+    }
+
+    private List<PostDto> declinedPosts(List<Post> posts) {
+        List<Post> postList = new ArrayList<>();
+        for (Post post : posts) {
+            if (post.getActive() == 1 && post.getModerationStatus().toString().equals("DECLINED")) {
+                postList.add(post);
+            }
+        }
+        return preparePost(postList);
+    }
+
+    private List<PostDto> publishedPosts(List<Post> posts) {
+        List<Post> postList = new ArrayList<>();
+        for (Post post : posts) {
+            if (post.getActive() == 1 && post.getModerationStatus().toString().equals("ACCEPTED")) {
+                postList.add(post);
+            }
+        }
+        return preparePost(postList);
+    }
+
+    private PostDtoById preparePost(Post post) {
         PostDtoById postDto = dtoMapper.postDtoById(post);
-        UserDto user = postDto.getUser();
+        UserDtoForPosts user = postDto.getUser();
         user.setPhoto(null);
         setTags(post, postDto);
         setComments(post, postDto);
@@ -92,7 +162,8 @@ public class PostService {
 
     private void incrementViewCount(Post post, PostDtoById postDto) {
         User userPost = post.getUser();
-        if (userPost.getModerator() == 0) {
+        String emailAuthUser = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (userPost.getModerator() == 0 && !emailAuthUser.equals(userPost.getEmail())) {
             int viewCount = post.getViewCount() + 1;
             postDto.setViewCount(viewCount);
             post.setViewCount(viewCount);
@@ -117,14 +188,14 @@ public class PostService {
         List<PostCommentDto> result = new ArrayList<>();
 
         for (PostComments comment : comments) {
-            UserDto userDto = dtoMapper.userToUserDto(post.getUser());
+            UserDtoForPosts userDtoForPosts = dtoMapper.userToUserDtoForPosts(post.getUser());
             PostCommentDto commentDto = dtoMapper.postCommentToDto(comment);
 
             Duration duration = Duration.between(comment.getTime(), LocalDateTime.now());
             long secondsAfterCreatePost = (System.currentTimeMillis() / 1000L) - duration.getSeconds();
 
             commentDto.setTimestamp(secondsAfterCreatePost);
-            commentDto.setUser(userDto);
+            commentDto.setUser(userDtoForPosts);
             result.add(commentDto);
         }
 
@@ -173,7 +244,7 @@ public class PostService {
         List<PostDto> result = new ArrayList<>();
         for (Post post : posts) {
             PostDto postDto = dtoMapper.postToPostDto(post);
-            UserDto user = postDto.getUser();
+            UserDtoForPosts user = postDto.getUser();
             user.setPhoto(null);
             postDto.setUser(user);
             setPostDtoVotesCount(post, postDto);

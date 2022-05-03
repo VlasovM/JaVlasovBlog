@@ -52,4 +52,12 @@ public class ApiPostController {
                 ResponseEntity.ok(postService.getPostById(id)) :
                 ResponseEntity.notFound().build();
     }
+
+    @GetMapping("post/my")
+    public ResponseEntity<PostResponse> getMyPosts(@RequestParam String status,
+                                                   @RequestParam(required = false, defaultValue = "0") int offset,
+                                                   @RequestParam(required = false, defaultValue = "10") int limit) {
+        return ResponseEntity.ok(postService.getMyPosts(status, offset, limit));
+    }
+
 }
