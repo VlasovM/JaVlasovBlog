@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -38,13 +38,12 @@ public class ApiGeneralController {
     }
 
     @GetMapping("/tag")
-    private ResponseEntity<TagResponse> tag(@RequestParam(required = false, defaultValue = "") String query) {
+    private ResponseEntity<TagResponse> tag(@RequestParam(required = false) Optional<String> query) {
         return ResponseEntity.ok(tagService.tag(query));
     }
 
     @GetMapping("/calendar")
-    private ResponseEntity<CalendarResponse> calendar(@RequestParam(required = false, defaultValue = "0") Integer year) {
-        return (year == 0) ? ResponseEntity.ok(calendarService.calendar(LocalDate.now().getYear()))
-                : ResponseEntity.ok(calendarService.calendar(year));
+    private ResponseEntity<CalendarResponse> calendar(@RequestParam(required = false) Optional<Integer> year) {
+        return ResponseEntity.ok(calendarService.calendar(year));
     }
 }

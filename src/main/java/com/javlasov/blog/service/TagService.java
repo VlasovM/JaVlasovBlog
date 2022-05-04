@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,7 +23,7 @@ public class TagService {
     private final TagRepository tagRepository;
     private final PostRepository postRepository;
 
-    public TagResponse tag(String query) {
+    public TagResponse tag(Optional<String> query) {
         TagResponse tagResponse = new TagResponse();
         List<Tag> tagList = findTagsWithQuery(query);
         List<TagDto> tagDtoList = prepareTag(tagList);
@@ -42,12 +43,12 @@ public class TagService {
         return result;
     }
 
-    private List<Tag> findTagsWithQuery(String query) {
+    private List<Tag> findTagsWithQuery(Optional<String> query) {
         if (query.isEmpty()) {
             return tagRepository.findAll();
         }
         return tagRepository.findAll().stream()
-                .filter(tag -> StringUtils.startsWithIgnoreCase(tag.getName(), query))
+                .filter(tag -> StringUtils.startsWithIgnoreCase(tag.getName(), query.get()))
                 .collect(Collectors.toList());
     }
 

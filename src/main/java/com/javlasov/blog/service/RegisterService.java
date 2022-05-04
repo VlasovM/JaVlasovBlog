@@ -73,7 +73,6 @@ public class RegisterService {
     private void checkCaptcha(String captchaUser, String secret, Map<String, String> errors) {
         if (captchaRepository.existsBySecretCode(secret)) {
             String code = captchaRepository.findBySecretCode(secret).get().getCode();
-            System.out.println(code);
             if (!code.equals(captchaUser)) {
                 errors.put("captcha", "Код с картинки введён неверно");
             }

@@ -22,7 +22,7 @@
         <hibernate-validator.version>7.0.4.Final</hibernate-validator.version>
         <commons-io.version>2.1${cage.version}</commons-io.version>
         <cage.version>1.0</cage.version>
-        <spring-boot-starter-security.version>2.6.3</spring-boot-starter-security.version>
+        <spring-boot-starter-security.version>2.6.7</spring-boot-starter-security.version>
     </properties>
     <dependencies>
 
@@ -47,6 +47,12 @@
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
             <version>${mapstruct.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security -->
@@ -84,12 +90,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <optional>true</optional>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/com.github.cage/cage -->
