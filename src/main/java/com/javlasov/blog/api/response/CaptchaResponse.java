@@ -8,6 +8,7 @@ public class CaptchaResponse {
 
     @JsonProperty("secret")
     private String secretCode;
+
     @JsonProperty("image")
     private String imageBase64;
 

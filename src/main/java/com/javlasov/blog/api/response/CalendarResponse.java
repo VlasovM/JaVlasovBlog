@@ -9,6 +9,7 @@ import java.util.Set;
 public class CalendarResponse {
 
     private Set<Integer> years;
+
     private Map<String, Long> posts;
 
 }

@@ -1,10 +1,9 @@
-package com.javlasov.blog.entity;
+package com.javlasov.blog.model;
 
 import com.sun.istack.NotNull;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Entity
@@ -33,4 +32,5 @@ public class PostComments {
 
     @Column(name = "post_id")
     private int postId;
+
 }

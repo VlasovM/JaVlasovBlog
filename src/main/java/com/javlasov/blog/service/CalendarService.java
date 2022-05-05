@@ -2,7 +2,7 @@ package com.javlasov.blog.service;
 
 import com.javlasov.blog.api.response.CalendarResponse;
 import com.javlasov.blog.constants.CommonConstants;
-import com.javlasov.blog.entity.Post;
+import com.javlasov.blog.model.Post;
 import com.javlasov.blog.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ public class CalendarService {
 
     private final PostRepository postRepository;
 
-    public CalendarResponse calendar(int year) {
+    public CalendarResponse calendar(Optional<Integer> year) {
         CalendarResponse calendarResponse = new CalendarResponse();
         List<Post> allPosts = postRepository.findAll();
         Set<Integer> years = setYears(allPosts);
@@ -38,9 +38,10 @@ public class CalendarService {
         return result;
     }
 
-    private Map<String, Long> findPosts(List<Post> allPosts, int year) {
+    private Map<String, Long> findPosts(List<Post> allPosts, Optional<Integer> optionalYear) {
         DateTimeFormatter formatter = CommonConstants.FORMATTER;
         List<String> dates = new ArrayList<>();
+        int year = (optionalYear.isEmpty()) ? LocalDateTime.now().getYear() : optionalYear.get();
         for (Post post : allPosts) {
             if (post.getTime().getYear() == year) {
                 LocalDateTime datePost = post.getTime();

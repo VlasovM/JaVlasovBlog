@@ -11,7 +11,7 @@ public class PostDto {
 
     private long timestamp;
 
-    private UserDto user;
+    private UserPostsDto user;
 
     private String title;
 
@@ -24,4 +24,5 @@ public class PostDto {
     private int commentCount;
 
     private int viewCount;
+
 }

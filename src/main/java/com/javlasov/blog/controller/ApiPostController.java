@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 public class ApiPostController {
 
     private final PostService postService;
+
     private final PostRepository postRepository;
 
     @GetMapping("/post")
@@ -52,4 +53,12 @@ public class ApiPostController {
                 ResponseEntity.ok(postService.getPostById(id)) :
                 ResponseEntity.notFound().build();
     }
+
+    @GetMapping("post/my")
+    public ResponseEntity<PostResponse> getMyPosts(@RequestParam String status,
+                                                   @RequestParam(required = false, defaultValue = "0") int offset,
+                                                   @RequestParam(required = false, defaultValue = "10") int limit) {
+        return ResponseEntity.ok(postService.getMyPosts(status, offset, limit));
+    }
+
 }

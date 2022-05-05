@@ -1,14 +1,15 @@
-package com.javlasov.blog.entity;
+package com.javlasov.blog.model;
 
 import com.sun.istack.NotNull;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "global_settings")
 @Data
-public class GlobalSettings {
+@Table(name = "captcha_codes")
+public class CaptchaCodes {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -16,14 +17,15 @@ public class GlobalSettings {
     private int id;
 
     @NotNull
-    @Column(name = "name")
-    private String name;
+    @Column(name = "time")
+    private LocalDateTime time;
 
     @NotNull
     @Column(name = "code")
     private String code;
 
     @NotNull
-    @Column(name = "value")
-    private String value;
+    @Column(name = "secret_code")
+    private String secretCode;
+
 }

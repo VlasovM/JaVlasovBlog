@@ -2,7 +2,7 @@ package com.javlasov.blog.service;
 
 import com.github.cage.GCage;
 import com.javlasov.blog.api.response.CaptchaResponse;
-import com.javlasov.blog.entity.CaptchaCodes;
+import com.javlasov.blog.model.CaptchaCodes;
 import com.javlasov.blog.repository.CaptchaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -59,4 +59,5 @@ public class CaptchaService {
             }
         }
     }
+
 }

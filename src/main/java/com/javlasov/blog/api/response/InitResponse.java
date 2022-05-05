@@ -12,10 +12,15 @@ import org.springframework.stereotype.Component;
 public class InitResponse {
 
     private String title;
+
     private String subTitle;
+
     private String phone;
+
     private String email;
+
     private String copyRight;
+
     private String copyrightFrom;
 
 }

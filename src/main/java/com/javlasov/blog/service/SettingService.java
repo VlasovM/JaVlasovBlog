@@ -1,7 +1,7 @@
 package com.javlasov.blog.service;
 
 import com.javlasov.blog.api.response.SettingsResponse;
-import com.javlasov.blog.entity.GlobalSettings;
+import com.javlasov.blog.model.GlobalSettings;
 import com.javlasov.blog.repository.GlobalSettingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 public class SettingService {
 
     private final GlobalSettingRepository globalSettingRepository;
+
     private final static String POSITIVE = "YES";
+
     private final static String NEGATIVE = "NO";
 
     public SettingsResponse checkSetting() {
@@ -50,4 +52,5 @@ public class SettingService {
 
         return settingsResponse;
     }
+
 }

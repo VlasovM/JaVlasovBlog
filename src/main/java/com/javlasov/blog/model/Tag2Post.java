@@ -1,4 +1,4 @@
-package com.javlasov.blog.entity;
+package com.javlasov.blog.model;
 
 import com.sun.istack.NotNull;
 import lombok.Data;
@@ -23,4 +23,5 @@ public class Tag2Post {
     @JoinColumn(name = "tag_id")
     @NotNull
     private Tag tag;
+
 }

@@ -1,5 +1,6 @@
-package com.javlasov.blog.entity;
+package com.javlasov.blog.model;
 
+import com.javlasov.blog.model.enums.ModerationStatus;
 import com.sun.istack.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;

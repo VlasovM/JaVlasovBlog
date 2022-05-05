@@ -1,10 +1,10 @@
 package com.javlasov.blog.mappers;
 
 import com.javlasov.blog.dto.*;
-import com.javlasov.blog.entity.Post;
-import com.javlasov.blog.entity.PostComments;
-import com.javlasov.blog.entity.Tag;
-import com.javlasov.blog.entity.User;
+import com.javlasov.blog.model.Post;
+import com.javlasov.blog.model.PostComments;
+import com.javlasov.blog.model.Tag;
+import com.javlasov.blog.model.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -20,6 +20,8 @@ public interface DtoMapper {
 
     PostCommentDto postCommentToDto(PostComments comment);
 
-    UserDto userToUserDto(User user);
+    UserPostsDto userToUserDtoForPosts(User user);
+
+    UserDto userToUserDTO(User user);
 
 }

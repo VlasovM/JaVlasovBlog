@@ -2,8 +2,8 @@ package com.javlasov.blog.service;
 
 import com.javlasov.blog.api.response.TagResponse;
 import com.javlasov.blog.dto.TagDto;
-import com.javlasov.blog.entity.Tag;
 import com.javlasov.blog.mappers.DtoMapper;
+import com.javlasov.blog.model.Tag;
 import com.javlasov.blog.repository.PostRepository;
 import com.javlasov.blog.repository.TagRepository;
 import com.mysql.cj.util.StringUtils;
@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,10 +20,12 @@ import java.util.stream.Collectors;
 public class TagService {
 
     private final DtoMapper dtoMapper;
+
     private final TagRepository tagRepository;
+
     private final PostRepository postRepository;
 
-    public TagResponse tag(String query) {
+    public TagResponse tag(Optional<String> query) {
         TagResponse tagResponse = new TagResponse();
         List<Tag> tagList = findTagsWithQuery(query);
         List<TagDto> tagDtoList = prepareTag(tagList);
@@ -42,12 +45,12 @@ public class TagService {
         return result;
     }
 
-    private List<Tag> findTagsWithQuery(String query) {
+    private List<Tag> findTagsWithQuery(Optional<String> query) {
         if (query.isEmpty()) {
             return tagRepository.findAll();
         }
         return tagRepository.findAll().stream()
-                .filter(tag -> StringUtils.startsWithIgnoreCase(tag.getName(), query))
+                .filter(tag -> StringUtils.startsWithIgnoreCase(tag.getName(), query.get()))
                 .collect(Collectors.toList());
     }
 
@@ -72,4 +75,5 @@ public class TagService {
         double dWeightMax = (double) mostPopularTag.getPosts().size() / postRepository.findAll().size();
         return 1 / dWeightMax;
     }
+
 }

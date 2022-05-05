@@ -8,8 +8,11 @@ import lombok.NoArgsConstructor;
 public class PostCommentDto {
 
     private int id;
+
     private long timestamp;
+
     private String text;
-    private UserDto user;
+
+    private UserPostsDto user;
 
 }

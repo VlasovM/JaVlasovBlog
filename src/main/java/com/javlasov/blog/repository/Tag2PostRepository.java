@@ -1,6 +1,6 @@
 package com.javlasov.blog.repository;
 
-import com.javlasov.blog.entity.Tag2Post;
+import com.javlasov.blog.model.Tag2Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
