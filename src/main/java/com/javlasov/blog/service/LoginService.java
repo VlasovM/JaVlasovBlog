@@ -27,9 +27,13 @@ import java.util.Optional;
 public class LoginService {
 
     private final UserRepository userRepository;
+
     private final DtoMapper dtoMapper;
+
     private final PostRepository postRepository;
+
     private final UserDetailsService userDetailsService;
+
     private final AuthenticationManager authenticationManager;
 
     public LoginResponse checkUser(Principal principal) {
@@ -51,16 +55,15 @@ public class LoginService {
     }
 
     public LoginResponse login(String email, String password) {
-        Authentication auth = authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(email, password));
-        SecurityContextHolder.getContext().setAuthentication(auth);
         LoginResponse loginResponse = new LoginResponse();
-
         if (!findUser(email, password)) {
             loginResponse.setResult(false);
             return loginResponse;
         }
 
+        Authentication auth = authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(email, password));
+        SecurityContextHolder.getContext().setAuthentication(auth);
         UserDto userDto = prepareUser(email);
         loginResponse.setResult(true);
         loginResponse.setUser(userDto);
@@ -101,5 +104,6 @@ public class LoginService {
         userDto.setSettings(false);
         userDto.setModeration(false);
     }
+
 }
 

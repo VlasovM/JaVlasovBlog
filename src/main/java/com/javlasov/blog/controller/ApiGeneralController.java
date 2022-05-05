@@ -23,27 +23,31 @@ import java.util.Optional;
 public class ApiGeneralController {
 
     private final InitService initService;
+
     private final SettingService service;
+
     private final TagService tagService;
+
     private final CalendarService calendarService;
 
     @GetMapping("/init")
-    private ResponseEntity<InitResponse> init() {
+    public ResponseEntity<InitResponse> init() {
         return ResponseEntity.ok(initService.init());
     }
 
     @GetMapping("/settings")
-    private ResponseEntity<SettingsResponse> settings() {
+    public ResponseEntity<SettingsResponse> settings() {
         return ResponseEntity.ok(service.checkSetting());
     }
 
     @GetMapping("/tag")
-    private ResponseEntity<TagResponse> tag(@RequestParam(required = false) Optional<String> query) {
+    public ResponseEntity<TagResponse> tag(@RequestParam(required = false) Optional<String> query) {
         return ResponseEntity.ok(tagService.tag(query));
     }
 
     @GetMapping("/calendar")
-    private ResponseEntity<CalendarResponse> calendar(@RequestParam(required = false) Optional<Integer> year) {
+    public ResponseEntity<CalendarResponse> calendar(@RequestParam(required = false) Optional<Integer> year) {
         return ResponseEntity.ok(calendarService.calendar(year));
     }
+
 }

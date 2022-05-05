@@ -5,7 +5,7 @@ import com.javlasov.blog.constants.CommonConstants;
 import com.javlasov.blog.dto.PostCommentDto;
 import com.javlasov.blog.dto.PostDto;
 import com.javlasov.blog.dto.PostDtoById;
-import com.javlasov.blog.dto.UserDtoForPosts;
+import com.javlasov.blog.dto.UserPostsDto;
 import com.javlasov.blog.mappers.DtoMapper;
 import com.javlasov.blog.model.*;
 import com.javlasov.blog.repository.PostRepository;
@@ -29,8 +29,11 @@ import java.util.regex.Pattern;
 public class PostService {
 
     private final PostRepository postRepository;
+
     private final DtoMapper dtoMapper;
+
     private final TagRepository tagRepository;
+
     private final UserRepository userRepository;
 
     public PostResponse getAllPosts(String mode, int offset, int limit) {
@@ -148,7 +151,7 @@ public class PostService {
 
     private PostDtoById preparePost(Post post) {
         PostDtoById postDto = dtoMapper.postDtoById(post);
-        UserDtoForPosts user = postDto.getUser();
+        UserPostsDto user = postDto.getUser();
         user.setPhoto(null);
         setTags(post, postDto);
         setComments(post, postDto);
@@ -188,14 +191,14 @@ public class PostService {
         List<PostCommentDto> result = new ArrayList<>();
 
         for (PostComments comment : comments) {
-            UserDtoForPosts userDtoForPosts = dtoMapper.userToUserDtoForPosts(post.getUser());
+            UserPostsDto userPostsDto = dtoMapper.userToUserDtoForPosts(post.getUser());
             PostCommentDto commentDto = dtoMapper.postCommentToDto(comment);
 
             Duration duration = Duration.between(comment.getTime(), LocalDateTime.now());
             long secondsAfterCreatePost = (System.currentTimeMillis() / 1000L) - duration.getSeconds();
 
             commentDto.setTimestamp(secondsAfterCreatePost);
-            commentDto.setUser(userDtoForPosts);
+            commentDto.setUser(userPostsDto);
             result.add(commentDto);
         }
 
@@ -244,7 +247,7 @@ public class PostService {
         List<PostDto> result = new ArrayList<>();
         for (Post post : posts) {
             PostDto postDto = dtoMapper.postToPostDto(post);
-            UserDtoForPosts user = postDto.getUser();
+            UserPostsDto user = postDto.getUser();
             user.setPhoto(null);
             postDto.setUser(user);
             setPostDtoVotesCount(post, postDto);
@@ -335,6 +338,7 @@ public class PostService {
         }
         return postDtoList;
     }
+
 }
 
 class PostComparatorByRecent implements Comparator<PostDto> {

@@ -22,6 +22,7 @@ import java.util.regex.Pattern;
 public class RegisterService {
 
     private final UserRepository userRepository;
+
     private final CaptchaRepository captchaRepository;
 
     public RegisterResponse register(String email, String password, String name,
@@ -91,4 +92,5 @@ public class RegisterService {
         user.setRegTime(LocalDateTime.now());
         userRepository.save(user);
     }
+
 }

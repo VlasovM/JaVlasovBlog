@@ -7,9 +7,12 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class UserDtoForPosts {
+public class UserPostsDto {
 
     private int id;
+
     private String name;
+
     private String photo;
+
 }

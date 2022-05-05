@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 public class TagDto {
 
     private String name;
+
     private double weight;
 
 }

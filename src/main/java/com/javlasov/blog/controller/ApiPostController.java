@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 public class ApiPostController {
 
     private final PostService postService;
+
     private final PostRepository postRepository;
 
     @GetMapping("/post")

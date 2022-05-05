@@ -15,7 +15,9 @@ import java.util.List;
 public class SecurityUser implements UserDetails {
 
     private final String username;
+
     private final String password;
+
     private final List<SimpleGrantedAuthority> authorities;
 
     @Override
@@ -50,4 +52,5 @@ public class SecurityUser implements UserDetails {
                 true, true, true, true,
                 user.getRole().getAuthorities());
     }
+
 }

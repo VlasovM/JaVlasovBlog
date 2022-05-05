@@ -23,4 +23,5 @@ public class Tag2Post {
     @JoinColumn(name = "tag_id")
     @NotNull
     private Tag tag;
+
 }

@@ -9,9 +9,11 @@ import java.lang.annotation.*;
 @Target(value = ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Email {
+
     String message() default "Неверный формат введённого e-mail";
 
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
+
 }

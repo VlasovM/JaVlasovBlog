@@ -29,4 +29,5 @@ public class PostVotes {
     @Column(name = "value")
     @NotNull
     private int value;
+
 }

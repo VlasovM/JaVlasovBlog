@@ -20,7 +20,7 @@ public interface DtoMapper {
 
     PostCommentDto postCommentToDto(PostComments comment);
 
-    UserDtoForPosts userToUserDtoForPosts(User user);
+    UserPostsDto userToUserDtoForPosts(User user);
 
     UserDto userToUserDTO(User user);
 

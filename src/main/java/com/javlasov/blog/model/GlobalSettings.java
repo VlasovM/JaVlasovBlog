@@ -26,4 +26,5 @@ public class GlobalSettings {
     @NotNull
     @Column(name = "value")
     private String value;
+
 }

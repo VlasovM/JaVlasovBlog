@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 public class SettingService {
 
     private final GlobalSettingRepository globalSettingRepository;
+
     private final static String POSITIVE = "YES";
+
     private final static String NEGATIVE = "NO";
 
     public SettingsResponse checkSetting() {
@@ -50,4 +52,5 @@ public class SettingService {
 
         return settingsResponse;
     }
+
 }

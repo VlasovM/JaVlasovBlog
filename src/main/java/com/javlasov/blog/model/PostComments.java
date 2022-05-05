@@ -32,4 +32,5 @@ public class PostComments {
 
     @Column(name = "post_id")
     private int postId;
+
 }

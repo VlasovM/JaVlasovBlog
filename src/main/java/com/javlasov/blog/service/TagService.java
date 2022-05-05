@@ -20,7 +20,9 @@ import java.util.stream.Collectors;
 public class TagService {
 
     private final DtoMapper dtoMapper;
+
     private final TagRepository tagRepository;
+
     private final PostRepository postRepository;
 
     public TagResponse tag(Optional<String> query) {
@@ -73,4 +75,5 @@ public class TagService {
         double dWeightMax = (double) mostPopularTag.getPosts().size() / postRepository.findAll().size();
         return 1 / dWeightMax;
     }
+
 }

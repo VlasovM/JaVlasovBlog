@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Getter
 public enum Role {
+
     USER(Set.of(Permission.USER)),
     MODERATOR(Set.of(Permission.MODERATE, Permission.USER));
 
@@ -20,4 +21,5 @@ public enum Role {
                 .map(p -> new SimpleGrantedAuthority(p.getPermission()))
                 .collect(Collectors.toSet());
     }
+
 }

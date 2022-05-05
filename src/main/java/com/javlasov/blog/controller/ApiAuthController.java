@@ -22,7 +22,9 @@ import java.security.Principal;
 public class ApiAuthController {
 
     private final CaptchaService captchaService;
+
     private final RegisterService registerService;
+
     private final LoginService loginService;
 
     @GetMapping("/check")

@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class InitService {
 
-
     public InitResponse init() {
         InitResponse initResponse = new InitResponse();
         initResponse.setTitle("JaVlasov");

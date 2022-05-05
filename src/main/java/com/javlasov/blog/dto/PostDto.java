@@ -11,7 +11,7 @@ public class PostDto {
 
     private long timestamp;
 
-    private UserDtoForPosts user;
+    private UserPostsDto user;
 
     private String title;
 

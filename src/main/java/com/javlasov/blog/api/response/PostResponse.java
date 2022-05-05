@@ -13,4 +13,5 @@ public class PostResponse {
 
     @JsonProperty("posts")
     private List<PostDto> postsDto;
+
 }

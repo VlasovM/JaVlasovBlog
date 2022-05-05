@@ -13,16 +13,26 @@ import java.util.List;
 public class PostDtoById {
 
     private long timestamp;
+
     private int id;
+
     @JsonProperty("active")
     private boolean isActive;
+
     private String title;
+
     private String text;
+
     private int likeCount;
-    private UserDtoForPosts user;
+
+    private UserPostsDto user;
+
     private int dislikeCount;
+
     private int viewCount;
+
     private List<PostCommentDto> comments;
+
     private List<String> tags;
 
 }
