@@ -1,11 +1,15 @@
 package com.javlasov.blog.controller;
 
+import com.javlasov.blog.api.request.PostRequest;
 import com.javlasov.blog.api.response.PostResponse;
+import com.javlasov.blog.api.response.RegisterResponse;
 import com.javlasov.blog.dto.PostDtoById;
 import com.javlasov.blog.repository.PostRepository;
+import com.javlasov.blog.repository.Tag2PostRepository;
 import com.javlasov.blog.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,6 +21,8 @@ public class ApiPostController {
 
     private final PostRepository postRepository;
 
+    private final Tag2PostRepository tag2PostRepository;
+
     @GetMapping("/post")
     public ResponseEntity<PostResponse> post(@RequestParam(required = false, defaultValue = "recent") String mode,
                                              @RequestParam(required = false, defaultValue = "0") int offset,
@@ -24,7 +30,7 @@ public class ApiPostController {
         return ResponseEntity.ok(postService.getAllPosts(mode, offset, limit));
     }
 
-    @GetMapping("post/search")
+    @GetMapping("/post/search")
     public ResponseEntity<PostResponse> postSearch(@RequestParam String query,
                                                    @RequestParam(required = false, defaultValue = "0") int offset,
                                                    @RequestParam(required = false, defaultValue = "10") int limit) {
@@ -33,32 +39,50 @@ public class ApiPostController {
                 ResponseEntity.ok(postService.postSearch(query, offset, limit));
     }
 
-    @GetMapping("post/byDate")
+    @GetMapping("/post/byDate")
     public ResponseEntity<PostResponse> postByDate(@RequestParam String date,
                                                    @RequestParam(required = false, defaultValue = "0") int offset,
                                                    @RequestParam(required = false, defaultValue = "10") int limit) {
         return ResponseEntity.ok(postService.getPostByDate(date, offset, limit));
     }
 
-    @GetMapping("post/byTag")
+    @GetMapping("/post/byTag")
     public ResponseEntity<PostResponse> postByTag(@RequestParam String tag,
                                                   @RequestParam(required = false, defaultValue = "0") int offset,
                                                   @RequestParam(required = false, defaultValue = "10") int limit) {
         return ResponseEntity.ok(postService.getPostByTag(tag, offset, limit));
     }
 
-    @GetMapping("post/{id}")
+    @GetMapping("/post/{id}")
     public ResponseEntity<PostDtoById> postById(@PathVariable int id) {
         return (postRepository.existsById(id)) ?
                 ResponseEntity.ok(postService.getPostById(id)) :
                 ResponseEntity.notFound().build();
     }
 
-    @GetMapping("post/my")
+    @GetMapping("/post/my")
     public ResponseEntity<PostResponse> getMyPosts(@RequestParam String status,
                                                    @RequestParam(required = false, defaultValue = "0") int offset,
                                                    @RequestParam(required = false, defaultValue = "10") int limit) {
         return ResponseEntity.ok(postService.getMyPosts(status, offset, limit));
     }
 
+    @GetMapping("/post/moderation")
+    public ResponseEntity<PostResponse> getPostsModeration(
+            @RequestParam String status,
+            @RequestParam(required = false, defaultValue = "0") int offset,
+            @RequestParam(required = false, defaultValue = "10") int limit) {
+        return ResponseEntity.ok(postService.getPostsModeration(status, offset, limit));
+    }
+
+    @PostMapping("/post")
+    public ResponseEntity<RegisterResponse> addPost(@RequestBody PostRequest postRequest) {
+       return ResponseEntity.ok(postService.addPost(postRequest.getTimestamp(), postRequest.getActive(),
+                postRequest.getTitle(), postRequest.getTags(), postRequest.getText()));
+    }
+
+    @GetMapping("/post/test")
+    public ResponseEntity<RegisterResponse> test() {
+        return null;
+    }
 }

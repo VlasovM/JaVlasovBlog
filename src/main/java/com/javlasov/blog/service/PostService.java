@@ -1,6 +1,7 @@
 package com.javlasov.blog.service;
 
 import com.javlasov.blog.api.response.PostResponse;
+import com.javlasov.blog.api.response.RegisterResponse;
 import com.javlasov.blog.constants.CommonConstants;
 import com.javlasov.blog.dto.PostCommentDto;
 import com.javlasov.blog.dto.PostDto;
@@ -8,7 +9,9 @@ import com.javlasov.blog.dto.PostDtoById;
 import com.javlasov.blog.dto.UserPostsDto;
 import com.javlasov.blog.mappers.DtoMapper;
 import com.javlasov.blog.model.*;
+import com.javlasov.blog.model.enums.ModerationStatus;
 import com.javlasov.blog.repository.PostRepository;
+import com.javlasov.blog.repository.Tag2PostRepository;
 import com.javlasov.blog.repository.TagRepository;
 import com.javlasov.blog.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,10 +21,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Pattern;
 
 @Service
@@ -35,6 +37,8 @@ public class PostService {
     private final TagRepository tagRepository;
 
     private final UserRepository userRepository;
+
+    private final Tag2PostRepository tag2PostRepository;
 
     public PostResponse getAllPosts(String mode, int offset, int limit) {
         PostResponse postResponse = new PostResponse();
@@ -107,6 +111,87 @@ public class PostService {
         postResponse.setCount(postDtoList.size());
         postResponse.setPostsDto(postDtoList);
         return postResponse;
+    }
+
+    public PostResponse getPostsModeration(String status, int offset, int limit) {
+        PostResponse response = new PostResponse();
+        List<Post> allPosts = new ArrayList<>();
+        switch (status) {
+            case "new":
+                allPosts = postRepository.findNewPosts();
+                break;
+            case "declined":
+                allPosts = postRepository.findDeclinedPosts();
+                break;
+            case "accepted":
+                allPosts = postRepository.findAcceptedPosts();
+                break;
+        }
+        List<PostDto> postDtoList = preparePost(allPosts);
+        postDtoList = getCollectionsByOffsetLimit(offset, limit, postDtoList);
+        response.setPostsDto(postDtoList);
+        response.setCount(postDtoList.size());
+        return response;
+    }
+
+    public RegisterResponse addPost(long timestamp, short active, String title, HashSet<String> tags, String text) {
+        System.out.println(SecurityContextHolder.getContext().getAuthentication());
+        RegisterResponse response = new RegisterResponse();
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByEmail(userEmail).get();
+        Map<String, String> errors = checkTitleAndText(text, title);
+        if (!errors.isEmpty()) {
+            response.setErrors(errors);
+            response.setResult(false);
+            return response;
+        }
+        Post post = new Post();
+        if (System.currentTimeMillis() / 1000L > timestamp) {
+            post.setTime(LocalDateTime.now());
+        } else {
+            LocalDateTime localDateTime = LocalDateTime.ofEpochSecond(timestamp, 0, ZoneOffset.UTC);
+            post.setTime(localDateTime);
+        }
+
+        post.setActive(active);
+        post.setModerationStatus(ModerationStatus.NEW);
+        post.setText(text);
+        post.setTitle(title);
+        post.setViewCount(0);
+        post.setUser(user);
+        postRepository.save(post);
+        setTagsToPost(tags, post);
+        response.setResult(true);
+        return response;
+    }
+
+    private void setTagsToPost(Set<String> tags, Post post) {
+        for (String str : tags) {
+            Optional<Tag> tagOptional = tagRepository.findByName(str);
+            if (tagOptional.isPresent()) {
+                Tag2Post tag2Post = new Tag2Post();
+                tag2Post.setPost(post);
+                tag2Post.setTag(tagOptional.get());
+                tag2PostRepository.save(tag2Post);
+            }
+        }
+    }
+
+    private Map<String, String> checkTitleAndText(String text, String title) {
+        Map<String, String> result = new HashMap<>();
+        if (text.isEmpty()) {
+            result.put("text", "Текст не установлен");
+        }
+        if (text.length() < 50) {
+            result.put("text", "Текст публикации слишком короткий");
+        }
+        if (title.isEmpty()) {
+            result.put("title", "Заголовок не установлен");
+        }
+        if (title.length() < 3) {
+            result.put("title", "Заголовок публикации слишком короткий");
+        }
+        return result;
     }
 
     private List<PostDto> inActivePosts(List<Post> posts) {
