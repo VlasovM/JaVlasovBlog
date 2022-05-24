@@ -9,6 +9,7 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -60,6 +61,13 @@ public class Post {
     @NotNull
     @OneToMany(mappedBy = "postId", cascade = CascadeType.ALL)
     private List<PostComments> postComments;
+
+    @NotNull
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name = "tag2post",
+            joinColumns = @JoinColumn(name = "post_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id"))
+    private List<Tag> tags;
 
 }
 

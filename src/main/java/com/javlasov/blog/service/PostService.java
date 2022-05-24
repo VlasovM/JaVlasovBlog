@@ -15,6 +15,7 @@ import com.javlasov.blog.repository.Tag2PostRepository;
 import com.javlasov.blog.repository.TagRepository;
 import com.javlasov.blog.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.jsoup.Jsoup;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -135,7 +136,6 @@ public class PostService {
     }
 
     public RegisterResponse addPost(long timestamp, short active, String title, HashSet<String> tags, String text) {
-        System.out.println(SecurityContextHolder.getContext().getAuthentication());
         RegisterResponse response = new RegisterResponse();
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findByEmail(userEmail).get();
@@ -160,21 +160,92 @@ public class PostService {
         post.setViewCount(0);
         post.setUser(user);
         postRepository.save(post);
-        setTagsToPost(tags, post);
         response.setResult(true);
         return response;
     }
 
-    private void setTagsToPost(Set<String> tags, Post post) {
-        for (String str : tags) {
-            Optional<Tag> tagOptional = tagRepository.findByName(str);
-            if (tagOptional.isPresent()) {
-                Tag2Post tag2Post = new Tag2Post();
-                tag2Post.setPost(post);
-                tag2Post.setTag(tagOptional.get());
-                tag2PostRepository.save(tag2Post);
-            }
+    public RegisterResponse editPost(int postId, long timestamp, short active, String title, HashSet<String> tags, String text) {
+        RegisterResponse response = new RegisterResponse();
+        Post post = postRepository.getById(postId);
+        Map<String, String> errors = checkTitleAndText(text, title);
+
+        if (!errors.isEmpty()) {
+            response.setErrors(errors);
+            response.setResult(false);
+            return response;
         }
+
+        if (System.currentTimeMillis() / 1000L > timestamp) {
+            post.setTime(LocalDateTime.now());
+        } else {
+            LocalDateTime localDateTime = LocalDateTime.ofEpochSecond(timestamp, 0, ZoneOffset.UTC);
+            post.setTime(localDateTime);
+        }
+        post.setActive(active);
+        post.setText(text);
+        post.setTitle(title);
+        postRepository.save(post);
+        response.setResult(true);
+        return response;
+    }
+
+//    private void setTagsWhenAddingPost(Set<String> tags, Post post) {
+//        for (String tag : tags) {
+//            Optional<Tag> tagOptional = tagRepository.findByName(tag);
+//            if (tagOptional.isPresent()) {
+//                Tag2Post tag2Post = new Tag2Post();
+//                tag2Post.setPost(post);
+//                tag2Post.setTag(tagOptional.get());
+//                tag2PostRepository.save(tag2Post);
+//            } else {
+//                System.out.println("Сохранен новый тэг " + tag);
+//                Tag newTag = new Tag();
+//                newTag.setName(tag);
+//                tagRepository.save(newTag);
+//                Tag2Post tag2Post = new Tag2Post();
+//                tag2Post.setPost(post);
+//                tag2Post.setTag(newTag);
+//                tag2PostRepository.save(tag2Post);
+//            }
+//        }
+//    }
+//
+//    private void setTagsWhenChangingPost(Set<String> tags, Post post) {
+//        if (tags.isEmpty())
+//        System.out.println(tags);
+//        for (String tag : tags) {
+//            Optional<Tag> tagOptional = tagRepository.findByName(tag);
+//            if (tagOptional.isPresent()) {
+//                Tag2Post tag2Post = new Tag2Post();
+//                tag2Post.setPost(post);
+//                tag2Post.setTag(tagOptional.get());
+//                tag2PostRepository.save(tag2Post);
+//            } else {
+//                System.out.println("Сохранен новый тэг " + tag);
+//                Tag newTag = new Tag();
+//                newTag.setName(tag);
+//                tagRepository.save(newTag);
+//                Tag2Post tag2Post = new Tag2Post();
+//                tag2Post.setPost(post);
+//                tag2Post.setTag(newTag);
+//                tag2PostRepository.save(tag2Post);
+//            }
+//        }
+//    }
+
+    public RegisterResponse moderationPost(int postId, String decision) {
+        String emailModerator = SecurityContextHolder.getContext().getAuthentication().getName();
+        int moderatorId = userRepository.findByEmail(emailModerator).get().getId();
+        RegisterResponse response = new RegisterResponse();
+        Post post = postRepository.getById(postId);
+        post.setModeratorId(moderatorId);
+        if (decision.equals("accept")) {
+            post.setModerationStatus(ModerationStatus.ACCEPTED);
+        } else if (decision.equals("decline")) {
+            post.setModerationStatus(ModerationStatus.DECLINED);
+        }
+        postRepository.save(post);
+        return response;
     }
 
     private Map<String, String> checkTitleAndText(String text, String title) {
@@ -251,7 +322,8 @@ public class PostService {
     private void incrementViewCount(Post post, PostDtoById postDto) {
         User userPost = post.getUser();
         String emailAuthUser = SecurityContextHolder.getContext().getAuthentication().getName();
-        if (userPost.getModerator() == 0 && !emailAuthUser.equals(userPost.getEmail())) {
+        User user = userRepository.findByEmail(emailAuthUser).get();
+        if (user.getModerator() == 0 && !emailAuthUser.equals(userPost.getEmail())) {
             int viewCount = post.getViewCount() + 1;
             postDto.setViewCount(viewCount);
             post.setViewCount(viewCount);
@@ -260,6 +332,7 @@ public class PostService {
     }
 
     private void setTags(Post post, PostDtoById postDto) {
+        List<Tag> tagsList = post.getTags();
         List<String> result = new ArrayList<>();
         List<Tag> tags = tagRepository.findAll();
         for (Tag tag : tags) {
@@ -268,7 +341,7 @@ public class PostService {
                 result.add(tag.getName());
             }
         }
-        postDto.setTags(result);
+        postDto.setTags(null);
     }
 
     private void setComments(Post post, PostDtoById postDto) {
@@ -377,9 +450,13 @@ public class PostService {
     }
 
     private void setPostAnnounce(Post post, PostDto postDto) {
-        int limit = 150; //Number of characters for the announcement
-        String text = (post.getText().length() > limit) ? post.getText() + "..." : post.getText();
-        postDto.setAnnounce(text);
+        int limit = 125; //Number of characters for the announcement
+        String announce = post.getText();
+        if (announce.length() > limit) {
+            String announceWithoutHTMLTags = Jsoup.parse(announce).text();
+            announce = announceWithoutHTMLTags.substring(0, limit);
+        }
+        postDto.setAnnounce(announce);
     }
 
     private void setPostTimestamp(Post post, PostDto postDto) {

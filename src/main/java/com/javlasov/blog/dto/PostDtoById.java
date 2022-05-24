@@ -2,6 +2,7 @@ package com.javlasov.blog.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.javlasov.blog.model.Tag;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -33,6 +34,6 @@ public class PostDtoById {
 
     private List<PostCommentDto> comments;
 
-    private List<String> tags;
+    private List<Tag> tags;
 
 }

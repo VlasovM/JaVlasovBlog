@@ -1,16 +1,23 @@
 package com.javlasov.blog.controller;
 
+import com.javlasov.blog.api.request.ModerationRequest;
 import com.javlasov.blog.api.request.PostRequest;
 import com.javlasov.blog.api.response.PostResponse;
 import com.javlasov.blog.api.response.RegisterResponse;
 import com.javlasov.blog.dto.PostDtoById;
+import com.javlasov.blog.model.Tag;
+import com.javlasov.blog.model.Tag2Post;
 import com.javlasov.blog.repository.PostRepository;
 import com.javlasov.blog.repository.Tag2PostRepository;
+import com.javlasov.blog.repository.TagRepository;
 import com.javlasov.blog.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -22,6 +29,8 @@ public class ApiPostController {
     private final PostRepository postRepository;
 
     private final Tag2PostRepository tag2PostRepository;
+
+    private final TagRepository tagRepository;
 
     @GetMapping("/post")
     public ResponseEntity<PostResponse> post(@RequestParam(required = false, defaultValue = "recent") String mode,
@@ -79,6 +88,18 @@ public class ApiPostController {
     public ResponseEntity<RegisterResponse> addPost(@RequestBody PostRequest postRequest) {
        return ResponseEntity.ok(postService.addPost(postRequest.getTimestamp(), postRequest.getActive(),
                 postRequest.getTitle(), postRequest.getTags(), postRequest.getText()));
+    }
+
+    @PutMapping("/post/{id}")
+    public ResponseEntity<RegisterResponse> editPost(@PathVariable int id,
+                                                     @RequestBody PostRequest postRequest) {
+        return ResponseEntity.ok(postService.editPost(id, postRequest.getTimestamp(), postRequest.getActive(),
+                postRequest.getTitle(), postRequest.getTags(), postRequest.getText()));
+    }
+
+    @PostMapping("moderation")
+    public ResponseEntity<RegisterResponse> moderationPost(@RequestBody ModerationRequest moderationRequest) {
+        return ResponseEntity.ok(postService.moderationPost(moderationRequest.getPostId(), moderationRequest.getDecision()));
     }
 
     @GetMapping("/post/test")
