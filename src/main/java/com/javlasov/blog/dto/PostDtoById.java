@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -34,6 +35,6 @@ public class PostDtoById {
 
     private List<PostCommentDto> comments;
 
-    private List<Tag> tags;
+    private Set<String> tags;
 
 }

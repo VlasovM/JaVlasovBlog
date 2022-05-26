@@ -16,6 +16,7 @@ public interface DtoMapper {
     TagDto tagToTagDto(Tag tag);
 
     @Mapping(source = "active", target = "active", ignore = true)
+    @Mapping(source = "tags", target = "tags", ignore = true)
     PostDtoById postDtoById(Post post);
 
     PostCommentDto postCommentToDto(PostComments comment);

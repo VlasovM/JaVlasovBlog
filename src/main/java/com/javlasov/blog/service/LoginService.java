@@ -48,7 +48,7 @@ public class LoginService {
     }
 
     public LoginResponse logout() {
-        SecurityContextHolder.getContext().setAuthentication(null);
+        SecurityContextHolder.clearContext();
         LoginResponse response = new LoginResponse();
         response.setResult(true);
         return response;
@@ -60,7 +60,6 @@ public class LoginService {
             loginResponse.setResult(false);
             return loginResponse;
         }
-
         Authentication auth = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(email, password));
         SecurityContextHolder.getContext().setAuthentication(auth);

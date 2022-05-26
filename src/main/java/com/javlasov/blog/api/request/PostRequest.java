@@ -2,7 +2,7 @@ package com.javlasov.blog.api.request;
 
 import lombok.Data;
 
-import java.util.HashSet;
+import java.util.List;
 
 @Data
 public class PostRequest {
@@ -13,7 +13,7 @@ public class PostRequest {
 
     private String title;
 
-    private HashSet<String> tags;
+    private List<String> tags;
 
     private String text;
 

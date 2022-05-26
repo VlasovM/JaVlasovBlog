@@ -68,25 +68,29 @@ public class TagService {
                 .collect(Collectors.toList());
     }
 
+
     private Tag findMostPopularTag(List<Tag> tagList) {
         Tag mostPopularTag = new Tag();
         int count = 0;
         for (Tag tag : tagList) {
-            if (tag.getPosts().size() > count) {
+            List<Tag2Post> tag2PostList = tag2PostRepository.findByTagId(tag.getId());
+            if (tag2PostList.size() > count) {
                 mostPopularTag = tag;
-                count = tag.getPosts().size();
+                count = tag2PostList.size();
             }
         }
         return mostPopularTag;
     }
 
     private double calculateTagWeight(Tag tag, double coefficientK) {
-        double dWeightTag = (double) tag.getPosts().size() / postRepository.findAll().size();
+        double dWeightTag = (double) tag2PostRepository.findByTagId(tag.getId()).size()
+                / postRepository.findAll().size();
         return dWeightTag * coefficientK;
     }
 
     private double calculateKCoefficient(Tag mostPopularTag) {
-        double dWeightMax = (double) mostPopularTag.getPosts().size() / postRepository.findAll().size();
+        double dWeightMax = (double) tag2PostRepository.findByTagId(mostPopularTag.getId()).size()
+                / postRepository.findAll().size();
         return 1 / dWeightMax;
     }
 
