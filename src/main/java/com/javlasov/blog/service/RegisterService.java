@@ -1,6 +1,6 @@
 package com.javlasov.blog.service;
 
-import com.javlasov.blog.api.response.RegisterResponse;
+import com.javlasov.blog.api.response.StatusResponse;
 import com.javlasov.blog.model.User;
 import com.javlasov.blog.repository.CaptchaRepository;
 import com.javlasov.blog.repository.UserRepository;
@@ -25,23 +25,23 @@ public class RegisterService {
 
     private final CaptchaRepository captchaRepository;
 
-    public RegisterResponse register(String email, String password, String name,
-                                     String captcha, String secret) {
-        RegisterResponse registerResponse = new RegisterResponse();
+    public StatusResponse register(String email, String password, String name,
+                                   String captcha, String secret) {
+        StatusResponse statusResponse = new StatusResponse();
         Map<String, String> errors = checkInputData(email, captcha, secret);
         if (errors.isEmpty()) {
-            registerResponse.setResult(true);
-            registerResponse.setErrors(null);
+            statusResponse.setResult(true);
+            statusResponse.setErrors(null);
             addUserInDB(email, password, name);
-            return registerResponse;
+            return statusResponse;
         }
-        registerResponse.setErrors(errors);
-        registerResponse.setResult(false);
-        return registerResponse;
+        statusResponse.setErrors(errors);
+        statusResponse.setResult(false);
+        return statusResponse;
     }
 
-    public RegisterResponse getRegisterWithErrors(List<ObjectError> listErrors) {
-        RegisterResponse response = new RegisterResponse();
+    public StatusResponse getRegisterWithErrors(List<ObjectError> listErrors) {
+        StatusResponse response = new StatusResponse();
         Map<String, String> errors = new HashMap<>();
         listErrors.forEach((error -> {
             String fieldName = ((FieldError) error).getField();

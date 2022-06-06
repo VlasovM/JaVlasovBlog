@@ -4,7 +4,7 @@ import com.javlasov.blog.api.request.LoginRequest;
 import com.javlasov.blog.api.request.RegisterRequest;
 import com.javlasov.blog.api.response.CaptchaResponse;
 import com.javlasov.blog.api.response.LoginResponse;
-import com.javlasov.blog.api.response.RegisterResponse;
+import com.javlasov.blog.api.response.StatusResponse;
 import com.javlasov.blog.service.CaptchaService;
 import com.javlasov.blog.service.LoginService;
 import com.javlasov.blog.service.RegisterService;
@@ -38,7 +38,7 @@ public class ApiAuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<RegisterResponse> register(@Valid @RequestBody RegisterRequest request, BindingResult bindingResult) {
+    public ResponseEntity<StatusResponse> register(@Valid @RequestBody RegisterRequest request, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.ok(registerService.getRegisterWithErrors(bindingResult.getAllErrors()));
         }

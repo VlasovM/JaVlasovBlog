@@ -1,7 +1,7 @@
 package com.javlasov.blog.service;
 
 import com.javlasov.blog.api.response.PostResponse;
-import com.javlasov.blog.api.response.RegisterResponse;
+import com.javlasov.blog.api.response.StatusResponse;
 import com.javlasov.blog.constants.CommonConstants;
 import com.javlasov.blog.dto.PostCommentDto;
 import com.javlasov.blog.dto.PostDto;
@@ -44,7 +44,6 @@ public class PostService {
     private final Tag2PostRepository tag2PostRepository;
 
     public PostResponse getAllPosts(String mode, int offset, int limit) {
-        System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         PostResponse postResponse = new PostResponse();
         List<Post> allPostsList = postRepository.findAll();
         List<PostDto> postDtoList = preparePost(allPostsList);
@@ -138,8 +137,8 @@ public class PostService {
         return response;
     }
 
-    public RegisterResponse addPost(long timestamp, short active, String title, List<String> tags, String text) {
-        RegisterResponse response = new RegisterResponse();
+    public StatusResponse addPost(long timestamp, short active, String title, List<String> tags, String text) {
+        StatusResponse response = new StatusResponse();
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findByEmail(userEmail).get();
         Map<String, String> errors = checkTitleAndText(text, title);
@@ -171,8 +170,8 @@ public class PostService {
         return response;
     }
 
-    public RegisterResponse editPost(int postId, long timestamp, short active, String title, List<String> tags, String text) {
-        RegisterResponse response = new RegisterResponse();
+    public StatusResponse editPost(int postId, long timestamp, short active, String title, List<String> tags, String text) {
+        StatusResponse response = new StatusResponse();
         Post post = postRepository.getById(postId);
         Map<String, String> errors = checkTitleAndText(text, title);
         if (!errors.isEmpty()) {
@@ -223,10 +222,10 @@ public class PostService {
         return tag;
     }
 
-    public RegisterResponse moderationPost(int postId, String decision) {
+    public StatusResponse moderationPost(int postId, String decision) {
         String emailModerator = SecurityContextHolder.getContext().getAuthentication().getName();
         int moderatorId = userRepository.findByEmail(emailModerator).get().getId();
-        RegisterResponse response = new RegisterResponse();
+        StatusResponse response = new StatusResponse();
         Post post = postRepository.getById(postId);
         post.setModeratorId(moderatorId);
         if (decision.equals("accept")) {

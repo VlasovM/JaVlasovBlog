@@ -3,7 +3,7 @@ package com.javlasov.blog.controller;
 import com.javlasov.blog.api.request.ModerationRequest;
 import com.javlasov.blog.api.request.PostRequest;
 import com.javlasov.blog.api.response.PostResponse;
-import com.javlasov.blog.api.response.RegisterResponse;
+import com.javlasov.blog.api.response.StatusResponse;
 import com.javlasov.blog.dto.PostDtoById;
 import com.javlasov.blog.repository.PostRepository;
 import com.javlasov.blog.service.PostService;
@@ -73,20 +73,20 @@ public class ApiPostController {
     }
 
     @PostMapping("/post")
-    public ResponseEntity<RegisterResponse> addPost(@RequestBody PostRequest postRequest) {
+    public ResponseEntity<StatusResponse> addPost(@RequestBody PostRequest postRequest) {
         return ResponseEntity.ok(postService.addPost(postRequest.getTimestamp(), postRequest.getActive(),
                 postRequest.getTitle(), postRequest.getTags(), postRequest.getText()));
     }
 
     @PutMapping("/post/{id}")
-    public ResponseEntity<RegisterResponse> editPost(@PathVariable int id,
-                                                     @RequestBody PostRequest postRequest) {
+    public ResponseEntity<StatusResponse> editPost(@PathVariable int id,
+                                                   @RequestBody PostRequest postRequest) {
         return ResponseEntity.ok(postService.editPost(id, postRequest.getTimestamp(), postRequest.getActive(),
                 postRequest.getTitle(), postRequest.getTags(), postRequest.getText()));
     }
 
     @PostMapping("moderation")
-    public ResponseEntity<RegisterResponse> moderationPost(@RequestBody ModerationRequest moderationRequest) {
+    public ResponseEntity<StatusResponse> moderationPost(@RequestBody ModerationRequest moderationRequest) {
         return ResponseEntity.ok(postService.moderationPost(moderationRequest.getPostId(), moderationRequest.getDecision()));
     }
 
