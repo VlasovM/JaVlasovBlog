@@ -1,5 +1,6 @@
 package com.javlasov.blog.controller;
 
+import com.javlasov.blog.api.request.CommentRequest;
 import com.javlasov.blog.api.response.CalendarResponse;
 import com.javlasov.blog.api.response.InitResponse;
 import com.javlasov.blog.api.response.SettingsResponse;
@@ -27,6 +28,8 @@ public class ApiGeneralController {
 
     private final StorageService uploadImageService;
 
+    private final CommentService commentService;
+
     @GetMapping("/init")
     public ResponseEntity<InitResponse> init() {
         return ResponseEntity.ok(initService.init());
@@ -50,6 +53,13 @@ public class ApiGeneralController {
     @PostMapping("/image")
     public ResponseEntity<?> uploadImage(@RequestParam() MultipartFile image) {
         return uploadImageService.uploadFile(image);
+    }
+
+    @PostMapping("/comment")
+    public ResponseEntity<?> sendComment(@RequestBody CommentRequest commentRequest) {
+        return commentService.setCommentToPost(commentRequest.getParentId(),
+                commentRequest.getPostId(),
+                commentRequest.getText());
     }
 
 }
