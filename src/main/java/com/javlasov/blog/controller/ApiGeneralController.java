@@ -1,16 +1,16 @@
 package com.javlasov.blog.controller;
 
 import com.javlasov.blog.api.request.CommentRequest;
-import com.javlasov.blog.api.response.CalendarResponse;
-import com.javlasov.blog.api.response.InitResponse;
-import com.javlasov.blog.api.response.SettingsResponse;
-import com.javlasov.blog.api.response.TagResponse;
+import com.javlasov.blog.api.request.EditProfileRequest;
+import com.javlasov.blog.api.response.*;
 import com.javlasov.blog.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
@@ -29,6 +29,8 @@ public class ApiGeneralController {
     private final StorageService uploadImageService;
 
     private final CommentService commentService;
+
+    private final ProfileService profileService;
 
     @GetMapping("/init")
     public ResponseEntity<InitResponse> init() {
@@ -51,7 +53,7 @@ public class ApiGeneralController {
     }
 
     @PostMapping("/image")
-    public ResponseEntity<?> uploadImage(@RequestParam() MultipartFile image) {
+    public ResponseEntity<?> uploadImage(@RequestParam MultipartFile image) {
         return uploadImageService.uploadFile(image);
     }
 
@@ -60,6 +62,29 @@ public class ApiGeneralController {
         return commentService.setCommentToPost(commentRequest.getParentId(),
                 commentRequest.getPostId(),
                 commentRequest.getText());
+    }
+
+    @PostMapping(value = "/profile/my", consumes = {"application/json"})
+    public ResponseEntity<StatusResponse> editMyProfileWithoutPhoto(
+            @RequestBody @Valid EditProfileRequest editProfileRequest,
+            BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.ok(profileService.getRegisterWithErrors(bindingResult.getAllErrors()));
+        }
+        return ResponseEntity.ok(profileService.editMyProfileWithoutPhoto(
+                editProfileRequest.getName(),
+                editProfileRequest.getEmail(),
+                editProfileRequest.getPassword()));
+    }
+
+    @PostMapping(value = "/profile/my", consumes = {"multipart/form-data"})
+    public ResponseEntity<StatusResponse> editMyProfileWithPhoto(
+            @RequestParam(required = false) MultipartFile photo,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String email,
+            @RequestParam(required = false) String password,
+            @RequestParam(required = false) int removePhoto) {
+        return ResponseEntity.ok(profileService.editMyProfileWithPhoto(photo, name, email, password, removePhoto));
     }
 
 }
