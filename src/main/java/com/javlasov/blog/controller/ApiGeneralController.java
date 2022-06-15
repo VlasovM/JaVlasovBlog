@@ -74,7 +74,8 @@ public class ApiGeneralController {
         return ResponseEntity.ok(profileService.editMyProfileWithoutPhoto(
                 editProfileRequest.getName(),
                 editProfileRequest.getEmail(),
-                editProfileRequest.getPassword()));
+                editProfileRequest.getPassword(),
+                editProfileRequest.getRemovePhoto()));
     }
 
     @PostMapping(value = "/profile/my", consumes = {"multipart/form-data"})
@@ -82,9 +83,8 @@ public class ApiGeneralController {
             @RequestParam(required = false) MultipartFile photo,
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String email,
-            @RequestParam(required = false) String password,
-            @RequestParam(required = false) int removePhoto) {
-        return ResponseEntity.ok(profileService.editMyProfileWithPhoto(photo, name, email, password, removePhoto));
+            @RequestParam(required = false) String password) {
+        return ResponseEntity.ok(profileService.editMyProfileWithPhoto(photo, name, email, password));
     }
 
 }

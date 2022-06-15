@@ -16,5 +16,7 @@ public class EditProfileRequest {
     String email;
     @Password
     String password;
+    
+    int removePhoto;
 
 }

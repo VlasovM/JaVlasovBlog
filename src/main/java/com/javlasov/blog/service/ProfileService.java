@@ -4,6 +4,7 @@ import com.javlasov.blog.api.response.StatusResponse;
 import com.javlasov.blog.model.User;
 import com.javlasov.blog.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.imgscalr.Scalr;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -27,41 +27,48 @@ public class ProfileService {
 
     private final UserRepository userRepository;
 
-    private final int MAX_WEIGHT_AND_WIGHT_PHOTO = 36; //pixels
-
-    public StatusResponse editMyProfileWithoutPhoto(String name, String email, String password) {
+    public StatusResponse editMyProfileWithoutPhoto(String name, String email, String password, int removePhoto) {
         StatusResponse statusResponse = new StatusResponse();
-
-        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findByEmail(userEmail).get();
+        User user = getCurrentAuthorizedUser();
         user.setName(name);
         user.setEmail(email);
+        //change password
         if (!(password == null)) {
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
             user.setPassword(encoder.encode(password));
-            userRepository.save(user);
-            statusResponse.setResult(true);
-            return statusResponse;
+        }
+        //delete photo
+        if (removePhoto == 1) {
+            user.setPhoto(null);
         }
         userRepository.save(user);
         statusResponse.setResult(true);
         return statusResponse;
+    }
 
+    private User getCurrentAuthorizedUser() {
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        return userRepository.findByEmail(userEmail).get();
     }
 
     public StatusResponse editMyProfileWithPhoto(MultipartFile photo, String name, String email,
-                                                 String password, int removePhoto) {
+                                                 String password) {
         StatusResponse statusResponse = new StatusResponse();
-
-        if (password == null) {
-            //method chane only photo and email \ name + valid
+        User user = getCurrentAuthorizedUser();
+        user.setName(name);
+        user.setEmail(email);
+        try {
+            user.setPhoto(uploadFile(photo));
+        } catch (IOException e) {
+            //TODO: logger
+            e.printStackTrace();
         }
-
-        if (photo.isEmpty() && removePhoto == 1) {
-
+        if (!(password == null)) {
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
+            user.setPassword(encoder.encode(password));
         }
-
-
+        userRepository.save(user);
+        statusResponse.setResult(true);
         return statusResponse;
     }
 
@@ -79,30 +86,35 @@ public class ProfileService {
         return response;
     }
 
-    private void changePhoto(MultipartFile photo, String email, String name) {
-        String pathToFile = getPathToFile();
-    }
-
-    private void changePhotoAndPassword(MultipartFile photo, String email, String name, String password) {
-
-    }
-
-    private void deleteUserPhoto(String email, String name) {
-
-    }
-
     private String getPathToFile() {
-        String mainFolderName = "D:\\upload";
+        String mainFolderName = "upload";
         String[] foldersName = UUID.randomUUID().toString().split("-");
         return mainFolderName + "\\" + foldersName[1] + "\\" +
                 foldersName[2] + "\\" + foldersName[3] + "\\";
     }
 
-    private void uploadFile(MultipartFile file) {
-        String pathToFile = getPathToFile();
+    private String uploadFile(MultipartFile file) throws IOException {
         String imageType = file.getContentType().split("/")[1];
+        int maxPhotoSize = 36; //px
+        String path = getPathToFile();
         BufferedImage image = ImageIO.read(file.getInputStream());
-        double height = Math.round(image.getHeight()) / (image.getWidth() / (double) MAX_WEIGHT_AND_WIGHT_PHOTO);
+        int height = (int) (Math.round(image.getHeight()) / (image.getWidth() / (double) maxPhotoSize));
+        BufferedImage newImage = Scalr.resize(
+                image,
+                Scalr.Method.AUTOMATIC,
+                Scalr.Mode.FIT_EXACT,
+                maxPhotoSize,
+                height,
+                Scalr.OP_ANTIALIAS);
+
+        if (!new File(path).exists()) {
+            new File(path).mkdirs();
+        }
+
+        File newFile = new File(path + "/" + file.getOriginalFilename());
+        ImageIO.write(newImage, imageType, newFile);
+        System.out.println(newFile.getPath());
+        return newFile.getPath();
     }
 
 }
