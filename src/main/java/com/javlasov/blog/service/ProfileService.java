@@ -111,7 +111,7 @@ public class ProfileService {
             new File(path).mkdirs();
         }
 
-        File newFile = new File(path + "/" + file.getOriginalFilename());
+        File newFile = new File(path + "\\" + file.getOriginalFilename());
         ImageIO.write(newImage, imageType, newFile);
         System.out.println(newFile.getPath());
         return newFile.getPath();

@@ -37,7 +37,7 @@ public class StorageService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return ResponseEntity.ok(uploadPath);
+        return ResponseEntity.ok("\\" + uploadPath + "" + image.getOriginalFilename());
     }
 
     private Map<String, String> checkCorrectFormatFile(String typeFile) {
@@ -71,7 +71,7 @@ public class StorageService {
         if (!new File(path).exists()) {
             new File(path).mkdirs();
         }
-        File newFile = new File(path + "/" + file.getOriginalFilename());
+        File newFile = new File(path + "\\" + file.getOriginalFilename());
         ImageIO.write(newImage, imageType, newFile);
     }
 }

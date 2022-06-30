@@ -24,6 +24,13 @@
         <spring-boot-starter-security.version>2.6.7</spring-boot-starter-security.version>
         <hibernate-validator.version>6.2.0.Final</hibernate-validator.version>
         <jsoup.version>1.14.3</jsoup.version>
+        <javax.mail-api.version>1.6.2</javax.mail-api.version>
+        <imgscalr-lib.version>4.2</imgscalr-lib.version>
+        <activation.version>1.1.1</activation.version>
+        <spring-boot-starter-mail.version>2.6.6</spring-boot-starter-mail.version>
+        <spring-context-support.version>5.3.20</spring-context-support.version>
+        <mail.version>1.5.0-b01</mail.version>
+        <mockito-core.version>4.5.1</mockito-core.version>
     </properties>
     <dependencies>
 
@@ -56,6 +63,23 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito-core.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+
+        <!-- https://mvnrepository.com/artifact/javax.mail/mail -->
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>${mail.version}</version>
+        </dependency>
+
+
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -69,7 +93,6 @@
             <artifactId>jsoup</artifactId>
             <version>${jsoup.version}</version>
         </dependency>
-
 
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -120,10 +143,11 @@
             <artifactId>jaxb-api</artifactId>
             <version>${jaxb-api.version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.imgscalr</groupId>
             <artifactId>imgscalr-lib</artifactId>
-            <version>4.2</version>
+            <version>${imgscalr-lib.version}</version>
         </dependency>
 
     </dependencies>

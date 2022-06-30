@@ -52,7 +52,7 @@ public class ApiGeneralController {
         return ResponseEntity.ok(calendarService.calendar(year));
     }
 
-    @PostMapping("/image")
+    @PostMapping(value = "/image")
     public ResponseEntity<?> uploadImage(@RequestParam MultipartFile image) {
         return uploadImageService.uploadFile(image);
     }
