@@ -32,6 +32,8 @@ public class ApiGeneralController {
 
     private final ProfileService profileService;
 
+    private final StatisticService statisticService;
+
     @GetMapping("/init")
     public ResponseEntity<InitResponse> init() {
         return ResponseEntity.ok(initService.init());
@@ -85,6 +87,11 @@ public class ApiGeneralController {
             @RequestParam(required = false) String email,
             @RequestParam(required = false) String password) {
         return ResponseEntity.ok(profileService.editMyProfileWithPhoto(photo, name, email, password));
+    }
+
+    @GetMapping("/statistics/my")
+    public ResponseEntity<PersonalStatisticsResponse> getMyStatistics() {
+        return ResponseEntity.ok(statisticService.getMyStatistics());
     }
 
 }

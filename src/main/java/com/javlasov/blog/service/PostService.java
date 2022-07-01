@@ -140,7 +140,7 @@ public class PostService {
     public StatusResponse addPost(long timestamp, short active, String title, List<String> tags, String text) {
         StatusResponse response = new StatusResponse();
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findByEmail(userEmail).get();
+        User user = userRepository.findByEmail(userEmail).orElseThrow();
         Map<String, String> errors = checkTitleAndText(text, title);
         if (!errors.isEmpty()) {
             response.setErrors(errors);
@@ -224,7 +224,7 @@ public class PostService {
 
     public StatusResponse moderationPost(int postId, String decision) {
         String emailModerator = SecurityContextHolder.getContext().getAuthentication().getName();
-        int moderatorId = userRepository.findByEmail(emailModerator).get().getId();
+        int moderatorId = userRepository.findByEmail(emailModerator).orElseThrow().getId();
         StatusResponse response = new StatusResponse();
         Post post = postRepository.getById(postId);
         post.setModeratorId(moderatorId);
@@ -322,7 +322,7 @@ public class PostService {
         int viewCount;
         if (isAuthenticated()) {
             String emailAuthUser = SecurityContextHolder.getContext().getAuthentication().getName();
-            User user = userRepository.findByEmail(emailAuthUser).get();
+            User user = userRepository.findByEmail(emailAuthUser).orElseThrow();
             if (user.getModerator() == 0 && !emailAuthUser.equals(userPost.getEmail())) {
                 viewCount = post.getViewCount() + 1;
                 postDto.setViewCount(viewCount);
@@ -357,11 +357,11 @@ public class PostService {
     }
 
     private List<Post> findPostByTag(String tagName) {
-        Tag tag = tagRepository.findByName(tagName).get();
+        Tag tag = tagRepository.findByName(tagName).orElseThrow();
         List<Tag2Post> tag2PostList = tag2PostRepository.findByTagId(tag.getId());
         List<Post> result = new ArrayList<>();
         for (Tag2Post tag2Post : tag2PostList) {
-            result.add(postRepository.findById(tag2Post.getPost().getId()).get());
+            result.add(postRepository.findById(tag2Post.getPost().getId()).orElseThrow());
         }
         return result;
     }

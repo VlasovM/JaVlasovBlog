@@ -10,6 +10,7 @@ import java.util.Optional;
 public interface CaptchaRepository extends JpaRepository<CaptchaCodes, Integer> {
 
     Optional<CaptchaCodes> findBySecretCode(String code);
+
     boolean existsBySecretCode(String code);
 
 }
