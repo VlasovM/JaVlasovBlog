@@ -113,7 +113,6 @@ public class ProfileService {
 
         File newFile = new File(path + "\\" + file.getOriginalFilename());
         ImageIO.write(newImage, imageType, newFile);
-        System.out.println(newFile.getPath());
         return newFile.getPath();
     }
 

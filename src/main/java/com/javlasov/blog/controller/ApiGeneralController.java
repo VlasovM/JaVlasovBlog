@@ -2,6 +2,8 @@ package com.javlasov.blog.controller;
 
 import com.javlasov.blog.api.request.CommentRequest;
 import com.javlasov.blog.api.request.EditProfileRequest;
+import com.javlasov.blog.api.request.ModerationRequest;
+import com.javlasov.blog.api.request.SettingsRequest;
 import com.javlasov.blog.api.response.*;
 import com.javlasov.blog.service.*;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +22,7 @@ public class ApiGeneralController {
 
     private final InitService initService;
 
-    private final SettingService service;
+    private final SettingService settingService;
 
     private final TagService tagService;
 
@@ -34,6 +36,8 @@ public class ApiGeneralController {
 
     private final StatisticService statisticService;
 
+    private final PostService postService;
+
     @GetMapping("/init")
     public ResponseEntity<InitResponse> init() {
         return ResponseEntity.ok(initService.init());
@@ -41,7 +45,7 @@ public class ApiGeneralController {
 
     @GetMapping("/settings")
     public ResponseEntity<SettingsResponse> settings() {
-        return ResponseEntity.ok(service.checkSetting());
+        return ResponseEntity.ok(settingService.checkSettings());
     }
 
     @GetMapping("/tag")
@@ -89,9 +93,25 @@ public class ApiGeneralController {
         return ResponseEntity.ok(profileService.editMyProfileWithPhoto(photo, name, email, password));
     }
 
+    @PostMapping("/moderation")
+    public ResponseEntity<StatusResponse> moderationPost(@RequestBody ModerationRequest moderationRequest) {
+        return ResponseEntity.ok(postService.moderationPost(moderationRequest.getPostId(), moderationRequest.getDecision()));
+    }
+
     @GetMapping("/statistics/my")
-    public ResponseEntity<PersonalStatisticsResponse> getMyStatistics() {
+    public ResponseEntity<StatisticsResponse> getMyStatistics() {
         return ResponseEntity.ok(statisticService.getMyStatistics());
+    }
+
+    @GetMapping("/statistics/all")
+    public ResponseEntity<?> getAllStatistics() {
+
+        return ResponseEntity.ok(statisticService.getAllStatistics());
+    }
+
+    @PutMapping("/settings")
+    public ResponseEntity<?> saveSettings(@RequestBody SettingsRequest settingsRequest) {
+        return ResponseEntity.ok(settingService.saveSettings(settingsRequest));
     }
 
 }

@@ -416,8 +416,9 @@ public class PostService {
         for (PostVotes postVotes : postVotesList) {
             if (postVotes.getValue() == 1) {
                 like++;
+            } else {
+                dislike++;
             }
-            dislike++;
         }
         postDto.setLikeCount(like);
         postDto.setDislikeCount(dislike);
@@ -430,8 +431,9 @@ public class PostService {
         for (PostVotes postVotes : postVotesList) {
             if (postVotes.getValue() == 1) {
                 like++;
+            } else {
+                dislike++;
             }
-            dislike++;
         }
         postDto.setLikeCount(like);
         postDto.setDislikeCount(dislike);
