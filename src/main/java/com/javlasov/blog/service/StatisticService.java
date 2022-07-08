@@ -1,6 +1,7 @@
 package com.javlasov.blog.service;
 
 import com.javlasov.blog.api.response.StatisticsResponse;
+import com.javlasov.blog.exceptions.UnauthorizedExceptions;
 import com.javlasov.blog.model.GlobalSettings;
 import com.javlasov.blog.model.Post;
 import com.javlasov.blog.model.PostVotes;
@@ -10,8 +11,6 @@ import com.javlasov.blog.repository.PostRepository;
 import com.javlasov.blog.repository.PostVotesRepository;
 import com.javlasov.blog.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -57,7 +56,7 @@ public class StatisticService {
         return response;
     }
 
-    public ResponseEntity<?> getAllStatistics() {
+    public StatisticsResponse getAllStatistics() {
         StatisticsResponse statisticsResponse = new StatisticsResponse();
         String emailUser = SecurityContextHolder.getContext().getAuthentication().getName();
         Optional<User> user = userRepository.findByEmail(emailUser);
@@ -66,7 +65,7 @@ public class StatisticService {
 
         if (statisticsIsPublic.getValue().equals("NO")) {
             if (user.isEmpty() || user.orElseThrow().getModerator() == 0) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+                throw new UnauthorizedExceptions();
             }
         }
 
@@ -78,7 +77,7 @@ public class StatisticService {
         statisticsResponse.setViewsCount(getViewsCountAllPosts(allPosts));
         statisticsResponse.setFirstPublication(getTimeFirstPublicationAllPosts(allPosts));
 
-        return ResponseEntity.ok(statisticsResponse);
+        return statisticsResponse;
     }
 
     private int getViewsCountAllPosts(List<Post> allPosts) {

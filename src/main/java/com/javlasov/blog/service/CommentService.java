@@ -30,10 +30,10 @@ public class CommentService {
 
     public ResponseEntity<?> setCommentToPost(String parentId, int postId, String text) {
 
-        if (text.length() < 20) {
+        if (text.length() < 5) {
             StatusResponse statusResponse = new StatusResponse();
             Map<String, String> errors = new HashMap<>();
-            errors.put("text", "Текст комментария не задан или слишком короткий");
+            errors.put("text", "Текст комментария должен быть не менее 5 символов");
             statusResponse.setErrors(errors);
             return ResponseEntity.badRequest().body(statusResponse);
         }
@@ -47,9 +47,9 @@ public class CommentService {
     private int setComment(String parentIdString, int postId, String text) {
         Optional<Post> post = postRepository.findById(postId);
         String emailUser = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findByEmail(emailUser).get();
+        User user = userRepository.findByEmail(emailUser).orElseThrow();
         PostComments postComments = new PostComments();
-        postComments.setPostId(post.get().getId());
+        postComments.setPostId(post.orElseThrow().getId());
         postComments.setTime(LocalDateTime.now());
         postComments.setUserId(user.getId());
         postComments.setText(text);

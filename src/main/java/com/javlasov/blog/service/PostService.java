@@ -188,11 +188,18 @@ public class PostService {
             post.setTime(localDateTime);
         }
         post.setActive(active);
-        String textWithoutHTMLTags = Jsoup.parse(text).text();
-        post.setText(textWithoutHTMLTags);
+        post.setText(text);
         post.setTitle(title);
         Set<Tag> tagsSet = createSetTags(tags);
         post.setTags(tagsSet);
+
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByEmail(userEmail).orElseThrow();
+
+        if (user.getModerator() == 0) {
+            post.setModerationStatus(ModerationStatus.NEW);
+        }
+
         postRepository.save(post);
         response.setResult(true);
         return response;
@@ -242,14 +249,14 @@ public class PostService {
         if (text.isEmpty()) {
             result.put("text", "Текст не установлен");
         }
-        if (text.length() < 50) {
-            result.put("text", "Текст публикации слишком короткий");
+        if (text.length() < 30) {
+            result.put("text", "Текст публикациии должен быть не менее 30 символов");
         }
         if (title.isEmpty()) {
             result.put("title", "Заголовок не установлен");
         }
-        if (title.length() < 3) {
-            result.put("title", "Заголовок публикации слишком короткий");
+        if (title.length() < 3 || title.length() > 50) {
+            result.put("title", "Заголовок публикации должен быть не менее 3 символов и не более 50");
         }
         return result;
     }
@@ -342,7 +349,8 @@ public class PostService {
         List<PostCommentDto> result = new ArrayList<>();
 
         for (PostComments comment : comments) {
-            UserPostsDto userPostsDto = dtoMapper.userToUserDtoForPosts(post.getUser());
+            User user = userRepository.findById(comment.getUserId()).orElseThrow();
+            UserPostsDto userPostsDto = dtoMapper.userToUserDtoForPosts(user);
             PostCommentDto commentDto = dtoMapper.postCommentToDto(comment);
 
             Duration duration = Duration.between(comment.getTime(), LocalDateTime.now());

@@ -53,6 +53,13 @@ public class ApiPostController {
         return ResponseEntity.ok(postService.getPostByTag(tag, offset, limit));
     }
 
+    @GetMapping("/moderation")
+    public ResponseEntity<PostResponse> getListModerationPosts (@RequestParam String status,
+                                                                @RequestParam(required = false, defaultValue = "0") int offset,
+                                                                @RequestParam(required = false, defaultValue = "10") int limit) {
+        return ResponseEntity.ok(postService.getPostsModeration(status, offset, limit));
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<PostDtoById> postById(@PathVariable int id) {
         return (postRepository.existsById(id)) ?

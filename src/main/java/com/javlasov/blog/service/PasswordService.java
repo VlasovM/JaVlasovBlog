@@ -91,8 +91,8 @@ public class PasswordService {
 
             String linkRestore = "http://localhost:8080/login/change-password/" + hash;
 
-            message.setSubject("Restore password in JaVlasovBlog");
-            String msg = "Hello! Your link to restore password in JaVlasovBlog: "
+            message.setSubject("Восстановление пароля на JaVlasovBlog");
+            String msg = "Привет! Ваша ссылка для восстановления пароля: "
                     + "<a href = \"" + linkRestore + "\">Восстановить пароль</a>";
 
             MimeBodyPart mimeBodyPart = new MimeBodyPart();
