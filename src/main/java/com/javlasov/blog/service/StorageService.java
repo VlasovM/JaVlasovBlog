@@ -12,6 +12,8 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -25,19 +27,20 @@ public class StorageService {
         //only jpg and png formats
         String imageType = image.getContentType().split("/")[1];
         Map<String, String> errors = checkCorrectFormatFile(imageType);
+
         if (!errors.isEmpty()) {
             StatusResponse statusResponse = new StatusResponse();
             statusResponse.setErrors(errors);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(statusResponse);
         }
 
-        String uploadPath = getPathToFile();
+        String path = "";
         try {
-            uploadFile(image, uploadPath);
+            path = uploadFileAndGetPath(image);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return ResponseEntity.ok("\\" + uploadPath + "" + image.getOriginalFilename());
+        return ResponseEntity.ok(path);
     }
 
     private Map<String, String> checkCorrectFormatFile(String typeFile) {
@@ -50,13 +53,13 @@ public class StorageService {
     }
 
     private String getPathToFile() {
-        String mainFolderName = "upload";
+        String mainFolderName = "\\upload";
         String[] foldersName = UUID.randomUUID().toString().split("-");
         return mainFolderName + "\\" + foldersName[1] + "\\" +
                 foldersName[2] + "\\" + foldersName[3] + "\\";
     }
 
-    private void uploadFile(MultipartFile file, String path) throws IOException {
+    private String uploadFileAndGetPath(MultipartFile file) throws IOException {
         String imageType = file.getContentType().split("/")[1];
         BufferedImage image = ImageIO.read(file.getInputStream());
         int height = (int) (Math.round(image.getHeight()) / (image.getWidth() / (double) 1024));
@@ -68,10 +71,14 @@ public class StorageService {
                 height,
                 Scalr.OP_ANTIALIAS);
 
-        if (!new File(path).exists()) {
-            new File(path).mkdirs();
+        Path path = Paths.get(getPathToFile());
+
+        if (!new File(path.toString()).exists()) {
+            new File(path.toString()).mkdirs();
         }
+
         File newFile = new File(path + "\\" + file.getOriginalFilename());
         ImageIO.write(newImage, imageType, newFile);
+        return newFile.getPath();
     }
 }

@@ -16,6 +16,8 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,7 +50,7 @@ public class ProfileService {
 
     private User getCurrentAuthorizedUser() {
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        return userRepository.findByEmail(userEmail).get();
+        return userRepository.findByEmail(userEmail).orElseThrow();
     }
 
     public StatusResponse editMyProfileWithPhoto(MultipartFile photo, String name, String email,
@@ -87,7 +89,7 @@ public class ProfileService {
     }
 
     private String getPathToFile() {
-        String mainFolderName = "upload";
+        String mainFolderName = "\\upload";
         String[] foldersName = UUID.randomUUID().toString().split("-");
         return mainFolderName + "\\" + foldersName[1] + "\\" +
                 foldersName[2] + "\\" + foldersName[3] + "\\";
@@ -96,7 +98,7 @@ public class ProfileService {
     private String uploadFile(MultipartFile file) throws IOException {
         String imageType = file.getContentType().split("/")[1];
         int maxPhotoSize = 36; //px
-        String path = getPathToFile();
+        Path path = Paths.get(getPathToFile());
         BufferedImage image = ImageIO.read(file.getInputStream());
         int height = (int) (Math.round(image.getHeight()) / (image.getWidth() / (double) maxPhotoSize));
         BufferedImage newImage = Scalr.resize(
@@ -107,8 +109,8 @@ public class ProfileService {
                 height,
                 Scalr.OP_ANTIALIAS);
 
-        if (!new File(path).exists()) {
-            new File(path).mkdirs();
+        if (!new File(path.toString()).exists()) {
+            new File(path.toString()).mkdirs();
         }
 
         File newFile = new File(path + "\\" + file.getOriginalFilename());

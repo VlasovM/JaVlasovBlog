@@ -5,13 +5,9 @@ import com.javlasov.blog.api.request.EditProfileRequest;
 import com.javlasov.blog.api.request.ModerationRequest;
 import com.javlasov.blog.api.request.SettingsRequest;
 import com.javlasov.blog.api.response.*;
-import com.javlasov.blog.model.GlobalSettings;
-import com.javlasov.blog.model.User;
-import com.javlasov.blog.repository.UserRepository;
 import com.javlasov.blog.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -62,7 +58,7 @@ public class ApiGeneralController {
         return ResponseEntity.ok(calendarService.calendar(year));
     }
 
-    @PostMapping(value = "/image")
+    @PostMapping(value = "/image", consumes = {"multipart/form-data"})
     public ResponseEntity<?> uploadImage(@RequestParam MultipartFile image) {
         return uploadImageService.uploadFile(image);
     }
