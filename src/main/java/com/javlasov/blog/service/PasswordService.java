@@ -84,7 +84,7 @@ public class PasswordService {
         Message message = new MimeMessage(session);
 
         try {
-            InternetAddress emailFrom = new InternetAddress("m.a.vlasov97@gmail.com");
+            InternetAddress emailFrom = new InternetAddress("JaVlasovBlog");
             message.setFrom(emailFrom);
             message.setRecipients(
                     Message.RecipientType.TO, InternetAddress.parse(emailTo));
@@ -92,7 +92,7 @@ public class PasswordService {
             String linkRestore = "http://localhost:8080/login/change-password/" + hash;
 
             message.setSubject("Восстановление пароля на JaVlasovBlog");
-            String msg = "Привет! Ваша ссылка для восстановления пароля: "
+            String msg = "Привет! Твоя ссылка для восстановления пароля: "
                     + "<a href = \"" + linkRestore + "\">Восстановить пароль</a>";
 
             MimeBodyPart mimeBodyPart = new MimeBodyPart();

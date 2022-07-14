@@ -2,6 +2,7 @@ package com.javlasov.blog.service;
 
 import com.javlasov.blog.api.response.StatusResponse;
 import lombok.RequiredArgsConstructor;
+import net.bytebuddy.utility.RandomString;
 import org.imgscalr.Scalr;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,33 +53,38 @@ public class StorageService {
         return result;
     }
 
-    private String getPathToFile() {
-        String mainFolderName = "\\upload";
+    private Path getPathToFile() {
         String[] foldersName = UUID.randomUUID().toString().split("-");
-        return mainFolderName + "\\" + foldersName[1] + "\\" +
-                foldersName[2] + "\\" + foldersName[3] + "\\";
+        return Paths.get("\\upload\\image" + "\\" + foldersName[1] + "\\" +
+                foldersName[2] + "\\" + foldersName[3] + "\\");
     }
 
     private String uploadFileAndGetPath(MultipartFile file) throws IOException {
         String imageType = file.getContentType().split("/")[1];
         BufferedImage image = ImageIO.read(file.getInputStream());
-        int height = (int) (Math.round(image.getHeight()) / (image.getWidth() / (double) 1024));
+        int maxPhotoSize = 512; //px
+        int height = (int) (Math.round(image.getHeight()) / (image.getWidth() / (double) maxPhotoSize));
         BufferedImage newImage = Scalr.resize(
                 image,
                 Scalr.Method.AUTOMATIC,
-                Scalr.Mode.FIT_EXACT,
-                1024,
+                Scalr.Mode.AUTOMATIC,
+                maxPhotoSize,
                 height,
                 Scalr.OP_ANTIALIAS);
 
-        Path path = Paths.get(getPathToFile());
+        Path path = getPathToFile();
 
         if (!new File(path.toString()).exists()) {
             new File(path.toString()).mkdirs();
         }
 
-        File newFile = new File(path + "\\" + file.getOriginalFilename());
+        String fileType = file.getOriginalFilename().split("\\.")[1];
+        String fileName = RandomString.make(12) + "." + fileType;
+
+        File newFile = new File(path + "\\" + fileName);
         ImageIO.write(newImage, imageType, newFile);
         return newFile.getPath();
     }
+
+
 }

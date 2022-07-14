@@ -88,23 +88,22 @@ public class ProfileService {
         return response;
     }
 
-    private String getPathToFile() {
-        String mainFolderName = "\\upload";
+    private Path getPathToFile() {
         String[] foldersName = UUID.randomUUID().toString().split("-");
-        return mainFolderName + "\\" + foldersName[1] + "\\" +
-                foldersName[2] + "\\" + foldersName[3] + "\\";
+        return Paths.get("\\upload\\profile" + "\\" + foldersName[1] + "\\" +
+                foldersName[2] + "\\" + foldersName[3] + "\\");
     }
 
     private String uploadFile(MultipartFile file) throws IOException {
         String imageType = file.getContentType().split("/")[1];
-        int maxPhotoSize = 36; //px
-        Path path = Paths.get(getPathToFile());
+        int maxPhotoSize = 128;
+        Path path = getPathToFile();
         BufferedImage image = ImageIO.read(file.getInputStream());
         int height = (int) (Math.round(image.getHeight()) / (image.getWidth() / (double) maxPhotoSize));
         BufferedImage newImage = Scalr.resize(
                 image,
                 Scalr.Method.AUTOMATIC,
-                Scalr.Mode.FIT_EXACT,
+                Scalr.Mode.AUTOMATIC,
                 maxPhotoSize,
                 height,
                 Scalr.OP_ANTIALIAS);
