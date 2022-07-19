@@ -8,6 +8,7 @@ import com.javlasov.blog.api.response.*;
 import com.javlasov.blog.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -55,15 +56,17 @@ public class ApiGeneralController {
 
     @GetMapping("/calendar")
     public ResponseEntity<CalendarResponse> calendar(@RequestParam(required = false) Optional<Integer> year) {
-        return ResponseEntity.ok(calendarService.calendar(year));
+        return ResponseEntity.ok(calendarService.getPostsByDate(year));
     }
 
     @PostMapping(value = "/image", consumes = {"multipart/form-data"})
+    @PreAuthorize("hasAuthority('user:write')")
     public ResponseEntity<?> uploadImage(@RequestParam MultipartFile image) {
         return uploadImageService.uploadFile(image);
     }
 
     @PostMapping("/comment")
+    @PreAuthorize("hasAuthority('user:write')")
     public ResponseEntity<?> sendComment(@RequestBody CommentRequest commentRequest) {
         return commentService.setCommentToPost(commentRequest.getParentId(),
                 commentRequest.getPostId(),
@@ -71,6 +74,7 @@ public class ApiGeneralController {
     }
 
     @PostMapping(value = "/profile/my", consumes = {"application/json"})
+    @PreAuthorize("hasAuthority('user:write')")
     public ResponseEntity<StatusResponse> editMyProfileWithoutPhoto(
             @RequestBody @Valid EditProfileRequest editProfileRequest,
             BindingResult bindingResult) {
@@ -85,6 +89,7 @@ public class ApiGeneralController {
     }
 
     @PostMapping(value = "/profile/my", consumes = {"multipart/form-data"})
+    @PreAuthorize("hasAuthority('user:write')")
     public ResponseEntity<StatusResponse> editMyProfileWithPhoto(
             @RequestParam(required = false) MultipartFile photo,
             @RequestParam(required = false) String name,
@@ -94,6 +99,7 @@ public class ApiGeneralController {
     }
 
     @GetMapping("/statistics/my")
+    @PreAuthorize("hasAuthority('user:write')")
     public ResponseEntity<StatisticsResponse> getMyStatistics() {
         return ResponseEntity.ok(statisticService.getMyStatistics());
     }
@@ -104,11 +110,13 @@ public class ApiGeneralController {
     }
 
     @PutMapping("/settings")
+    @PreAuthorize("hasAuthority('user:moderate')")
     public ResponseEntity<?> saveSettings(@RequestBody SettingsRequest settingsRequest) {
         return ResponseEntity.ok(settingService.saveSettings(settingsRequest));
     }
 
     @PostMapping("/moderation")
+    @PreAuthorize("hasAuthority('user:moderate')")
     public ResponseEntity<StatusResponse> moderationPost(@RequestBody ModerationRequest moderationRequest) {
         return ResponseEntity.ok(postService.moderationPost(moderationRequest.getPostId(), moderationRequest.getDecision()));
     }

@@ -1,4 +1,4 @@
-package com.javlasov.blog.handlers;
+package com.javlasov.blog.aop.handlers;
 
 import org.apache.tomcat.util.http.fileupload.impl.SizeException;
 import org.springframework.http.HttpStatus;

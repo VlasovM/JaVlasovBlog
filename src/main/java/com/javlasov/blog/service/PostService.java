@@ -16,6 +16,8 @@ import com.javlasov.blog.repository.TagRepository;
 import com.javlasov.blog.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -32,6 +34,8 @@ import java.util.regex.Pattern;
 @Service
 @RequiredArgsConstructor
 public class PostService {
+
+    private final Logger logger = LoggerFactory.getLogger(PostService.class);
 
     private final PostRepository postRepository;
 
@@ -166,6 +170,7 @@ public class PostService {
         Set<Tag> tagsSet = createSetTags(tags);
         post.setTags(tagsSet);
         postRepository.save(post);
+        logger.info("Post was successfully created, published and saved to db. Title post: {}", title);
         response.setResult(true);
         return response;
     }
@@ -201,6 +206,7 @@ public class PostService {
         }
 
         postRepository.save(post);
+        logger.info("Post id = {} was successfully modified", postId);
         response.setResult(true);
         return response;
     }
@@ -241,6 +247,7 @@ public class PostService {
             post.setModerationStatus(ModerationStatus.DECLINED);
         }
         postRepository.save(post);
+        logger.info("Moderator {} set status {} at the post (id) = {}", emailModerator, decision, postId);
         return response;
     }
 

@@ -6,6 +6,8 @@ import com.javlasov.blog.model.User;
 import com.javlasov.blog.repository.CaptchaRepository;
 import com.javlasov.blog.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,8 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 public class PasswordService {
+
+    private final Logger logger = LoggerFactory.getLogger(PostService.class);
 
     private final UserRepository userRepository;
 
@@ -74,6 +78,7 @@ public class PasswordService {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(12);
         user.setPassword(passwordEncoder.encode(password));
         userRepository.save(user);
+        logger.info("Password {} has been successfully saved", user.getEmail());
     }
 
     private void sendEmail(String emailTo, String hash) {
@@ -103,10 +108,12 @@ public class PasswordService {
             message.setContent(multipart);
 
             Transport.send(message);
+            logger.info("{} requested to restore password", emailTo);
 
         } catch (Exception exception) {
-            //TODO: logger
+            logger.error(exception.getMessage());
             exception.printStackTrace();
+
         }
     }
 

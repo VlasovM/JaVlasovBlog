@@ -5,6 +5,8 @@ import com.javlasov.blog.model.User;
 import com.javlasov.blog.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.imgscalr.Scalr;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,8 @@ import java.util.UUID;
 public class ProfileService {
 
     private final UserRepository userRepository;
+
+    private final Logger logger = LoggerFactory.getLogger(ProfileService.class);
 
     public StatusResponse editMyProfileWithoutPhoto(String name, String email, String password, int removePhoto) {
         StatusResponse statusResponse = new StatusResponse();
@@ -62,7 +66,7 @@ public class ProfileService {
         try {
             user.setPhoto(uploadFile(photo));
         } catch (IOException e) {
-            //TODO: logger
+            logger.error(e.getMessage());
             e.printStackTrace();
         }
         if (!(password == null)) {
@@ -114,6 +118,7 @@ public class ProfileService {
 
         File newFile = new File(path + "\\" + file.getOriginalFilename());
         ImageIO.write(newImage, imageType, newFile);
+        logger.info("File has been successfully saved in: {}", newFile.getPath());
         return newFile.getPath();
     }
 

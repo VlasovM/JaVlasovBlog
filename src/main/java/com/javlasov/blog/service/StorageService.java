@@ -4,6 +4,8 @@ import com.javlasov.blog.api.response.StatusResponse;
 import lombok.RequiredArgsConstructor;
 import net.bytebuddy.utility.RandomString;
 import org.imgscalr.Scalr;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class StorageService {
 
+    private final Logger logger = LoggerFactory.getLogger(StorageService.class);
+
     public ResponseEntity<?> uploadFile(MultipartFile image) {
 
         //only jpg and png formats
@@ -32,6 +36,7 @@ public class StorageService {
         if (!errors.isEmpty()) {
             StatusResponse statusResponse = new StatusResponse();
             statusResponse.setErrors(errors);
+            logger.info("Image was not upload: {}", errors);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(statusResponse);
         }
 
@@ -39,8 +44,10 @@ public class StorageService {
         try {
             path = uploadFileAndGetPath(image);
         } catch (IOException e) {
+            logger.error(e.getMessage());
             e.printStackTrace();
         }
+        logger.info("Image has been successfully saved in: {}", path);
         return ResponseEntity.ok(path);
     }
 
@@ -85,6 +92,5 @@ public class StorageService {
         ImageIO.write(newImage, imageType, newFile);
         return newFile.getPath();
     }
-
 
 }

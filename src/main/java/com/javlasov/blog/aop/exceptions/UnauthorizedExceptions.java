@@ -1,4 +1,4 @@
-package com.javlasov.blog.exceptions;
+package com.javlasov.blog.aop.exceptions;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;

@@ -1,7 +1,7 @@
 package com.javlasov.blog.service;
 
 import com.javlasov.blog.api.response.StatisticsResponse;
-import com.javlasov.blog.exceptions.UnauthorizedExceptions;
+import com.javlasov.blog.aop.exceptions.UnauthorizedExceptions;
 import com.javlasov.blog.model.GlobalSettings;
 import com.javlasov.blog.model.Post;
 import com.javlasov.blog.model.PostVotes;

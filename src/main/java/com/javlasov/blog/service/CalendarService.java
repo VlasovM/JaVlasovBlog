@@ -19,7 +19,7 @@ public class CalendarService {
 
     private final PostRepository postRepository;
 
-    public CalendarResponse calendar(Optional<Integer> year) {
+    public CalendarResponse getPostsByDate(Optional<Integer> year) {
         CalendarResponse calendarResponse = new CalendarResponse();
         List<Post> allPosts = postRepository.findAll();
         Set<Integer> years = setYears(allPosts);
