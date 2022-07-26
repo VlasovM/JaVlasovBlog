@@ -115,7 +115,7 @@ class LoginServiceTest {
     private User getUser() {
         User user = new User();
         user.setName("Maxim");
-        user.setEmail("memaks@mail.ru");
+        user.setEmail("test@mail.ru");
         user.setModerator(0);
         return user;
     }
