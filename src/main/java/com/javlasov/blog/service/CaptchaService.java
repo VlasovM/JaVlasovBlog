@@ -22,16 +22,17 @@ public class CaptchaService {
         deleteOldCaptchaCodes();
         CaptchaResponse captchaResponse = new CaptchaResponse();
         GCage captcha = new GCage();
-        String image = getImageBase64(captcha);
+        String codeCaptcha = captcha.getTokenGenerator().next();
+        String image = getImageBase64(captcha, codeCaptcha);
         String secretCode = generateSecretCode();
         captchaResponse.setImageBase64(image);
         captchaResponse.setSecretCode(secretCode);
-        saveCaptchaToDb(captcha, secretCode);
+        saveCaptchaToDb(codeCaptcha, secretCode);
         return captchaResponse;
     }
 
-    private String getImageBase64(GCage gCage) {
-        byte[] fileContent = gCage.draw(gCage.getTokenGenerator().next());
+    private String getImageBase64(GCage gCage, String code) {
+        byte[] fileContent = gCage.draw(code);
         String encodedString = Base64.getEncoder().encodeToString(fileContent);
         return "data:image/png;base64, " + encodedString;
     }
@@ -41,11 +42,10 @@ public class CaptchaService {
     }
 
 
-    private void saveCaptchaToDb(GCage gCage, String secretCode) {
-        String code = gCage.getTokenGenerator().next();
+    private void saveCaptchaToDb(String codeCaptcha, String secretCode) {
         CaptchaCodes captcha = new CaptchaCodes();
         captcha.setSecretCode(secretCode);
-        captcha.setCode(code);
+        captcha.setCode(codeCaptcha);
         captcha.setTime(LocalDateTime.now());
         captchaRepository.save(captcha);
     }

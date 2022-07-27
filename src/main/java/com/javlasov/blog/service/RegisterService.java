@@ -1,10 +1,12 @@
 package com.javlasov.blog.service;
 
-import com.javlasov.blog.api.response.RegisterResponse;
+import com.javlasov.blog.api.response.StatusResponse;
 import com.javlasov.blog.model.User;
 import com.javlasov.blog.repository.CaptchaRepository;
 import com.javlasov.blog.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.FieldError;
@@ -21,27 +23,31 @@ import java.util.regex.Pattern;
 @RequiredArgsConstructor
 public class RegisterService {
 
+    private final Logger logger = LoggerFactory.getLogger(RegisterService.class);
+
     private final UserRepository userRepository;
 
     private final CaptchaRepository captchaRepository;
 
-    public RegisterResponse register(String email, String password, String name,
-                                     String captcha, String secret) {
-        RegisterResponse registerResponse = new RegisterResponse();
+    public StatusResponse register(String email, String password, String name,
+                                   String captcha, String secret) {
+        StatusResponse statusResponse = new StatusResponse();
         Map<String, String> errors = checkInputData(email, captcha, secret);
         if (errors.isEmpty()) {
-            registerResponse.setResult(true);
-            registerResponse.setErrors(null);
-            addUserInDB(email, password, name);
-            return registerResponse;
+            statusResponse.setResult(true);
+            statusResponse.setErrors(null);
+            addUserToDB(email, password, name);
+            logger.info("Registration user is successful. Email: {}, name: {}", email, name);
+            return statusResponse;
         }
-        registerResponse.setErrors(errors);
-        registerResponse.setResult(false);
-        return registerResponse;
+        statusResponse.setErrors(errors);
+        statusResponse.setResult(false);
+        logger.info("Registration user is not successful: {}", errors);
+        return statusResponse;
     }
 
-    public RegisterResponse getRegisterWithErrors(List<ObjectError> listErrors) {
-        RegisterResponse response = new RegisterResponse();
+    public StatusResponse getRegisterWithErrors(List<ObjectError> listErrors) {
+        StatusResponse response = new StatusResponse();
         Map<String, String> errors = new HashMap<>();
         listErrors.forEach((error -> {
             String fieldName = ((FieldError) error).getField();
@@ -73,7 +79,7 @@ public class RegisterService {
 
     private void checkCaptcha(String captchaUser, String secret, Map<String, String> errors) {
         if (captchaRepository.existsBySecretCode(secret)) {
-            String code = captchaRepository.findBySecretCode(secret).get().getCode();
+            String code = captchaRepository.findBySecretCode(secret).orElseThrow().getCode();
             if (!code.equals(captchaUser)) {
                 errors.put("captcha", "Код с картинки введён неверно");
             }
@@ -82,7 +88,7 @@ public class RegisterService {
         errors.put("captcha", "Код с картинки введён неверно");
     }
 
-    private void addUserInDB(String email, String password, String name) {
+    private void addUserToDB(String email, String password, String name) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(12);
         User user = new User();
         user.setEmail(email);
@@ -91,6 +97,7 @@ public class RegisterService {
         user.setModerator(0);
         user.setRegTime(LocalDateTime.now());
         userRepository.save(user);
+        logger.info("User save to DB. User: {}", user);
     }
 
 }

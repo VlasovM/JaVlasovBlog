@@ -12,7 +12,7 @@ public class NameValidator implements ConstraintValidator<Name, String> {
 
     @Override
     public boolean isValid(String name, ConstraintValidatorContext constraintValidatorContext) {
-        String regExp = "[a-zA-Z ]+"; // only letters in name
+        String regExp = "[a-zA-Zа-яА-Я]+"; // only letters in name
         return (name.trim().length() >= 2 && (name.matches(regExp)));
     }
 

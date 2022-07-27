@@ -1,6 +1,7 @@
 package com.javlasov.blog.service;
 
 import com.javlasov.blog.api.response.PostResponse;
+import com.javlasov.blog.api.response.StatusResponse;
 import com.javlasov.blog.constants.CommonConstants;
 import com.javlasov.blog.dto.PostCommentDto;
 import com.javlasov.blog.dto.PostDto;
@@ -8,25 +9,33 @@ import com.javlasov.blog.dto.PostDtoById;
 import com.javlasov.blog.dto.UserPostsDto;
 import com.javlasov.blog.mappers.DtoMapper;
 import com.javlasov.blog.model.*;
+import com.javlasov.blog.model.enums.ModerationStatus;
 import com.javlasov.blog.repository.PostRepository;
+import com.javlasov.blog.repository.Tag2PostRepository;
 import com.javlasov.blog.repository.TagRepository;
 import com.javlasov.blog.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.jsoup.Jsoup;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Pattern;
 
 @Service
 @RequiredArgsConstructor
 public class PostService {
+
+    private final Logger logger = LoggerFactory.getLogger(PostService.class);
 
     private final PostRepository postRepository;
 
@@ -35,6 +44,8 @@ public class PostService {
     private final TagRepository tagRepository;
 
     private final UserRepository userRepository;
+
+    private final Tag2PostRepository tag2PostRepository;
 
     public PostResponse getAllPosts(String mode, int offset, int limit) {
         PostResponse postResponse = new PostResponse();
@@ -109,6 +120,154 @@ public class PostService {
         return postResponse;
     }
 
+    public PostResponse getPostsModeration(String status, int offset, int limit) {
+        PostResponse response = new PostResponse();
+        List<Post> allPosts = new ArrayList<>();
+        switch (status) {
+            case "new":
+                allPosts = postRepository.findNewPosts();
+                break;
+            case "declined":
+                allPosts = postRepository.findDeclinedPosts();
+                break;
+            case "accepted":
+                allPosts = postRepository.findAcceptedPosts();
+                break;
+        }
+        List<PostDto> postDtoList = preparePost(allPosts);
+        postDtoList = getCollectionsByOffsetLimit(offset, limit, postDtoList);
+        response.setPostsDto(postDtoList);
+        response.setCount(postDtoList.size());
+        return response;
+    }
+
+    public StatusResponse addPost(long timestamp, short active, String title, List<String> tags, String text) {
+        StatusResponse response = new StatusResponse();
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByEmail(userEmail).orElseThrow();
+        Map<String, String> errors = checkTitleAndText(text, title);
+        if (!errors.isEmpty()) {
+            response.setErrors(errors);
+            response.setResult(false);
+            return response;
+        }
+        Post post = new Post();
+        if (System.currentTimeMillis() / 1000L > timestamp) {
+            post.setTime(LocalDateTime.now());
+        } else {
+            ZoneOffset localZone = ZoneOffset.systemDefault().getRules().getOffset(LocalDateTime.now());
+            LocalDateTime localDateTime = LocalDateTime.ofEpochSecond(timestamp, 0, localZone);
+            post.setTime(localDateTime);
+        }
+
+        post.setActive(active);
+        post.setModerationStatus(ModerationStatus.NEW);
+        String textWithoutHTMLTags = Jsoup.parse(text).text();
+        post.setText(textWithoutHTMLTags);
+        post.setTitle(title);
+        post.setViewCount(0);
+        post.setUser(user);
+        Set<Tag> tagsSet = createSetTags(tags);
+        post.setTags(tagsSet);
+        postRepository.save(post);
+        logger.info("Post was successfully created, published and saved to db. Title post: {}", title);
+        response.setResult(true);
+        return response;
+    }
+
+    public StatusResponse editPost(int postId, long timestamp, short active, String title, List<String> tags, String text) {
+        StatusResponse response = new StatusResponse();
+        Post post = postRepository.getById(postId);
+        Map<String, String> errors = checkTitleAndText(text, title);
+        if (!errors.isEmpty()) {
+            response.setErrors(errors);
+            response.setResult(false);
+            return response;
+        }
+
+        if (System.currentTimeMillis() / 1000L > timestamp) {
+            post.setTime(LocalDateTime.now());
+        } else {
+            ZoneOffset localZone = ZoneOffset.systemDefault().getRules().getOffset(LocalDateTime.now());
+            LocalDateTime localDateTime = LocalDateTime.ofEpochSecond(timestamp, 0, localZone);
+            post.setTime(localDateTime);
+        }
+        post.setActive(active);
+        post.setText(text);
+        post.setTitle(title);
+        Set<Tag> tagsSet = createSetTags(tags);
+        post.setTags(tagsSet);
+
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByEmail(userEmail).orElseThrow();
+
+        if (user.getModerator() == 0) {
+            post.setModerationStatus(ModerationStatus.NEW);
+        }
+
+        postRepository.save(post);
+        logger.info("Post id = {} was successfully modified", postId);
+        response.setResult(true);
+        return response;
+    }
+
+    //transformation incoming set<String> -> set<Tag>
+    private Set<Tag> createSetTags(List<String> tagListString) {
+        if (tagListString.isEmpty()) {
+            return null;
+        }
+        Set<Tag> result = new HashSet<>();
+        for (String tagString : tagListString) {
+            Optional<Tag> tagOptional = tagRepository.findByName(tagString);
+            if (tagOptional.isPresent()) {
+                result.add(tagOptional.get());
+            } else {
+                result.add(addNewTag(tagString));
+            }
+        }
+        return result;
+    }
+
+    private Tag addNewTag(String tagName) {
+        Tag tag = new Tag();
+        tag.setName(tagName);
+        tagRepository.save(tag);
+        return tag;
+    }
+
+    public StatusResponse moderationPost(int postId, String decision) {
+        String emailModerator = SecurityContextHolder.getContext().getAuthentication().getName();
+        int moderatorId = userRepository.findByEmail(emailModerator).orElseThrow().getId();
+        StatusResponse response = new StatusResponse();
+        Post post = postRepository.getById(postId);
+        post.setModeratorId(moderatorId);
+        if (decision.equals("accept")) {
+            post.setModerationStatus(ModerationStatus.ACCEPTED);
+        } else if (decision.equals("decline")) {
+            post.setModerationStatus(ModerationStatus.DECLINED);
+        }
+        postRepository.save(post);
+        logger.info("Moderator {} set status {} at the post (id) = {}", emailModerator, decision, postId);
+        return response;
+    }
+
+    private Map<String, String> checkTitleAndText(String text, String title) {
+        Map<String, String> result = new HashMap<>();
+        if (text.isEmpty()) {
+            result.put("text", "Текст не установлен");
+        }
+        if (text.length() < 30) {
+            result.put("text", "Текст публикациии должен быть не менее 30 символов");
+        }
+        if (title.isEmpty()) {
+            result.put("title", "Заголовок не установлен");
+        }
+        if (title.length() < 3 || title.length() > 50) {
+            result.put("title", "Заголовок публикации должен быть не менее 3 символов и не более 50");
+        }
+        return result;
+    }
+
     private List<PostDto> inActivePosts(List<Post> posts) {
         List<Post> postList = new ArrayList<>();
         for (Post post : posts) {
@@ -153,7 +312,7 @@ public class PostService {
         PostDtoById postDto = dtoMapper.postDtoById(post);
         UserPostsDto user = postDto.getUser();
         user.setPhoto(null);
-        setTags(post, postDto);
+        postDto.setTags(transformationSetTagToSetString(post.getTags()));
         setComments(post, postDto);
         Duration duration = Duration.between(post.getTime(), LocalDateTime.now());
         long secondsAfterCreatePost = (System.currentTimeMillis() / 1000L) - duration.getSeconds();
@@ -163,27 +322,33 @@ public class PostService {
         return postDto;
     }
 
+    //transformation incoming set<Tag> -> set<String> for PostDTO
+    private Set<String> transformationSetTagToSetString(Set<Tag> tagsSet) {
+        Set<String> result = new HashSet<>();
+        for (Tag tag : tagsSet) {
+            result.add(tag.getName());
+        }
+        return result;
+    }
+
     private void incrementViewCount(Post post, PostDtoById postDto) {
         User userPost = post.getUser();
-        String emailAuthUser = SecurityContextHolder.getContext().getAuthentication().getName();
-        if (userPost.getModerator() == 0 && !emailAuthUser.equals(userPost.getEmail())) {
-            int viewCount = post.getViewCount() + 1;
+        int viewCount;
+        if (isAuthenticated()) {
+            String emailAuthUser = SecurityContextHolder.getContext().getAuthentication().getName();
+            User user = userRepository.findByEmail(emailAuthUser).orElseThrow();
+            if (user.getModerator() == 0 && !emailAuthUser.equals(userPost.getEmail())) {
+                viewCount = post.getViewCount() + 1;
+                postDto.setViewCount(viewCount);
+                post.setViewCount(viewCount);
+                postRepository.save(post);
+            }
+        } else {
+            viewCount = post.getViewCount() + 1;
             postDto.setViewCount(viewCount);
             post.setViewCount(viewCount);
             postRepository.save(post);
         }
-    }
-
-    private void setTags(Post post, PostDtoById postDto) {
-        List<String> result = new ArrayList<>();
-        List<Tag> tags = tagRepository.findAll();
-        for (Tag tag : tags) {
-            List<Post> posts = tag.getPosts();
-            if (posts.contains(post)) {
-                result.add(tag.getName());
-            }
-        }
-        postDto.setTags(result);
     }
 
     private void setComments(Post post, PostDtoById postDto) {
@@ -191,7 +356,8 @@ public class PostService {
         List<PostCommentDto> result = new ArrayList<>();
 
         for (PostComments comment : comments) {
-            UserPostsDto userPostsDto = dtoMapper.userToUserDtoForPosts(post.getUser());
+            User user = userRepository.findById(comment.getUserId()).orElseThrow();
+            UserPostsDto userPostsDto = dtoMapper.userToUserDtoForPosts(user);
             PostCommentDto commentDto = dtoMapper.postCommentToDto(comment);
 
             Duration duration = Duration.between(comment.getTime(), LocalDateTime.now());
@@ -206,12 +372,11 @@ public class PostService {
     }
 
     private List<Post> findPostByTag(String tagName) {
-        List<Tag> tags = tagRepository.findAll();
+        Tag tag = tagRepository.findByName(tagName).orElseThrow();
+        List<Tag2Post> tag2PostList = tag2PostRepository.findByTagId(tag.getId());
         List<Post> result = new ArrayList<>();
-        for (Tag tag : tags) {
-            if (tag.getName().equals(tagName)) {
-                result.addAll(tag.getPosts());
-            }
+        for (Tag2Post tag2Post : tag2PostList) {
+            result.add(postRepository.findById(tag2Post.getPost().getId()).orElseThrow());
         }
         return result;
     }
@@ -266,8 +431,9 @@ public class PostService {
         for (PostVotes postVotes : postVotesList) {
             if (postVotes.getValue() == 1) {
                 like++;
+            } else {
+                dislike++;
             }
-            dislike++;
         }
         postDto.setLikeCount(like);
         postDto.setDislikeCount(dislike);
@@ -280,8 +446,9 @@ public class PostService {
         for (PostVotes postVotes : postVotesList) {
             if (postVotes.getValue() == 1) {
                 like++;
+            } else {
+                dislike++;
             }
-            dislike++;
         }
         postDto.setLikeCount(like);
         postDto.setDislikeCount(dislike);
@@ -292,9 +459,13 @@ public class PostService {
     }
 
     private void setPostAnnounce(Post post, PostDto postDto) {
-        int limit = 150; //Number of characters for the announcement
-        String text = (post.getText().length() > limit) ? post.getText() + "..." : post.getText();
-        postDto.setAnnounce(text);
+        int limit = 125; //Number of characters for the announcement
+        String announce = post.getText();
+        if (announce.length() > limit) {
+            String announceWithoutHTMLTags = Jsoup.parse(announce).text();
+            announce = announceWithoutHTMLTags.substring(0, limit);
+        }
+        postDto.setAnnounce(announce + "...");
     }
 
     private void setPostTimestamp(Post post, PostDto postDto) {
@@ -337,6 +508,12 @@ public class PostService {
             }
         }
         return postDtoList;
+    }
+
+    // https://stackoverflow.com/questions/19221979/spring-security-3-isauthenticated-not-working
+    private boolean isAuthenticated() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication != null && !(authentication instanceof AnonymousAuthenticationToken) && authentication.isAuthenticated();
     }
 
 }

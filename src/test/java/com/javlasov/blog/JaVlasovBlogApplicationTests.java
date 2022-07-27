@@ -1,4 +1,4 @@
-package com;
+package com.javlasov.blog;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,5 +9,4 @@ class JaVlasovBlogApplicationTests {
     @Test
     void contextLoads() {
     }
-
 }

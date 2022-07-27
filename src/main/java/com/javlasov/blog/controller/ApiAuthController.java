@@ -1,15 +1,22 @@
 package com.javlasov.blog.controller;
 
 import com.javlasov.blog.api.request.LoginRequest;
+import com.javlasov.blog.api.request.PasswordRequest;
 import com.javlasov.blog.api.request.RegisterRequest;
+import com.javlasov.blog.api.request.RestoreRequest;
 import com.javlasov.blog.api.response.CaptchaResponse;
 import com.javlasov.blog.api.response.LoginResponse;
-import com.javlasov.blog.api.response.RegisterResponse;
+import com.javlasov.blog.api.response.StatusResponse;
+import com.javlasov.blog.model.GlobalSettings;
+import com.javlasov.blog.repository.GlobalSettingRepository;
 import com.javlasov.blog.service.CaptchaService;
 import com.javlasov.blog.service.LoginService;
+import com.javlasov.blog.service.PasswordService;
 import com.javlasov.blog.service.RegisterService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +34,10 @@ public class ApiAuthController {
 
     private final LoginService loginService;
 
+    private final PasswordService passwordService;
+
+    private final GlobalSettingRepository globalSettingRepository;
+
     @GetMapping("/check")
     public ResponseEntity<LoginResponse> check(Principal principal) {
         return ResponseEntity.ok(loginService.checkUser(principal));
@@ -38,7 +49,11 @@ public class ApiAuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<RegisterResponse> register(@Valid @RequestBody RegisterRequest request, BindingResult bindingResult) {
+    public ResponseEntity<StatusResponse> register(@Valid @RequestBody RegisterRequest request, BindingResult bindingResult) {
+        GlobalSettings multiuserMode = globalSettingRepository.findByCode("MULTIUSER_MODE");
+        if (multiuserMode.getValue().equals("NO")) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         if (bindingResult.hasErrors()) {
             return ResponseEntity.ok(registerService.getRegisterWithErrors(bindingResult.getAllErrors()));
         }
@@ -52,8 +67,20 @@ public class ApiAuthController {
     }
 
     @GetMapping("/logout")
+    @PreAuthorize("hasAuthority('user:write')")
     public ResponseEntity<LoginResponse> logout() {
         return ResponseEntity.ok(loginService.logout());
+    }
+
+    @PostMapping("/restore")
+    public ResponseEntity<StatusResponse> restorePassword(@RequestBody RestoreRequest restoreRequest) {
+        return ResponseEntity.ok(passwordService.restorePassword(restoreRequest.getEmail()));
+    }
+
+    @PostMapping("/password")
+    public ResponseEntity<StatusResponse> changePassword(@RequestBody PasswordRequest passwordRequest) {
+        return ResponseEntity.ok(passwordService.changePassword(passwordRequest.getCode(), passwordRequest.getPassword(),
+                passwordRequest.getCaptcha(), passwordRequest.getCaptchaSecret()));
     }
 
 }

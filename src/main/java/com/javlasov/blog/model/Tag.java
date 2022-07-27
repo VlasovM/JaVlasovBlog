@@ -20,11 +20,4 @@ public class Tag {
     @Column(name = "name")
     private String name;
 
-    @NotNull
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH}, fetch = FetchType.LAZY)
-    @JoinTable(name = "tag2post",
-            joinColumns = @JoinColumn(name = "tag_id"),
-            inverseJoinColumns = @JoinColumn(name = "post_id"))
-    private List<Post> posts;
-
 }

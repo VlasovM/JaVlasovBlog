@@ -18,4 +18,16 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 
     List<Post> findPostsByUserId(int userId);
 
+    @Query(value = "FROM Post WHERE user.id = ?1 AND moderationStatus = 'ACCEPTED' and active = 1")
+    List<Post> findPostsByUserIdAndAcceptedStatus(int userId);
+
+    @Query(value = "FROM Post WHERE moderationStatus = 'NEW' and active = 1")
+    List<Post> findNewPosts();
+
+    @Query(value = "FROM Post WHERE moderationStatus = 'ACCEPTED' and active = 1")
+    List<Post> findAcceptedPosts();
+
+    @Query(value = "FROM Post WHERE moderationStatus = 'DECLINED' and active = 1")
+    List<Post> findDeclinedPosts();
+
 }
