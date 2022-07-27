@@ -16,14 +16,14 @@ public class SettingService {
     private final GlobalSettingRepository globalSettingRepository;
 
     private final static String POSITIVE = "YES";
-
     private final static String NEGATIVE = "NO";
 
     public SettingsResponse checkSettings() {
         SettingsResponse settingsResponse = new SettingsResponse();
-        GlobalSettings multiUserMode = globalSettingRepository.getById(1);
-        GlobalSettings postPremoderation = globalSettingRepository.getById(2);
-        GlobalSettings statisticsIsPublic = globalSettingRepository.getById(3);
+
+        GlobalSettings multiUserMode = globalSettingRepository.findByCode("MULTIUSER_MODE");
+        GlobalSettings postPremoderation = globalSettingRepository.findByCode("POST_PREMODERATION");
+        GlobalSettings statisticsIsPublic = globalSettingRepository.findByCode("STATISTICS_IS_PUBLIC");
 
         switch (multiUserMode.getValue()) {
             case (POSITIVE):

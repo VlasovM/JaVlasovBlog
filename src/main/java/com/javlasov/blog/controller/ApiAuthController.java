@@ -50,7 +50,7 @@ public class ApiAuthController {
 
     @PostMapping("/register")
     public ResponseEntity<StatusResponse> register(@Valid @RequestBody RegisterRequest request, BindingResult bindingResult) {
-        GlobalSettings multiuserMode = globalSettingRepository.findById(1);
+        GlobalSettings multiuserMode = globalSettingRepository.findByCode("MULTIUSER_MODE");
         if (multiuserMode.getValue().equals("NO")) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
