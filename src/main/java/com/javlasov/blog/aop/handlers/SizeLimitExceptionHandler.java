@@ -21,7 +21,7 @@ public class SizeLimitExceptionHandler {
         Map<String, String> message = new HashMap<>();
         message.put("message", "Превышен допустимый размер файла. Максимальынй размер файла не более " +
                 "256KB.");
-        logger.error("Ошибка при попатке загрузки изображения. Превышен допустимый размер файла.");
+        logger.error("Ошибка при попытке загрузки изображения. Превышен допустимый размер файла.");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
     }
 
