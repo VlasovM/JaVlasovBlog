@@ -8,6 +8,7 @@ import com.javlasov.blog.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 
 import java.time.LocalDateTime;
@@ -101,17 +102,26 @@ class RegisterServiceTest {
     }
 
     @Test
-    @DisplayName("Test method register with empty error list.")
+    @DisplayName("Method errors with email and name error.")
     void registerWithErrorsTest() {
         StatusResponse expectedResponse = new StatusResponse();
-        expectedResponse.setErrors(new HashMap<>());
+        Map<String, String> errorsMapExpected = new HashMap<>();
 
-        ObjectError error = new ObjectError("someName", "someMessage");
-        List<ObjectError> errorsList = new ArrayList<>() {};
-        errorsList.add(error);
+        errorsMapExpected.put("name", "Имя должно содержать только буквы и состоять минимум из 2 символов");
+        errorsMapExpected.put("email", "Неверный формат введённого e-mail");
+        expectedResponse.setErrors(errorsMapExpected);
+
+        List<ObjectError> errorsList = new ArrayList<>();
+
+        ObjectError errorName = new FieldError("FieldError", "name",
+                "Имя должно содержать только буквы и состоять минимум из 2 символов");
+        ObjectError errorEmail = new FieldError("FieldError", "email",
+                "Неверный формат введённого e-mail");
+
+        errorsList.add(errorName);
+        errorsList.add(errorEmail);
 
         StatusResponse actualResponse = underTestService.getRegisterWithErrors(errorsList);
-
         assertEquals(expectedResponse, actualResponse);
     }
 

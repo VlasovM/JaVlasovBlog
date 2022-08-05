@@ -20,10 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -112,9 +109,11 @@ public class ProfileService {
         StatusResponse response = new StatusResponse();
         Map<String, String> errors = new HashMap<>();
         listErrors.forEach((error -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
+            if (error instanceof ObjectError) {
+                String fieldName = ((FieldError) error).getField();
+                String errorMessage = error.getDefaultMessage();
+                errors.put(fieldName, errorMessage);
+            }
         }));
         response.setResult(false);
         response.setErrors(errors);

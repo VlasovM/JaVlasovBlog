@@ -1,5 +1,6 @@
 package com.javlasov.blog.service;
 
+import com.javlasov.blog.annotations.Name;
 import com.javlasov.blog.api.response.StatusResponse;
 import com.javlasov.blog.model.User;
 import com.javlasov.blog.repository.UserRepository;
@@ -10,13 +11,13 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.lang.reflect.Field;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -237,7 +238,7 @@ class ProfileServiceTest {
     }
 
     @Test
-    @DisplayName("Upload correct photo and change pass")
+    @DisplayName("Upload correct photo and change pass.")
     void uploadPhotoAndChangePass() throws IOException {
         StatusResponse expectedResponse = new StatusResponse();
         expectedResponse.setResult(true);
@@ -304,12 +305,26 @@ class ProfileServiceTest {
     }
 
     @Test
-    @DisplayName("Test method with empty error list.")
+    @DisplayName("Test errors method with name and email error.")
     void getRegisterWithErrorsTest() {
         StatusResponse expectedResponse = new StatusResponse();
-        expectedResponse.setErrors(new HashMap<>());
+        Map<String, String> errorsMapExpected = new HashMap<>();
 
-        StatusResponse actualResponse = underTestService.getRegisterWithErrors(new ArrayList<>());
+        errorsMapExpected.put("name", "Имя должно содержать только буквы и состоять минимум из 2 символов");
+        errorsMapExpected.put("email", "Неверный формат введённого e-mail");
+        expectedResponse.setErrors(errorsMapExpected);
+
+        List<ObjectError> errorsList = new ArrayList<>();
+
+        ObjectError errorName = new FieldError("FieldError", "name",
+                "Имя должно содержать только буквы и состоять минимум из 2 символов");
+        ObjectError errorEmail = new FieldError("FieldError", "email",
+                "Неверный формат введённого e-mail");
+
+        errorsList.add(errorName);
+        errorsList.add(errorEmail);
+
+        StatusResponse actualResponse = underTestService.getRegisterWithErrors(errorsList);
         assertEquals(expectedResponse, actualResponse);
     }
 

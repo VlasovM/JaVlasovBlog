@@ -31,20 +31,19 @@ public class TagService {
 
     public TagResponse tag(Optional<String> query) {
         TagResponse tagResponse = new TagResponse();
-        if (!checkTag()) {
-            return tagResponse;
-        }
         List<Tag> tagList = findTagsWithQuery(query);
         List<TagDto> tagDtoList = prepareTag(tagList);
         tagResponse.setTags(tagDtoList);
         return tagResponse;
     }
 
-    private boolean checkTag() {
-        if (postRepository.findAll().isEmpty()) {
-            return false;
+    private List<Tag> findTagsWithQuery(Optional<String> query) {
+        if (query.isEmpty()) {
+            return tagRepository.findAll();
         }
-        return !tag2PostRepository.findAll().isEmpty();
+        return tagRepository.findAll().stream()
+                .filter(tag -> StringUtils.startsWithIgnoreCase(tag.getName(), query.get()))
+                .collect(Collectors.toList());
     }
 
     private List<TagDto> prepareTag(List<Tag> tagList) {
@@ -57,15 +56,6 @@ public class TagService {
             result.add(tagDto);
         }
         return result;
-    }
-
-    private List<Tag> findTagsWithQuery(Optional<String> query) {
-        if (query.isEmpty()) {
-            return tagRepository.findAll();
-        }
-        return tagRepository.findAll().stream()
-                .filter(tag -> StringUtils.startsWithIgnoreCase(tag.getName(), query.get()))
-                .collect(Collectors.toList());
     }
 
 

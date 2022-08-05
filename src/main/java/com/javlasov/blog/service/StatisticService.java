@@ -61,7 +61,7 @@ public class StatisticService {
         String emailUser = SecurityContextHolder.getContext().getAuthentication().getName();
         Optional<User> user = userRepository.findByEmail(emailUser);
 
-        GlobalSettings statisticsIsPublic = globalSettingRepository.getById(3);
+        GlobalSettings statisticsIsPublic = globalSettingRepository.findByCode("STATISTICS_IS_PUBLIC");
 
         if (statisticsIsPublic.getValue().equals("NO")) {
             if (user.isEmpty() || user.orElseThrow().getModerator() == 0) {

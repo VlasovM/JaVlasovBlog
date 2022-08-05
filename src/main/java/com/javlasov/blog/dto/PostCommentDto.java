@@ -13,6 +13,6 @@ public class PostCommentDto {
 
     private String text;
 
-    private UserPostsDto user;
+    private UserPostDto user;
 
 }
