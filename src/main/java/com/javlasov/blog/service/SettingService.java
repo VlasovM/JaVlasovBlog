@@ -33,7 +33,6 @@ public class SettingService {
                 settingsResponse.setMultiuserMode(false);
                 break;
         }
-
         switch (postPremoderation.getValue()) {
             case (POSITIVE):
                 settingsResponse.setPostPremoderation(true);
@@ -42,7 +41,6 @@ public class SettingService {
                 settingsResponse.setPostPremoderation(false);
                 break;
         }
-
         switch (statisticsIsPublic.getValue()) {
             case (POSITIVE):
                 settingsResponse.setStaticsIsPublic(true);
@@ -57,9 +55,9 @@ public class SettingService {
     }
 
     public ResponseEntity<Object> saveSettings(SettingsRequest settingsRequest) {
-        GlobalSettings multiUserMode = globalSettingRepository.getById(1);
-        GlobalSettings postPremoderation = globalSettingRepository.getById(2);
-        GlobalSettings statisticsIsPublic = globalSettingRepository.getById(3);
+        GlobalSettings multiUserMode = globalSettingRepository.findByCode("MULTIUSER_MODE");
+        GlobalSettings postPremoderation = globalSettingRepository.findByCode("POST_PREMODERATION");
+        GlobalSettings statisticsIsPublic = globalSettingRepository.findByCode("STATISTICS_IS_PUBLIC");
 
         if (settingsRequest.isMultiuserMode()) {
             multiUserMode.setValue(POSITIVE);

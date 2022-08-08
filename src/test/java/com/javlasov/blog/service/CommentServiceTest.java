@@ -117,7 +117,6 @@ class CommentServiceTest {
         commentRequest.setParentId("1");
         commentRequest.setText("Тестовый текст для комментария длинее минимального требования.");
 
-
         User user = getUser();
         when(mockUserRepo.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
 
@@ -131,12 +130,12 @@ class CommentServiceTest {
         SecurityContext securityContext = Mockito.mock(SecurityContext.class);
         when(securityContext.getAuthentication()).thenReturn(authentication);
         SecurityContextHolder.setContext(securityContext);
-        when(authentication.getName()).thenReturn("test@mail.ru");
+        when(authentication.getName()).thenReturn("incorrectEmail@mail.ru");
 
         assertThrows(NoSuchElementException.class, () -> underTestService.setCommentToPost(
                 commentRequest.getParentId(),
                 commentRequest.getPostId(),
-                commentRequest.getText()), "No value present");
+                commentRequest.getText()));
 
     }
 

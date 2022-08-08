@@ -1,10 +1,7 @@
 package com.javlasov.blog.dto;
 
-import com.javlasov.blog.model.Tag;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-
-import java.util.Set;
 
 @Data
 @RequiredArgsConstructor
@@ -14,7 +11,7 @@ public class PostDto {
 
     private long timestamp;
 
-    private UserPostsDto user;
+    private UserPostDto user;
 
     private String title;
 

@@ -1,0 +1,213 @@
+2022-08-05 10:46:25,482 [INFO] com.javlasov.blog.JaVlasovBlogApplication [restartedMain] Starting JaVlasovBlogApplication using Java 17.0.1 on JaVlasov with PID 12788 (C:\Users\79153\Desktop\Диплом\JaVlasovBlog\target\classes started by 79153 in C:\Users\79153\Desktop\Диплом\JaVlasovBlog)
+2022-08-05 10:46:25,485 [INFO] com.javlasov.blog.JaVlasovBlogApplication [restartedMain] No active profile set, falling back to default profiles: default
+2022-08-05 10:46:25,520 [INFO] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [restartedMain] Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-08-05 10:46:25,521 [INFO] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [restartedMain] For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2022-08-05 10:46:26,313 [INFO] org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2022-08-05 10:46:26,470 [INFO] org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Finished Spring Data repository scanning in 145 ms. Found 8 JPA repository interfaces.
+2022-08-05 10:46:27,218 [INFO] org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat initialized with port(s): 8080 (http)
+2022-08-05 10:46:27,230 [INFO] org.apache.catalina.core.StandardService [restartedMain] Starting service [Tomcat]
+2022-08-05 10:46:27,230 [INFO] org.apache.catalina.core.StandardEngine [restartedMain] Starting Servlet engine: [Apache Tomcat/9.0.56]
+2022-08-05 10:46:27,339 [INFO] org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] [restartedMain] Initializing Spring embedded WebApplicationContext
+2022-08-05 10:46:27,340 [INFO] org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 1819 ms
+2022-08-05 10:46:27,493 [INFO] org.hibernate.jpa.internal.util.LogHelper [restartedMain] HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-08-05 10:46:27,562 [INFO] org.hibernate.Version [restartedMain] HHH000412: Hibernate ORM core version 5.6.4.Final
+2022-08-05 10:46:27,696 [INFO] org.hibernate.annotations.common.Version [restartedMain] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-08-05 10:46:27,817 [INFO] com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Starting...
+2022-08-05 10:46:28,350 [INFO] com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Start completed.
+2022-08-05 10:46:28,403 [INFO] org.hibernate.dialect.Dialect [restartedMain] HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+2022-08-05 10:46:30,160 [INFO] org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [restartedMain] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-08-05 10:46:30,174 [INFO] org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [restartedMain] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2022-08-05 10:46:30,869 [WARN] org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [restartedMain] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2022-08-05 10:46:31,526 [INFO] org.springframework.security.web.DefaultSecurityFilterChain [restartedMain] Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@381dc801, org.springframework.security.web.context.SecurityContextPersistenceFilter@51a88fc6, org.springframework.security.web.header.HeaderWriterFilter@317fbeda, org.springframework.security.web.authentication.logout.LogoutFilter@47adc984, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@3f845814, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@30af7b9, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@324c6c26, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@763a2378, org.springframework.security.web.session.SessionManagementFilter@10282627, org.springframework.security.web.access.ExceptionTranslationFilter@3fe7adab, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@58f74a90]
+2022-08-05 10:46:31,767 [INFO] org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping [restartedMain] Adding welcome page template: index
+2022-08-05 10:46:32,039 [INFO] org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer [restartedMain] LiveReload server is running on port 35729
+2022-08-05 10:46:32,080 [INFO] org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat started on port(s): 8080 (http) with context path ''
+2022-08-05 10:46:32,092 [INFO] com.javlasov.blog.JaVlasovBlogApplication [restartedMain] Started JaVlasovBlogApplication in 6.905 seconds (JVM running for 7.777)
+2022-08-05 10:46:45,437 [INFO] org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] [http-nio-8080-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-08-05 10:46:45,437 [INFO] org.springframework.web.servlet.DispatcherServlet [http-nio-8080-exec-1] Initializing Servlet 'dispatcherServlet'
+2022-08-05 10:46:45,439 [INFO] org.springframework.web.servlet.DispatcherServlet [http-nio-8080-exec-1] Completed initialization in 1 ms
+2022-08-05 10:46:45,797 [INFO] com.javlasov.blog.service.InitService [http-nio-8080-exec-6] anonymousUser is visited the blog
+2022-08-05 10:46:57,052 [INFO] com.javlasov.blog.service.LoginService [http-nio-8080-exec-10] memaks@mail.ru logged to blog
+2022-08-05 10:50:43,681 [INFO] org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [Thread-5] Closing JPA EntityManagerFactory for persistence unit 'default'
+2022-08-05 10:50:43,683 [INFO] com.zaxxer.hikari.HikariDataSource [Thread-5] HikariPool-1 - Shutdown initiated...
+2022-08-05 10:50:43,704 [INFO] com.zaxxer.hikari.HikariDataSource [Thread-5] HikariPool-1 - Shutdown completed.
+2022-08-05 10:50:43,793 [INFO] com.javlasov.blog.JaVlasovBlogApplication [restartedMain] Starting JaVlasovBlogApplication using Java 17.0.1 on JaVlasov with PID 12788 (C:\Users\79153\Desktop\Диплом\JaVlasovBlog\target\classes started by 79153 in C:\Users\79153\Desktop\Диплом\JaVlasovBlog)
+2022-08-05 10:50:43,794 [INFO] com.javlasov.blog.JaVlasovBlogApplication [restartedMain] No active profile set, falling back to default profiles: default
+2022-08-05 10:50:44,118 [INFO] org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2022-08-05 10:50:44,153 [INFO] org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Finished Spring Data repository scanning in 34 ms. Found 8 JPA repository interfaces.
+2022-08-05 10:50:44,276 [INFO] org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat initialized with port(s): 8080 (http)
+2022-08-05 10:50:44,276 [INFO] org.apache.catalina.core.StandardService [restartedMain] Starting service [Tomcat]
+2022-08-05 10:50:44,277 [INFO] org.apache.catalina.core.StandardEngine [restartedMain] Starting Servlet engine: [Apache Tomcat/9.0.56]
+2022-08-05 10:50:44,296 [INFO] org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] [restartedMain] Initializing Spring embedded WebApplicationContext
+2022-08-05 10:50:44,296 [INFO] org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 499 ms
+2022-08-05 10:50:44,364 [INFO] org.hibernate.jpa.internal.util.LogHelper [restartedMain] HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-08-05 10:50:44,371 [INFO] com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-2 - Starting...
+2022-08-05 10:50:44,412 [INFO] com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-2 - Start completed.
+2022-08-05 10:50:44,412 [INFO] org.hibernate.dialect.Dialect [restartedMain] HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+2022-08-05 10:50:44,587 [INFO] org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [restartedMain] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-08-05 10:50:44,588 [INFO] org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [restartedMain] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2022-08-05 10:50:44,733 [WARN] org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [restartedMain] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2022-08-05 10:50:44,860 [WARN] org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext [restartedMain] Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'apiAuthController' defined in file [C:\Users\79153\Desktop\Диплом\JaVlasovBlog\target\classes\com\javlasov\blog\controller\ApiAuthController.class]: Unsatisfied dependency expressed through constructor parameter 3; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'passwordService' defined in file [C:\Users\79153\Desktop\Диплом\JaVlasovBlog\target\classes\com\javlasov\blog\service\PasswordService.class]: Bean instantiation via constructor failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.javlasov.blog.service.PasswordService]: Constructor threw exception; nested exception is java.lang.NoClassDefFoundError: com/javlasov/blog/service/PostService
+2022-08-05 10:50:44,861 [INFO] org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [restartedMain] Closing JPA EntityManagerFactory for persistence unit 'default'
+2022-08-05 10:50:44,861 [INFO] com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-2 - Shutdown initiated...
+2022-08-05 10:50:44,871 [INFO] com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-2 - Shutdown completed.
+2022-08-05 10:50:44,872 [INFO] org.apache.catalina.core.StandardService [restartedMain] Stopping service [Tomcat]
+2022-08-05 10:50:44,885 [INFO] org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener [restartedMain] 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2022-08-05 10:50:44,922 [ERROR] org.springframework.boot.SpringApplication [restartedMain] Application run failed
+org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'apiAuthController' defined in file [C:\Users\79153\Desktop\Диплом\JaVlasovBlog\target\classes\com\javlasov\blog\controller\ApiAuthController.class]: Unsatisfied dependency expressed through constructor parameter 3; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'passwordService' defined in file [C:\Users\79153\Desktop\Диплом\JaVlasovBlog\target\classes\com\javlasov\blog\service\PasswordService.class]: Bean instantiation via constructor failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.javlasov.blog.service.PasswordService]: Constructor threw exception; nested exception is java.lang.NoClassDefFoundError: com/javlasov/blog/service/PostService
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:800) ~[spring-beans-5.3.15.jar:5.3.15]
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:229) ~[spring-beans-5.3.15.jar:5.3.15]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1372) ~[spring-beans-5.3.15.jar:5.3.15]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1222) ~[spring-beans-5.3.15.jar:5.3.15]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:582) ~[spring-beans-5.3.15.jar:5.3.15]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542) ~[spring-beans-5.3.15.jar:5.3.15]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335) ~[spring-beans-5.3.15.jar:5.3.15]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-5.3.15.jar:5.3.15]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333) ~[spring-beans-5.3.15.jar:5.3.15]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208) ~[spring-beans-5.3.15.jar:5.3.15]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:953) ~[spring-beans-5.3.15.jar:5.3.15]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:918) ~[spring-context-5.3.15.jar:5.3.15]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:583) ~[spring-context-5.3.15.jar:5.3.15]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:145) ~[spring-boot-2.6.3.jar:2.6.3]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:732) ~[spring-boot-2.6.3.jar:2.6.3]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:414) ~[spring-boot-2.6.3.jar:2.6.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:302) ~[spring-boot-2.6.3.jar:2.6.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1303) ~[spring-boot-2.6.3.jar:2.6.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1292) ~[spring-boot-2.6.3.jar:2.6.3]
+	at com.javlasov.blog.JaVlasovBlogApplication.main(JaVlasovBlogApplication.java:10) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:49) ~[spring-boot-devtools-2.6.3.jar:2.6.3]
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'passwordService' defined in file [C:\Users\79153\Desktop\Диплом\JaVlasovBlog\target\classes\com\javlasov\blog\service\PasswordService.class]: Bean instantiation via constructor failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.javlasov.blog.service.PasswordService]: Constructor threw exception; nested exception is java.lang.NoClassDefFoundError: com/javlasov/blog/service/PostService
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:315) ~[spring-beans-5.3.15.jar:5.3.15]
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:296) ~[spring-beans-5.3.15.jar:5.3.15]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1372) ~[spring-beans-5.3.15.jar:5.3.15]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1222) ~[spring-beans-5.3.15.jar:5.3.15]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:582) ~[spring-beans-5.3.15.jar:5.3.15]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542) ~[spring-beans-5.3.15.jar:5.3.15]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335) ~[spring-beans-5.3.15.jar:5.3.15]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-5.3.15.jar:5.3.15]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333) ~[spring-beans-5.3.15.jar:5.3.15]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208) ~[spring-beans-5.3.15.jar:5.3.15]
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:276) ~[spring-beans-5.3.15.jar:5.3.15]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1389) ~[spring-beans-5.3.15.jar:5.3.15]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1309) ~[spring-beans-5.3.15.jar:5.3.15]
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:887) ~[spring-beans-5.3.15.jar:5.3.15]
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:791) ~[spring-beans-5.3.15.jar:5.3.15]
+	... 24 common frames omitted
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.javlasov.blog.service.PasswordService]: Constructor threw exception; nested exception is java.lang.NoClassDefFoundError: com/javlasov/blog/service/PostService
+	at org.springframework.beans.BeanUtils.instantiateClass(BeanUtils.java:224) ~[spring-beans-5.3.15.jar:5.3.15]
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:117) ~[spring-beans-5.3.15.jar:5.3.15]
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:311) ~[spring-beans-5.3.15.jar:5.3.15]
+	... 38 common frames omitted
+Caused by: java.lang.NoClassDefFoundError: com/javlasov/blog/service/PostService
+	at com.javlasov.blog.service.PasswordService.<init>(PasswordService.java:25) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45) ~[na:na]
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:499) ~[na:na]
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:480) ~[na:na]
+	at org.springframework.beans.BeanUtils.instantiateClass(BeanUtils.java:211) ~[spring-beans-5.3.15.jar:5.3.15]
+	... 40 common frames omitted
+Caused by: java.lang.ClassNotFoundException: com.javlasov.blog.service.PostService
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:641) ~[na:na]
+	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:188) ~[na:na]
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:520) ~[na:na]
+	at java.base/java.lang.Class.forName0(Native Method) ~[na:na]
+	at java.base/java.lang.Class.forName(Class.java:467) ~[na:na]
+	at org.springframework.boot.devtools.restart.classloader.RestartClassLoader.loadClass(RestartClassLoader.java:145) ~[spring-boot-devtools-2.6.3.jar:2.6.3]
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:520) ~[na:na]
+	... 47 common frames omitted
+2022-08-05 10:50:46,463 [INFO] com.javlasov.blog.JaVlasovBlogApplication [restartedMain] Starting JaVlasovBlogApplication using Java 17.0.1 on JaVlasov with PID 12788 (C:\Users\79153\Desktop\Диплом\JaVlasovBlog\target\classes started by 79153 in C:\Users\79153\Desktop\Диплом\JaVlasovBlog)
+2022-08-05 10:50:46,464 [INFO] com.javlasov.blog.JaVlasovBlogApplication [restartedMain] No active profile set, falling back to default profiles: default
+2022-08-05 10:50:46,646 [INFO] org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2022-08-05 10:50:46,675 [INFO] org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Finished Spring Data repository scanning in 29 ms. Found 8 JPA repository interfaces.
+2022-08-05 10:50:46,774 [INFO] org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat initialized with port(s): 8080 (http)
+2022-08-05 10:50:46,774 [INFO] org.apache.catalina.core.StandardService [restartedMain] Starting service [Tomcat]
+2022-08-05 10:50:46,774 [INFO] org.apache.catalina.core.StandardEngine [restartedMain] Starting Servlet engine: [Apache Tomcat/9.0.56]
+2022-08-05 10:50:46,791 [INFO] org.apache.catalina.core.ContainerBase.[Tomcat-1].[localhost].[/] [restartedMain] Initializing Spring embedded WebApplicationContext
+2022-08-05 10:50:46,792 [INFO] org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 325 ms
+2022-08-05 10:50:46,835 [INFO] org.hibernate.jpa.internal.util.LogHelper [restartedMain] HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-08-05 10:50:46,839 [INFO] com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-3 - Starting...
+2022-08-05 10:50:46,857 [INFO] com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-3 - Start completed.
+2022-08-05 10:50:46,858 [INFO] org.hibernate.dialect.Dialect [restartedMain] HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+2022-08-05 10:50:46,975 [INFO] org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [restartedMain] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-08-05 10:50:46,975 [INFO] org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [restartedMain] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2022-08-05 10:50:47,083 [WARN] org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [restartedMain] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2022-08-05 10:50:47,499 [INFO] org.springframework.security.web.DefaultSecurityFilterChain [restartedMain] Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@3f71069b, org.springframework.security.web.context.SecurityContextPersistenceFilter@46f07a7d, org.springframework.security.web.header.HeaderWriterFilter@375e8925, org.springframework.security.web.authentication.logout.LogoutFilter@744a296c, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@18e0a0dc, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@55a68a9f, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@16f226af, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@773e2dbb, org.springframework.security.web.session.SessionManagementFilter@28e1f304, org.springframework.security.web.access.ExceptionTranslationFilter@5a692591, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@660d14c1]
+2022-08-05 10:50:47,635 [INFO] org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping [restartedMain] Adding welcome page template: index
+2022-08-05 10:50:47,764 [INFO] org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer [restartedMain] LiveReload server is running on port 35729
+2022-08-05 10:50:47,801 [INFO] org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat started on port(s): 8080 (http) with context path ''
+2022-08-05 10:50:47,820 [INFO] com.javlasov.blog.JaVlasovBlogApplication [restartedMain] Started JaVlasovBlogApplication in 1.392 seconds (JVM running for 263.504)
+2022-08-05 10:50:47,824 [INFO] org.springframework.boot.devtools.autoconfigure.ConditionEvaluationDeltaLoggingListener [restartedMain] Condition evaluation unchanged
+2022-08-05 10:54:06,001 [INFO] org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [Thread-7] Closing JPA EntityManagerFactory for persistence unit 'default'
+2022-08-05 10:54:06,002 [INFO] com.zaxxer.hikari.HikariDataSource [Thread-7] HikariPool-3 - Shutdown initiated...
+2022-08-05 10:54:06,009 [INFO] com.zaxxer.hikari.HikariDataSource [Thread-7] HikariPool-3 - Shutdown completed.
+2022-08-05 10:54:06,092 [INFO] com.javlasov.blog.JaVlasovBlogApplication [restartedMain] Starting JaVlasovBlogApplication using Java 17.0.1 on JaVlasov with PID 12788 (C:\Users\79153\Desktop\Диплом\JaVlasovBlog\target\classes started by 79153 in C:\Users\79153\Desktop\Диплом\JaVlasovBlog)
+2022-08-05 10:54:06,093 [INFO] com.javlasov.blog.JaVlasovBlogApplication [restartedMain] No active profile set, falling back to default profiles: default
+2022-08-05 10:54:06,380 [INFO] org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2022-08-05 10:54:06,427 [INFO] org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Finished Spring Data repository scanning in 47 ms. Found 8 JPA repository interfaces.
+2022-08-05 10:54:06,597 [INFO] org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat initialized with port(s): 8080 (http)
+2022-08-05 10:54:06,598 [INFO] org.apache.catalina.core.StandardService [restartedMain] Starting service [Tomcat]
+2022-08-05 10:54:06,598 [INFO] org.apache.catalina.core.StandardEngine [restartedMain] Starting Servlet engine: [Apache Tomcat/9.0.56]
+2022-08-05 10:54:06,624 [INFO] org.apache.catalina.core.ContainerBase.[Tomcat-1].[localhost].[/] [restartedMain] Initializing Spring embedded WebApplicationContext
+2022-08-05 10:54:06,624 [INFO] org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 528 ms
+2022-08-05 10:54:06,691 [INFO] org.hibernate.jpa.internal.util.LogHelper [restartedMain] HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-08-05 10:54:06,698 [INFO] com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-4 - Starting...
+2022-08-05 10:54:06,719 [INFO] com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-4 - Start completed.
+2022-08-05 10:54:06,719 [INFO] org.hibernate.dialect.Dialect [restartedMain] HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+2022-08-05 10:54:06,852 [INFO] org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [restartedMain] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-08-05 10:54:06,852 [INFO] org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [restartedMain] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2022-08-05 10:54:06,957 [WARN] org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [restartedMain] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2022-08-05 10:54:07,222 [WARN] org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext [restartedMain] Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'apiGeneralController' defined in file [C:\Users\79153\Desktop\Диплом\JaVlasovBlog\target\classes\com\javlasov\blog\controller\ApiGeneralController.class]: Unsatisfied dependency expressed through constructor parameter 8; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.javlasov.blog.service.PostService' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+2022-08-05 10:54:07,223 [INFO] org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [restartedMain] Closing JPA EntityManagerFactory for persistence unit 'default'
+2022-08-05 10:54:07,224 [INFO] com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-4 - Shutdown initiated...
+2022-08-05 10:54:07,232 [INFO] com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-4 - Shutdown completed.
+2022-08-05 10:54:07,233 [INFO] org.apache.catalina.core.StandardService [restartedMain] Stopping service [Tomcat]
+2022-08-05 10:54:07,239 [INFO] org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener [restartedMain] 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2022-08-05 10:54:07,246 [ERROR] org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter [restartedMain] 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 8 of constructor in com.javlasov.blog.controller.ApiGeneralController required a bean of type 'com.javlasov.blog.service.PostService' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'com.javlasov.blog.service.PostService' in your configuration.
+
+2022-08-05 10:54:08,814 [INFO] com.javlasov.blog.JaVlasovBlogApplication [restartedMain] Starting JaVlasovBlogApplication using Java 17.0.1 on JaVlasov with PID 12788 (C:\Users\79153\Desktop\Диплом\JaVlasovBlog\target\classes started by 79153 in C:\Users\79153\Desktop\Диплом\JaVlasovBlog)
+2022-08-05 10:54:08,814 [INFO] com.javlasov.blog.JaVlasovBlogApplication [restartedMain] No active profile set, falling back to default profiles: default
+2022-08-05 10:54:09,012 [INFO] org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2022-08-05 10:54:09,051 [INFO] org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Finished Spring Data repository scanning in 39 ms. Found 8 JPA repository interfaces.
+2022-08-05 10:54:09,138 [INFO] org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat initialized with port(s): 8080 (http)
+2022-08-05 10:54:09,138 [INFO] org.apache.catalina.core.StandardService [restartedMain] Starting service [Tomcat]
+2022-08-05 10:54:09,138 [INFO] org.apache.catalina.core.StandardEngine [restartedMain] Starting Servlet engine: [Apache Tomcat/9.0.56]
+2022-08-05 10:54:09,154 [INFO] org.apache.catalina.core.ContainerBase.[Tomcat-2].[localhost].[/] [restartedMain] Initializing Spring embedded WebApplicationContext
+2022-08-05 10:54:09,154 [INFO] org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 337 ms
+2022-08-05 10:54:09,201 [INFO] org.hibernate.jpa.internal.util.LogHelper [restartedMain] HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-08-05 10:54:09,205 [INFO] com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-5 - Starting...
+2022-08-05 10:54:09,219 [INFO] com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-5 - Start completed.
+2022-08-05 10:54:09,219 [INFO] org.hibernate.dialect.Dialect [restartedMain] HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+2022-08-05 10:54:09,313 [INFO] org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [restartedMain] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-08-05 10:54:09,314 [INFO] org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [restartedMain] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2022-08-05 10:54:09,382 [WARN] org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [restartedMain] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2022-08-05 10:54:09,582 [INFO] org.springframework.security.web.DefaultSecurityFilterChain [restartedMain] Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@55fbdedc, org.springframework.security.web.context.SecurityContextPersistenceFilter@4f51b2a, org.springframework.security.web.header.HeaderWriterFilter@7b224f01, org.springframework.security.web.authentication.logout.LogoutFilter@52da5197, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@39290d4e, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@621b2cb6, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@b282db3, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@cbd4759, org.springframework.security.web.session.SessionManagementFilter@53d4ca69, org.springframework.security.web.access.ExceptionTranslationFilter@68b1d73d, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@18bef456]
+2022-08-05 10:54:09,663 [INFO] org.springframework.boot.autoconfigure.web.servlet.WelcomePageHandlerMapping [restartedMain] Adding welcome page template: index
+2022-08-05 10:54:09,719 [INFO] org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer [restartedMain] LiveReload server is running on port 35729
+2022-08-05 10:54:09,728 [INFO] org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat started on port(s): 8080 (http) with context path ''
+2022-08-05 10:54:09,731 [INFO] com.javlasov.blog.JaVlasovBlogApplication [restartedMain] Started JaVlasovBlogApplication in 0.94 seconds (JVM running for 465.416)
+2022-08-05 10:54:09,732 [INFO] org.springframework.boot.devtools.autoconfigure.ConditionEvaluationDeltaLoggingListener [restartedMain] Condition evaluation unchanged
+2022-08-05 10:54:46,197 [INFO] org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [SpringApplicationShutdownHook] Closing JPA EntityManagerFactory for persistence unit 'default'
+2022-08-05 10:54:46,198 [INFO] com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-5 - Shutdown initiated...
+2022-08-05 10:54:46,206 [INFO] com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-5 - Shutdown completed.

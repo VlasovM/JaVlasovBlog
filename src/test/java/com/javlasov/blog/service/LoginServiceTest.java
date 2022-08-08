@@ -46,7 +46,7 @@ class LoginServiceTest {
         when(mockDtoMapper.userToUserDTO(user)).thenReturn(userDto);
 
         Principal principal = Mockito.mock(Principal.class);
-        when(principal.getName()).thenReturn("memaks@mail.ru");
+        when(principal.getName()).thenReturn(user.getEmail());
 
         LoginResponse actual = underTestService.checkUser(principal);
 
@@ -72,7 +72,7 @@ class LoginServiceTest {
         SecurityContext securityContext = Mockito.mock(SecurityContext.class);
         when(securityContext.getAuthentication()).thenReturn(authentication);
         SecurityContextHolder.setContext(securityContext);
-        when(authentication.getName()).thenReturn("memaks@mail.ru");
+        when(authentication.getName()).thenReturn("test@mail.ru");
 
         LoginResponse actual = underTestService.logout();
 

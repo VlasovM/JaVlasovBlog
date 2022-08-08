@@ -2,7 +2,6 @@ package com.javlasov.blog.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.javlasov.blog.model.Tag;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -27,7 +26,7 @@ public class PostDtoById {
 
     private int likeCount;
 
-    private UserPostsDto user;
+    private UserPostDto user;
 
     private int dislikeCount;
 

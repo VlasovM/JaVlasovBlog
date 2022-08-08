@@ -50,9 +50,11 @@ public class RegisterService {
         StatusResponse response = new StatusResponse();
         Map<String, String> errors = new HashMap<>();
         listErrors.forEach((error -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
+            if (error instanceof ObjectError) {
+                String fieldName = ((FieldError) error).getField();
+                String errorMessage = error.getDefaultMessage();
+                errors.put(fieldName, errorMessage);
+            }
         }));
         response.setResult(false);
         response.setErrors(errors);

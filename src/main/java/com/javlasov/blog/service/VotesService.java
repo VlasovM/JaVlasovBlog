@@ -33,14 +33,6 @@ public class VotesService {
         return statusResponse;
     }
 
-    public StatusResponse setDislike(int postId) {
-        StatusResponse statusResponse = new StatusResponse();
-        String emailUser = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findByEmail(emailUser).orElseThrow();
-        statusResponse.setResult(setDislike(postId, user));
-        return statusResponse;
-    }
-
     private boolean setLike(int postId, User user) {
         Optional<PostVotes> postVotesOptional = postVotesRepository.findByUserIdAndPostId(postId, user.getId());
 
@@ -54,13 +46,23 @@ public class VotesService {
             postVotesRepository.save(postVotes);
             return true;
         }
+
         if (postVotesOptional.orElseThrow().getValue() == -1) {
             PostVotes postVotes = postVotesOptional.orElseThrow();
             postVotes.setValue(1);
             postVotesRepository.save(postVotes);
             return true;
         }
+
         return false;
+    }
+
+    public StatusResponse setDislike(int postId) {
+        StatusResponse statusResponse = new StatusResponse();
+        String emailUser = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByEmail(emailUser).orElseThrow();
+        statusResponse.setResult(setDislike(postId, user));
+        return statusResponse;
     }
 
     private boolean setDislike(int postId, User user) {

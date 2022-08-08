@@ -20,10 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -36,6 +33,15 @@ public class ProfileService {
     public StatusResponse editMyProfileWithoutPhoto(String name, String email, String password, int removePhoto) {
         StatusResponse statusResponse = new StatusResponse();
         User user = getCurrentAuthorizedUser();
+
+        if (userRepository.findByEmail(email).isPresent() && !(userRepository.findByEmail(email).orElseThrow().equals(user))) {
+            Map<String, String> errors = new HashMap<>();
+            errors.put("email", "Этот e-mail уже зарегистрирован");
+            statusResponse.setErrors(errors);
+            logger.info("The user {} attempt to set existing email: {}", user.getEmail(), email);
+            return statusResponse;
+        }
+
         user.setName(name);
         user.setEmail(email);
         //change password
@@ -59,10 +65,30 @@ public class ProfileService {
 
     public StatusResponse editMyProfileWithPhoto(MultipartFile photo, String name, String email,
                                                  String password) {
+
         StatusResponse statusResponse = new StatusResponse();
         User user = getCurrentAuthorizedUser();
+
+        if (userRepository.findByEmail(email).isPresent() && !(userRepository.findByEmail(email).orElseThrow().equals(user))) {
+            Map<String, String> errors = new HashMap<>();
+            errors.put("email", "Этот e-mail уже зарегистрирован");
+            statusResponse.setErrors(errors);
+            logger.info("The user {} attempt to set existing email: {}", user.getEmail(), email);
+            return statusResponse;
+        }
+
         user.setName(name);
         user.setEmail(email);
+
+        String imageType = photo.getContentType().split("/")[1];
+        if (!(imageType.equals("jpg") || imageType.equals("jpeg") || imageType.equals("png"))) {
+            Map<String, String> errors = new HashMap<>();
+            errors.put("photo", "Некорректный формат файла. Допустимые форматы: png, jpg(jpeg)");
+            statusResponse.setErrors(errors);
+            return statusResponse;
+        }
+
+
         try {
             user.setPhoto(uploadFile(photo));
         } catch (IOException e) {
@@ -83,9 +109,11 @@ public class ProfileService {
         StatusResponse response = new StatusResponse();
         Map<String, String> errors = new HashMap<>();
         listErrors.forEach((error -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
+            if (error instanceof ObjectError) {
+                String fieldName = ((FieldError) error).getField();
+                String errorMessage = error.getDefaultMessage();
+                errors.put(fieldName, errorMessage);
+            }
         }));
         response.setResult(false);
         response.setErrors(errors);
