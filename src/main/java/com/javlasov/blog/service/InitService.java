@@ -22,7 +22,7 @@ public class InitService {
         initResponse.setSubtitle("Блог о программировании и технологиях");
         initResponse.setEmail("JaVlasovM@gmail.com");
         initResponse.setCopyright("Vlasov Maxim");
-        initResponse.setCopyrightFrom("2021-2022");
+        initResponse.setCopyrightFrom("");
 
         String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
         logger.info(currentUser + " is visited the blog");
