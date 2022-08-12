@@ -69,7 +69,7 @@ public class StorageService {
     private String uploadFileAndGetPath(MultipartFile file) throws IOException {
         String imageType = file.getContentType().split("/")[1];
         BufferedImage image = ImageIO.read(file.getInputStream());
-        int maxPhotoSize = 512; //px
+        int maxPhotoSize = 350; //px
         int height = (int) (Math.round(image.getHeight()) / (image.getWidth() / (double) maxPhotoSize));
         BufferedImage newImage = Scalr.resize(
                 image,
