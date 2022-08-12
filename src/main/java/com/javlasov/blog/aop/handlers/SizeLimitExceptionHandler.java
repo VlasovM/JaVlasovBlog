@@ -19,7 +19,7 @@ public class SizeLimitExceptionHandler {
     @ExceptionHandler(SizeException.class)
     protected ResponseEntity<?> handleConflict() {
         Map<String, String> message = new HashMap<>();
-        message.put("message", "Превышен допустимый размер файла. Максимальынй размер файла не более " +
+        message.put("message", "Превышен допустимый размер файла. Максимальный размер файла не более " +
                 "256KB.");
         logger.error("Ошибка при попытке загрузки изображения. Превышен допустимый размер файла.");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
