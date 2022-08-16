@@ -26,6 +26,7 @@ public class InitService {
 
         String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
         logger.info(currentUser + " is visited the blog");
+        System.out.println("Test information for Heroku loggers.");
 
         return initResponse;
     }
