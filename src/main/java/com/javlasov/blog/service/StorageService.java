@@ -1,12 +1,12 @@
 package com.javlasov.blog.service;
 
+import com.javlasov.blog.aop.exceptions.BadRequestExceptions;
 import com.javlasov.blog.api.response.StatusResponse;
 import lombok.RequiredArgsConstructor;
 import net.bytebuddy.utility.RandomString;
 import org.imgscalr.Scalr;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,17 +27,14 @@ public class StorageService {
 
     private final Logger logger = LoggerFactory.getLogger(StorageService.class);
 
-    public ResponseEntity<?> uploadFile(MultipartFile image) {
+    public ResponseEntity<String> uploadFile(MultipartFile image) {
 
         //only jpg and png formats
-        String imageType = image.getContentType().split("/")[1];
-        Map<String, String> errors = checkCorrectFormatFile(imageType);
-
+        Map<String, String> errors = checkErrors(image);
         if (!errors.isEmpty()) {
             StatusResponse statusResponse = new StatusResponse();
             statusResponse.setErrors(errors);
-            logger.info("Image was not upload: {}", errors);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(statusResponse);
+            throw new BadRequestExceptions(errors);
         }
 
         String path = "";
@@ -51,19 +48,25 @@ public class StorageService {
         return ResponseEntity.ok(path);
     }
 
-    private Map<String, String> checkCorrectFormatFile(String typeFile) {
+    private Map<String, String> checkErrors(MultipartFile image) {
         Map<String, String> result = new HashMap<>();
-        if (typeFile.equals("jpg") || typeFile.equals("jpeg") || typeFile.equals("png")) {
+        String imageType = image.getContentType().split("/")[1];
+
+        boolean typeJpg = imageType.equals("jpg");
+        boolean typeJpeg = imageType.equals("jpeg");
+        boolean typePng = imageType.equals("png");
+
+        if (typeJpg || typePng || typeJpeg) {
             return result;
         }
-        result.put("image", "Недопустимый формат файла");
+        result.put("image", "Недопустимый формат файла. Используйте только файлы png, jpeg/jpg.");
         return result;
     }
 
     private Path getPathToFile() {
         String[] foldersName = UUID.randomUUID().toString().split("-");
-        return Paths.get("\\upload\\image" + "\\" + foldersName[1] + "\\" +
-                foldersName[2] + "\\" + foldersName[3] + "\\");
+        return Paths.get("upload/image" + "/" + foldersName[1] + "/" +
+                foldersName[2] + "/" + foldersName[3] + "/");
     }
 
     private String uploadFileAndGetPath(MultipartFile file) throws IOException {
@@ -88,9 +91,10 @@ public class StorageService {
         String fileType = file.getOriginalFilename().split("\\.")[1];
         String fileName = RandomString.make(12) + "." + fileType;
 
-        File newFile = new File(path + "\\" + fileName);
+        File newFile = new File(path + "/" + fileName);
         ImageIO.write(newImage, imageType, newFile);
-        return newFile.getPath();
+
+        return "/" + newFile.getPath();
     }
 
 }

@@ -1,7 +1,7 @@
 package com.javlasov.blog.service;
 
+import com.javlasov.blog.aop.exceptions.BadRequestExceptions;
 import com.javlasov.blog.api.response.CommentResponse;
-import com.javlasov.blog.api.response.StatusResponse;
 import com.javlasov.blog.model.Post;
 import com.javlasov.blog.model.PostComments;
 import com.javlasov.blog.model.User;
@@ -28,14 +28,11 @@ public class CommentService {
 
     private final UserRepository userRepository;
 
-    public ResponseEntity<?> setCommentToPost(String parentId, int postId, String text) {
-
+    public ResponseEntity<CommentResponse> setCommentToPost(String parentId, int postId, String text) {
         if (text.length() < 5) {
-            StatusResponse statusResponse = new StatusResponse();
             Map<String, String> errors = new HashMap<>();
             errors.put("text", "Текст комментария должен быть не менее 5 символов");
-            statusResponse.setErrors(errors);
-            return ResponseEntity.badRequest().body(statusResponse);
+            throw new BadRequestExceptions(errors);
         }
 
         CommentResponse commentResponse = new CommentResponse();

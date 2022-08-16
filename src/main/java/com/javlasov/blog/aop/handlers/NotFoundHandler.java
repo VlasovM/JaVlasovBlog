@@ -9,6 +9,7 @@ import org.springframework.util.ResourceUtils;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.io.File;
@@ -22,6 +23,7 @@ public class NotFoundHandler {
     private final Logger logger = LoggerFactory.getLogger(NotFoundHandler.class);
 
     @ExceptionHandler(NoHandlerFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<String> renderDefaultPage() {
         try {
             File indexFile = ResourceUtils.getFile("classpath:templates/index.html");

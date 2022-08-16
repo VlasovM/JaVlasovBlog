@@ -122,8 +122,8 @@ public class ProfileService {
 
     private Path getPathToFile() {
         String[] foldersName = UUID.randomUUID().toString().split("-");
-        return Paths.get("\\upload\\profile" + "\\" + foldersName[1] + "\\" +
-                foldersName[2] + "\\" + foldersName[3] + "\\");
+        return Paths.get("upload/profile" + "/" + foldersName[1] + "/" +
+                foldersName[2] + "/" + foldersName[3] + "/");
     }
 
     private String uploadFile(MultipartFile file) throws IOException {
@@ -144,10 +144,11 @@ public class ProfileService {
             new File(path.toString()).mkdirs();
         }
 
-        File newFile = new File(path + "\\" + file.getOriginalFilename());
+        File newFile = new File(path + "/" + file.getOriginalFilename());
         ImageIO.write(newImage, imageType, newFile);
         logger.info("File has been successfully saved in: {}", newFile.getPath());
-        return newFile.getPath();
+
+        return "/" + newFile.getPath();
     }
 
 }
