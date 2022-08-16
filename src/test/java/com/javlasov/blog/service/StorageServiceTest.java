@@ -1,5 +1,6 @@
 package com.javlasov.blog.service;
 
+import com.javlasov.blog.aop.exceptions.BadRequestExceptions;
 import com.javlasov.blog.api.response.StatusResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -37,9 +38,7 @@ class StorageServiceTest {
         MockMultipartFile mockMultipartFile = new MockMultipartFile(
                 "JpgFile", "bill", "application/pdf", fis);
 
-        ResponseEntity<?> actualResponse = underTestService.uploadFile(mockMultipartFile);
-
-        assertEquals(expectedResponse, actualResponse);
+        assertThrows(BadRequestExceptions.class, () -> underTestService.uploadFile(mockMultipartFile));
 
         fis.close();
     }

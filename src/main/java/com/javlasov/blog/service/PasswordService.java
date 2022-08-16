@@ -10,12 +10,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import java.net.InetAddress;
 import java.util.*;
 
 @Service
@@ -93,8 +95,8 @@ public class PasswordService {
             message.setFrom(emailFrom);
             message.setRecipients(
                     Message.RecipientType.TO, InternetAddress.parse(emailTo));
-
-            String linkRestore = "http://localhost:8080/login/change-password/" + hash;
+            String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
+            String linkRestore = baseUrl + "/login/change-password/" + hash;
 
             message.setSubject("Восстановление пароля на JaVlasovBlog");
             String msg = "Привет! Твоя ссылка для восстановления пароля: "

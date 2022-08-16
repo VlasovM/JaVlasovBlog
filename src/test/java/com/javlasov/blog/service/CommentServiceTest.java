@@ -1,8 +1,8 @@
 package com.javlasov.blog.service;
 
+import com.javlasov.blog.aop.exceptions.BadRequestExceptions;
 import com.javlasov.blog.api.request.CommentRequest;
 import com.javlasov.blog.api.response.CommentResponse;
-import com.javlasov.blog.api.response.StatusResponse;
 import com.javlasov.blog.model.Post;
 import com.javlasov.blog.model.PostComments;
 import com.javlasov.blog.model.User;
@@ -19,8 +19,6 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -78,13 +76,6 @@ class CommentServiceTest {
         commentRequest.setParentId("1");
         commentRequest.setText(""); //minimum length is 5
 
-        StatusResponse statusResponse = new StatusResponse();
-        statusResponse.setResult(false);
-        Map<String, String> errorsMap = new HashMap<>();
-        errorsMap.put("text", "Текст комментария должен быть не менее 5 символов");
-        statusResponse.setErrors(errorsMap);
-        ResponseEntity<StatusResponse> expected = ResponseEntity.badRequest().body(statusResponse);
-
         User user = getUser();
         when(mockUserRepo.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
 
@@ -100,12 +91,11 @@ class CommentServiceTest {
         SecurityContextHolder.setContext(securityContext);
         when(authentication.getName()).thenReturn(user.getEmail());
 
-        ResponseEntity<?> actual = underTestService.setCommentToPost(
+        assertThrows(BadRequestExceptions.class, () -> underTestService.setCommentToPost(
                 commentRequest.getParentId(),
                 commentRequest.getPostId(),
-                commentRequest.getText());
-
-        assertEquals(expected, actual);
+                commentRequest.getText()
+        ));
 
     }
 

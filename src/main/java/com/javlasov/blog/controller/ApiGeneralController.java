@@ -29,7 +29,7 @@ public class ApiGeneralController {
 
     private final CalendarService calendarService;
 
-    private final StorageService uploadImageService;
+    private final StorageService storageService;
 
     private final CommentService commentService;
 
@@ -61,13 +61,13 @@ public class ApiGeneralController {
 
     @PostMapping(value = "/image", consumes = {"multipart/form-data"})
     @PreAuthorize("hasAuthority('user:write')")
-    public ResponseEntity<?> uploadImage(@RequestParam MultipartFile image) {
-        return uploadImageService.uploadFile(image);
+    public ResponseEntity<String> uploadImage(@RequestParam MultipartFile image) {
+        return storageService.uploadFile(image);
     }
 
     @PostMapping("/comment")
     @PreAuthorize("hasAuthority('user:write')")
-    public ResponseEntity<?> sendComment(@RequestBody CommentRequest commentRequest) {
+    public ResponseEntity<CommentResponse> sendComment(@RequestBody CommentRequest commentRequest) {
         return commentService.setCommentToPost(commentRequest.getParentId(),
                 commentRequest.getPostId(),
                 commentRequest.getText());
