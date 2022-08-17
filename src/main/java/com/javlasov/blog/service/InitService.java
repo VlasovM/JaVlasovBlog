@@ -26,7 +26,6 @@ public class InitService {
 
         String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
         logger.info(currentUser + " is visited the blog");
-        System.out.println(currentUser + " is visited the blog.");
 
         return initResponse;
     }
