@@ -38,7 +38,6 @@ public class ProfileService {
             Map<String, String> errors = new HashMap<>();
             errors.put("email", "Этот e-mail уже зарегистрирован");
             statusResponse.setErrors(errors);
-            System.out.println("Test message!!! ");
             logger.info("The user {} attempt to set existing email: {}", user.getEmail(), email);
             return statusResponse;
         }
