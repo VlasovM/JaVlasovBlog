@@ -281,8 +281,7 @@ public class PostService {
         }
         post.setActive(active);
         post.setModerationStatus(ModerationStatus.NEW);
-        String textWithoutHTMLTags = Jsoup.parse(text).text();
-        post.setText(textWithoutHTMLTags);
+        post.setText(text);
         post.setTitle(title);
         post.setViewCount(0);
         post.setUser(user);

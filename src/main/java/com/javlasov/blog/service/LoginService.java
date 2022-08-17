@@ -70,6 +70,7 @@ public class LoginService {
         UserDto userDto = prepareUser(email);
         loginResponse.setResult(true);
         loginResponse.setUser(userDto);
+        System.out.println(email + " logged to blog");
         logger.info("{} logged to blog", email);
         return loginResponse;
     }
