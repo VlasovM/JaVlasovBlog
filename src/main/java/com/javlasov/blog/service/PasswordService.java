@@ -119,7 +119,8 @@ public class PasswordService {
         }
     }
 
-    private Properties getProperties() {
+        private Properties getProperties() {
+        //TODO: change this to your values
         Properties props = new Properties();
         props.setProperty("mail.smtp.ssl.protocols", "TLSv1.2");
         props.put("mail.smtp.host", "smtp.gmail.com");
@@ -131,9 +132,10 @@ public class PasswordService {
     }
 
     private Session getSession(Properties props) {
-        String username = "m.a.vlasov97@gmail.com";
+        //TODO: change this to your values
+        String username = "your Email";
         //https://support.google.com/mail/answer/185833?hl=en-GB
-        String password = "ufblfmxxfafcqmto";
+        String password = "your security password";
 
         return Session.getInstance(props, new Authenticator() {
             @Override

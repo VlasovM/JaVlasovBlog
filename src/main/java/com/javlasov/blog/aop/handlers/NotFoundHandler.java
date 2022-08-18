@@ -25,8 +25,6 @@ public class NotFoundHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<String> renderDefaultPage() {
         try {
-//            File indexFile = ResourceUtils.getFile("classpath:templates/index.html");
-//            FileInputStream inputStream = new FileInputStream(indexFile);
             InputStream inputStream = new ClassPathResource("templates/index.html").getInputStream();
             String body = StreamUtils.copyToString(inputStream, Charset.defaultCharset());
             return ResponseEntity.ok().contentType(MediaType.TEXT_HTML).body(body);

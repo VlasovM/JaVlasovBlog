@@ -18,6 +18,7 @@ public class InitService {
 
     public InitResponse init() {
         InitResponse initResponse = new InitResponse();
+        //TODO: change this to your values
         initResponse.setTitle("JaVlasov");
         initResponse.setSubtitle("Блог о программировании и технологиях");
         initResponse.setEmail("JaVlasovM@gmail.com");
