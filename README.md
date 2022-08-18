@@ -12,7 +12,7 @@ ___
 
 
 # Навигация
-- Описание
+- [Описание](https://github.com/VlasovM/JaVlasovBlog/blob/master/README.md?plain=1#L24)
 - Локальный запуск
 - База данных
 - Покрытие тестами
