@@ -1,5 +1,5 @@
 # JaVlasovBlog - блог о программировании и технологиях | blog about programming and technologies.
-English version bellow
+[English version bellow](./README.md#English version)
 ___
 
 <h2 align="center">
@@ -12,13 +12,13 @@ ___
 
 
 # Навигация
-- [Описание](https://github.com/VlasovM/JaVlasovBlog/blob/master/README.md?plain=1#L24)
-- Локальный запуск
-- База данных
-- Покрытие тестами
-- Навигация по проекту 
-- Используемые технологии
-- Контанктные данные
+- [Описание](./README.md#Описание)
+- [Локальный запуск](./README.md#Локальный-запуск)
+- [База данных](./README.md#База-данных)
+- [Покрытие тестами](./README.md#Покрытие тестами)
+- [Навигация по проекту](./README.md#Навигация-по-проекту) 
+- [Используемые технологии](./README.md#Используемые-технологии)
+- [Контанктные данные](./README.md#Контактные-данные)
 
 ___
 ## Описание:
