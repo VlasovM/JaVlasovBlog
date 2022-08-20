@@ -55,7 +55,7 @@ public class ApiAuthController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         if (bindingResult.hasErrors()) {
-            return ResponseEntity.ok(registerService.getRegisterWithErrors(bindingResult.getAllErrors()));
+            return ResponseEntity.badRequest().body(registerService.getRegisterWithErrors(bindingResult.getAllErrors()));
         }
         return ResponseEntity.ok(registerService.register(request.getEmail(), request.getPassword(), request.getName(),
                 request.getCaptcha(), request.getCaptchaSecret()));
@@ -73,12 +73,16 @@ public class ApiAuthController {
     }
 
     @PostMapping("/restore")
-    public ResponseEntity<StatusResponse> restorePassword(@RequestBody RestoreRequest restoreRequest) {
+    public ResponseEntity<StatusResponse> restorePassword( @RequestBody RestoreRequest restoreRequest) {
         return ResponseEntity.ok(passwordService.restorePassword(restoreRequest.getEmail()));
     }
 
     @PostMapping("/password")
-    public ResponseEntity<StatusResponse> changePassword(@RequestBody PasswordRequest passwordRequest) {
+    public ResponseEntity<StatusResponse> changePassword(@Valid @RequestBody PasswordRequest passwordRequest,
+                                                         BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().body(registerService.getRegisterWithErrors(bindingResult.getAllErrors()));
+        }
         return ResponseEntity.ok(passwordService.changePassword(passwordRequest.getCode(), passwordRequest.getPassword(),
                 passwordRequest.getCaptcha(), passwordRequest.getCaptchaSecret()));
     }

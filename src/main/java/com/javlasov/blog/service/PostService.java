@@ -10,10 +10,7 @@ import com.javlasov.blog.dto.UserPostDto;
 import com.javlasov.blog.mappers.DtoMapper;
 import com.javlasov.blog.model.*;
 import com.javlasov.blog.model.enums.ModerationStatus;
-import com.javlasov.blog.repository.PostRepository;
-import com.javlasov.blog.repository.Tag2PostRepository;
-import com.javlasov.blog.repository.TagRepository;
-import com.javlasov.blog.repository.UserRepository;
+import com.javlasov.blog.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
 import org.slf4j.Logger;
@@ -38,14 +35,11 @@ public class PostService {
     private final Logger logger = LoggerFactory.getLogger(PostService.class);
 
     private final PostRepository postRepository;
-
     private final DtoMapper dtoMapper;
-
     private final TagRepository tagRepository;
-
     private final UserRepository userRepository;
-
     private final Tag2PostRepository tag2PostRepository;
+    private final GlobalSettingRepository globalSettingRepository;
 
     public PostResponse getAllPosts(String mode, int offset, int limit) {
         PostResponse postResponse = new PostResponse();
@@ -279,8 +273,15 @@ public class PostService {
             LocalDateTime localDateTime = LocalDateTime.ofEpochSecond(timestamp, 0, localZone);
             post.setTime(localDateTime);
         }
+        String postPremoderationValue = globalSettingRepository.findByCode("POST_PREMODERATION").getValue();
+
+        if ((user.getModerator() == 1) || (postPremoderationValue.equals("NO"))) {
+            post.setModerationStatus(ModerationStatus.ACCEPTED);
+        } else {
+            post.setModerationStatus(ModerationStatus.NEW);
+        }
+
         post.setActive(active);
-        post.setModerationStatus(ModerationStatus.NEW);
         post.setText(text);
         post.setTitle(title);
         post.setViewCount(0);
@@ -321,7 +322,11 @@ public class PostService {
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findByEmail(userEmail).orElseThrow();
 
-        if (user.getModerator() == 0) {
+        String postPremoderationValue = globalSettingRepository.findByCode("POST_PREMODERATION").getValue();
+
+        if ((user.getModerator() == 1) || (postPremoderationValue.equals("NO"))) {
+            post.setModerationStatus(ModerationStatus.ACCEPTED);
+        } else {
             post.setModerationStatus(ModerationStatus.NEW);
         }
 

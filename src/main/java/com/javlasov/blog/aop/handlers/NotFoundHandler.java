@@ -30,7 +30,6 @@ public class NotFoundHandler {
             return ResponseEntity.ok().contentType(MediaType.TEXT_HTML).body(body);
         } catch (IOException exception) {
             logger.error(exception.getMessage());
-            exception.printStackTrace();
         }
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Sorry, some mistake has occurred. Please contact developer.");
     }

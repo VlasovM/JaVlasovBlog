@@ -6,10 +6,7 @@ import com.javlasov.blog.dto.*;
 import com.javlasov.blog.mappers.DtoMapper;
 import com.javlasov.blog.model.*;
 import com.javlasov.blog.model.enums.ModerationStatus;
-import com.javlasov.blog.repository.PostRepository;
-import com.javlasov.blog.repository.Tag2PostRepository;
-import com.javlasov.blog.repository.TagRepository;
-import com.javlasov.blog.repository.UserRepository;
+import com.javlasov.blog.repository.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -32,8 +29,9 @@ class PostServiceTest {
     TagRepository mockTagRepo = Mockito.mock(TagRepository.class);
     Tag2PostRepository mockTag2PostRepo = Mockito.mock(Tag2PostRepository.class);
     DtoMapper mockDtoMapper = Mockito.mock(DtoMapper.class);
+    GlobalSettingRepository mockGlobalSettingRepo = Mockito.mock(GlobalSettingRepository.class);
     PostService underTestService = new PostService(
-            mockPostRepo, mockDtoMapper, mockTagRepo, mockUserRepo, mockTag2PostRepo);
+            mockPostRepo, mockDtoMapper, mockTagRepo, mockUserRepo, mockTag2PostRepo, mockGlobalSettingRepo);
 
     @Test
     @DisplayName("Get all posts.")
@@ -381,6 +379,9 @@ class PostServiceTest {
         User user = getUsersList().get(0);
         when(mockUserRepo.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
 
+        GlobalSettings globalSettings = new GlobalSettings();
+        globalSettings.setValue("YES");
+        when(mockGlobalSettingRepo.findByCode("POST_PREMODERATION")).thenReturn(globalSettings);
 
         Authentication authentication = Mockito.mock(Authentication.class);
         SecurityContext securityContext = Mockito.mock(SecurityContext.class);

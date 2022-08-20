@@ -79,7 +79,7 @@ public class ApiGeneralController {
             @RequestBody @Valid EditProfileRequest editProfileRequest,
             BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return ResponseEntity.ok(profileService.getRegisterWithErrors(bindingResult.getAllErrors()));
+            return ResponseEntity.badRequest().body(profileService.getRegisterWithErrors(bindingResult.getAllErrors()));
         }
         return ResponseEntity.ok(profileService.editMyProfileWithoutPhoto(
                 editProfileRequest.getName(),
@@ -95,7 +95,11 @@ public class ApiGeneralController {
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String email,
             @RequestParam(required = false) String password) {
-        return ResponseEntity.ok(profileService.editMyProfileWithPhoto(photo, name, email, password));
+        StatusResponse statusResponse = profileService.editMyProfileWithPhoto(photo, name, email, password);
+        if (statusResponse.isResult()) {
+            return ResponseEntity.ok(statusResponse);
+        }
+        return ResponseEntity.badRequest().body(statusResponse);
     }
 
     @GetMapping("/statistics/my")

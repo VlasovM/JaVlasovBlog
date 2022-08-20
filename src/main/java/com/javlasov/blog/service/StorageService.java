@@ -42,7 +42,6 @@ public class StorageService {
             path = uploadFileAndGetPath(image);
         } catch (IOException e) {
             logger.error(e.getMessage());
-            e.printStackTrace();
         }
         logger.info("Image has been successfully saved in: {}", path);
         return ResponseEntity.ok(path);

@@ -1,5 +1,6 @@
 package com.javlasov.blog.service;
 
+import com.javlasov.blog.aop.exceptions.UnauthorizedExceptions;
 import com.javlasov.blog.api.response.StatusResponse;
 import com.javlasov.blog.model.Post;
 import com.javlasov.blog.model.PostVotes;
@@ -10,6 +11,7 @@ import com.javlasov.blog.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -28,8 +30,11 @@ public class VotesService {
     public StatusResponse setLike(int postId) {
         StatusResponse statusResponse = new StatusResponse();
         String emailUser = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findByEmail(emailUser).orElseThrow();
-        statusResponse.setResult(setLike(postId, user));
+        Optional<User> userOptional = userRepository.findByEmail(emailUser);
+        if (userOptional.isEmpty()) {
+            throw new UnauthorizedExceptions();
+        }
+        statusResponse.setResult(setLike(postId, userOptional.orElseThrow()));
         return statusResponse;
     }
 
@@ -60,8 +65,11 @@ public class VotesService {
     public StatusResponse setDislike(int postId) {
         StatusResponse statusResponse = new StatusResponse();
         String emailUser = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findByEmail(emailUser).orElseThrow();
-        statusResponse.setResult(setDislike(postId, user));
+        Optional<User> userOptional = userRepository.findByEmail(emailUser);
+        if (userOptional.isEmpty()) {
+            throw new UnauthorizedExceptions();
+        }
+        statusResponse.setResult(setDislike(postId, userOptional.orElseThrow()));
         return statusResponse;
     }
 

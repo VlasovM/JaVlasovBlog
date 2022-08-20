@@ -1,5 +1,6 @@
 package com.javlasov.blog.service;
 
+import com.javlasov.blog.aop.exceptions.BadRequestExceptions;
 import com.javlasov.blog.api.response.StatusResponse;
 import com.javlasov.blog.model.User;
 import com.javlasov.blog.repository.CaptchaRepository;
@@ -58,6 +59,7 @@ public class RegisterService {
         }));
         response.setResult(false);
         response.setErrors(errors);
+        logger.info("Errors when register: " + errors);
         return response;
     }
 

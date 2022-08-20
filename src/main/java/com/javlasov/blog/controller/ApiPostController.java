@@ -93,13 +93,11 @@ public class ApiPostController {
     }
 
     @PostMapping("/like")
-    @PreAuthorize("hasAuthority('user:write')")
     public ResponseEntity<StatusResponse> setLike(@RequestBody VotesRequest votesRequest) {
         return ResponseEntity.ok(votesService.setLike(votesRequest.getPostId()));
     }
 
     @PostMapping("dislike")
-    @PreAuthorize("hasAuthority('user:write')")
     public ResponseEntity<StatusResponse> setDislike(@RequestBody VotesRequest votesRequest) {
         return ResponseEntity.ok(votesService.setDislike(votesRequest.getPostId()));
     }

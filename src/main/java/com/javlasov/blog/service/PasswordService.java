@@ -17,7 +17,6 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-import java.net.InetAddress;
 import java.util.*;
 
 @Service
@@ -114,12 +113,10 @@ public class PasswordService {
 
         } catch (Exception exception) {
             logger.error(exception.getMessage());
-            exception.printStackTrace();
-
         }
     }
 
-        private Properties getProperties() {
+    private Properties getProperties() {
         //TODO: change this to your values
         Properties props = new Properties();
         props.setProperty("mail.smtp.ssl.protocols", "TLSv1.2");
@@ -133,9 +130,9 @@ public class PasswordService {
 
     private Session getSession(Properties props) {
         //TODO: change this to your values
-        String username = "your Email";
+        String username = "m.a.vlasov97@gmail.com";
         //https://support.google.com/mail/answer/185833?hl=en-GB
-        String password = "your security password";
+        String password = "ufblfmxxfafcqmto";
 
         return Session.getInstance(props, new Authenticator() {
             @Override

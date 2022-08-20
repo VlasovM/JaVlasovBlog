@@ -35,6 +35,12 @@ public class CommentService {
             throw new BadRequestExceptions(errors);
         }
 
+        if (text.length() > 200) {
+            Map<String, String> errors = new HashMap<>();
+            errors.put("text", "Текст комментария должен быть не более 200 символов");
+            throw new BadRequestExceptions(errors);
+        }
+
         CommentResponse commentResponse = new CommentResponse();
         int commentId = setComment(parentId, postId, text);
         commentResponse.setId(commentId);
