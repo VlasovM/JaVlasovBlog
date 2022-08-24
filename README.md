@@ -27,6 +27,11 @@ ___
 
 Данный проект представляет собой обычный блог, который базируется на технологии SpringBoot. (список исп. технологий см. [тут](#Используемые-технологии))
 
+<h2 align="center">
+
+Важно! Весь фронтенд был предоставлен платформой [Skillbox](https://skillbox.ru/)
+</h2>
+
 На данном блоге можно:
 
 - Смотреть чужие посты;
@@ -187,6 +192,11 @@ ____
 ## Description:
 
 This is a diploma project education platform [Skillbox](https://skillbox.ru/), course - Java-Developer.
+
+<h2 align="center">
+
+Important! The entire frontend was provided by the [Skillbox](https://skillbox.ru/)
+</h2>
 
 This is a just blog, which is based in technology Spring Boot. (The list of used tecnlologies [here](#Used-technologies))
 
