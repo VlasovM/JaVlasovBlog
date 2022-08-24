@@ -451,6 +451,10 @@ class PostServiceTest {
         List<String> tags = new ArrayList<>();
         tags.add("Java");
 
+        GlobalSettings globalSettings = new GlobalSettings();
+        globalSettings.setValue("YES");
+        when(mockGlobalSettingRepo.findByCode("POST_PREMODERATION")).thenReturn(globalSettings);
+
         String oldTitle = post.getTitle();
 
         StatusResponse actualResponse = underTestService.editPost(post.getId(), System.currentTimeMillis(),
