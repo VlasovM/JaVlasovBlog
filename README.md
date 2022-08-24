@@ -188,7 +188,7 @@ ____
 
 This is a diploma project education platform [Skillbox](https://skillbox.ru/), course - Java-Developer.
 
-This is a just blog, which is based in technology Spring Boot. (The list of used tecnlologies [here](#Used-technologies)
+This is a just blog, which is based in technology Spring Boot. (The list of used tecnlologies [here](#Used-technologies))
 
 On this blog:   
 
@@ -210,7 +210,9 @@ Some mediafiles to dempnstration:
 
 ![image](./readme_assets/Demo%20for%20application.png)
 
-##How to local start:
+____
+
+## How to local start:
 
 To run project in your local PK you need JDK 11, the system of control version git and maven. 
 
