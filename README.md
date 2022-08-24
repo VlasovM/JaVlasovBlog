@@ -186,7 +186,7 @@ ____
 
 ## Description:
 
-This is a diploma project education platform Skillbox [Skillbox](https://skillbox.ru/), course - Java-Developer.
+This is a diploma project education platform [Skillbox](https://skillbox.ru/), course - Java-Developer.
 
 This is a just blog, which is based in technology Spring Boot. (The list of used tecnlologies [here](#Used-technologies)
 
@@ -246,7 +246,7 @@ The dump of databese will be [here](https://drive.google.com/file/d/1fevEo2pctIz
 
 ____
 
-##Test coverage:
+## Test coverage:
 
 Test methods were prescribed for the service (service folder).
 
