@@ -130,9 +130,9 @@ public class PasswordService {
 
     private Session getSession(Properties props) {
         //TODO: change this to your values
-        String username = "m.a.vlasov97@gmail.com";
+        String username = "your email";
         //https://support.google.com/mail/answer/185833?hl=en-GB
-        String password = "ufblfmxxfafcqmto";
+        String password = "your password";
 
         return Session.getInstance(props, new Authenticator() {
             @Override
