@@ -8,6 +8,7 @@ import com.javlasov.blog.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -26,8 +27,13 @@ public class PasswordService {
     private final Logger logger = LoggerFactory.getLogger(PostService.class);
 
     private final UserRepository userRepository;
-
     private final CaptchaRepository captchaRepository;
+
+    @Value("${session.email}")
+    private String sessionEmail;
+
+    @Value("${session.password}")
+    private String sessionPassword;
 
     public StatusResponse restorePassword(String email) {
         StatusResponse statusResponse = new StatusResponse();
@@ -117,7 +123,6 @@ public class PasswordService {
     }
 
     private Properties getProperties() {
-        //TODO: change this to your values
         Properties props = new Properties();
         props.setProperty("mail.smtp.ssl.protocols", "TLSv1.2");
         props.put("mail.smtp.host", "smtp.gmail.com");
@@ -129,15 +134,11 @@ public class PasswordService {
     }
 
     private Session getSession(Properties props) {
-        //TODO: change this to your values
-        String username = "your email";
         //https://support.google.com/mail/answer/185833?hl=en-GB
-        String password = "your password";
-
         return Session.getInstance(props, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(username, password);
+                return new PasswordAuthentication(sessionEmail, sessionPassword);
             }
         });
     }
