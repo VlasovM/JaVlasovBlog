@@ -22,7 +22,6 @@ public class InitService {
     private String title;
 
     @Value("${init.subtitle}")
-
     private String subTitle;
 
     @Value("${init.email}")
