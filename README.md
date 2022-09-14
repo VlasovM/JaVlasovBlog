@@ -13,7 +13,7 @@ ___
 
 # Навигация
 - [Описание](#Описание)
-- [Локальный запуск](./README.md#Локальный-запуск)
+- [Локальный запуск](#Как-запустить-локально)
 - [База данных](#База-данных)
 - [Покрытие тестами](#Покрытие-тестами)
 - [Навигация по проекту](#Навигация-по-проекту) 
@@ -61,19 +61,45 @@ ___
 Для того, чтобы запустить проект локально вам необходимы JDK 11, система контроля версий git, сборщик проектов maven.
 Клонировать проект можно через git bash:
 
-    git init
     git clone https://github.com/VlasovM/JaVlasovBlog.git
     
-После того, как проект скопировался в ваш локальный репозиторий, вам необходимо изменить несколько значений. Для удобство я поменил их комментарием TODO в коде. Что изменить:
- - [application.properties](https://github.com/VlasovM/JaVlasovBlog/blob/master/src/main/resources/application.properties#L1-L5) -> свойства подключения к базе данных;
-    - информацию о базе данных можно прочитать вот [тут](#База-данных)
- - [PasswordService](https://github.com/VlasovM/JaVlasovBlog/blob/master/src/main/java/com/javlasov/blog/service/PasswordService.java#L122-L136) -> изменить свойства для отправки писем на почту, а также изменить email и пароль; (проверка безопасности от google)
- - [InitService](https://github.com/VlasovM/JaVlasovBlog/blob/master/src/main/java/com/javlasov/blog/service/InitService.java#L21-L25) -> общие данные при инициализации страницы;
- 
- Перед инициализацией проекта выполнить
+Далее вам нужно изменить такие параметры, как пароль и логин к подключению базы данных, пароль и email для безопасности google для отправления писем и начальные параметры, которые отображаются на главной странице (такие как заголовок, описание и т.п.). Эти переменные лежат в файле application.properties в ссылки на переменные окружения.
+
+Изменить эти параметры можно тремя способами: 
+- Просто менять ссылку переменной окружения на своё значение;
+- Настроить переменные окружения в среде разработки;
+- При запуске jar файла запустить его с параметрами;
+
+Для первого и второго способа потребуется наличие среды разработки. Переменные окружения должны быть следующими:
+
+![image](./readme_assets/Environment%20variables.PNG)</h2>
+
+Далее независимо какой способ изменения вы выбрали, следует выполнить команду:
  
     mvn clean install
     
+Если вы использовали способы №1 или №2, то просто выполните команду:
+
+    java -jar javlasovblog-0.0.1-SNAPSHOT.jar
+    
+Если вы не меняли переменные окружения, то нужно задать их при запуске проекта:
+
+    java -jar javlasovblog-0.0.1-SNAPSHOT.jar --spring.datasource.username=... --spring.datasource.password=...
+    
+Т.е мы дополнительно должны указать каждую переменную --name.values = ... 
+
+Список названия всех переменных:
+
+- spring.datasource.url
+- spring.datasource.username
+- spring.datasource.password
+- session.email
+- session.password
+- init.title
+- init.subtitle
+- init.email
+- init.copyRight
+- init.CopyrightFrom
 ____
 
 ## База данных:
@@ -228,19 +254,43 @@ To run project in your local PK you need JDK 11, the system of control version g
 
 Clone project can with git bash:
 
-    git init
     git clone https://github.com/VlasovM/JaVlasovBlog.git
     
-After the project is cloned, you need to change some values. They have comment TODO in code. What change:
+There are three ways to change these parameters:
+- Just change the reference of the environment variable to its value;
+- Configure environment variables in the development environment;
+- When you run the jar file and run it with the parameters;
 
- - [application.properties](https://github.com/VlasovM/JaVlasovBlog/blob/master/src/main/resources/application.properties#L1-L5) -> setting to connect to DB;
-    - information about databese [here](#Database)
- - [PasswordService](https://github.com/VlasovM/JaVlasovBlog/blob/master/src/main/java/com/javlasov/blog/service/PasswordService.java#L122-L136) -> change setting to send message in post and change email and password; (security google)
- - [InitService](https://github.com/VlasovM/JaVlasovBlog/blob/master/src/main/java/com/javlasov/blog/service/InitService.java#L21-L25) -> general data during initialization start page;
+The first and second methods will require a development environment. The environment variables should be as follows:
 
-Before initialization project do:
+![image](./readme_assets/Environment%20variables.PNG)</h2>
 
-    mvn clean install
+Next, regardless of which method of modification you have chosen, you should run the command:
+
+clean mvn installation
+
+If you used methods #1 or #2, then just run the command:
+
+    java -jar javlasovblog-0.0.1-SNAPSHOT.jar
+
+If you have not changed the environment variables, then you need to set them when starting the project.:
+
+    java -jar javlasovblog-0.0.1-SNAPSHOT.jar --spring.datasource.username=... --spring.datasource.password=...
+
+We additionally have to specify each variable --name.values = ...
+
+List of names of all variables:
+
+- spring.datasource.url
+- spring.datasource.username
+- spring.data source.password
+- session.Email
+- session. password
+- initialization.title
+- initialization.subtitles
+- initialization of email
+- initialization.Copyright
+- initialization.Copyright from
    
 ____
 
