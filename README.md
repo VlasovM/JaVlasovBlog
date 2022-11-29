@@ -8,7 +8,7 @@ ___
 
 <h2 align="center">
 
-<a  href="https://javlasov-blog.herokuapp.com/">Демоверсия | Live Demo</a></h2>
+<a  href="https://javlasov-blog.herokuapp.com/">Демоверсия (В данный момент ссылка на работает. Просьба запускать локально)</a></h2>
 
 
 # Навигация
