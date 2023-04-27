@@ -1,5 +1,5 @@
 # JaVlasovBlog - блог о программировании и технологиях | blog about programming and technologies.
-[English version bellow](#English-version)
+[English version below](#English-version)
 ___
 
 <h2 align="center">
